@@ -12,6 +12,15 @@
 		BAD472302AD448BA0021323A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD4722F2AD448BA0021323A /* ViewController.swift */; };
 		BAD472352AD448BC0021323A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BAD472342AD448BC0021323A /* Assets.xcassets */; };
 		BAD472382AD448BC0021323A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BAD472362AD448BC0021323A /* LaunchScreen.storyboard */; };
+		BAD472402AD44BA40021323A /* SecretKey.plist in Resources */ = {isa = PBXBuildFile; fileRef = BAD4723F2AD44BA40021323A /* SecretKey.plist */; };
+		BAD472462AD44C9E0021323A /* PapagoDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD472452AD44C9E0021323A /* PapagoDTO.swift */; };
+		BAD472482AD44EFD0021323A /* DecodingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD472472AD44EFD0021323A /* DecodingManager.swift */; };
+		BAD4724B2AD44F370021323A /* DecodingError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD4724A2AD44F370021323A /* DecodingError.swift */; };
+		BAD4724F2AD4506B0021323A /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD4724E2AD4506B0021323A /* NetworkManager.swift */; };
+		BAD472512AD450B00021323A /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD472502AD450B00021323A /* APIError.swift */; };
+		BAD472532AD451480021323A /* NetworkConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD472522AD451480021323A /* NetworkConfiguration.swift */; };
+		BAD472552AD452370021323A /* KeywordArgument.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD472542AD452370021323A /* KeywordArgument.swift */; };
+		BAD472592AD4563D0021323A /* LanguageCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD472582AD4563D0021323A /* LanguageCode.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +31,15 @@
 		BAD472342AD448BC0021323A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BAD472372AD448BC0021323A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BAD472392AD448BC0021323A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BAD4723F2AD44BA40021323A /* SecretKey.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = SecretKey.plist; sourceTree = "<group>"; };
+		BAD472452AD44C9E0021323A /* PapagoDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PapagoDTO.swift; sourceTree = "<group>"; };
+		BAD472472AD44EFD0021323A /* DecodingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecodingManager.swift; sourceTree = "<group>"; };
+		BAD4724A2AD44F370021323A /* DecodingError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecodingError.swift; sourceTree = "<group>"; };
+		BAD4724E2AD4506B0021323A /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		BAD472502AD450B00021323A /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
+		BAD472522AD451480021323A /* NetworkConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkConfiguration.swift; sourceTree = "<group>"; };
+		BAD472542AD452370021323A /* KeywordArgument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeywordArgument.swift; sourceTree = "<group>"; };
+		BAD472582AD4563D0021323A /* LanguageCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageCode.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,14 +72,79 @@
 		BAD4722A2AD448BA0021323A /* TranslateApp */ = {
 			isa = PBXGroup;
 			children = (
-				BAD4722B2AD448BA0021323A /* AppDelegate.swift */,
-				BAD4722D2AD448BA0021323A /* SceneDelegate.swift */,
-				BAD4722F2AD448BA0021323A /* ViewController.swift */,
+				BAD472412AD44C3E0021323A /* App */,
+				BAD472432AD44C540021323A /* Model */,
+				BAD472422AD44C470021323A /* Network */,
+				BAD4724D2AD44F6B0021323A /* Utility */,
+				BAD472492AD44F180021323A /* Error */,
+				BAD4724C2AD44F460021323A /* View */,
 				BAD472342AD448BC0021323A /* Assets.xcassets */,
 				BAD472362AD448BC0021323A /* LaunchScreen.storyboard */,
 				BAD472392AD448BC0021323A /* Info.plist */,
+				BAD4723F2AD44BA40021323A /* SecretKey.plist */,
 			);
 			path = TranslateApp;
+			sourceTree = "<group>";
+		};
+		BAD472412AD44C3E0021323A /* App */ = {
+			isa = PBXGroup;
+			children = (
+				BAD4722B2AD448BA0021323A /* AppDelegate.swift */,
+				BAD4722D2AD448BA0021323A /* SceneDelegate.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		BAD472422AD44C470021323A /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				BAD4724E2AD4506B0021323A /* NetworkManager.swift */,
+				BAD472522AD451480021323A /* NetworkConfiguration.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		BAD472432AD44C540021323A /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				BAD472442AD44C8F0021323A /* DTO */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		BAD472442AD44C8F0021323A /* DTO */ = {
+			isa = PBXGroup;
+			children = (
+				BAD472452AD44C9E0021323A /* PapagoDTO.swift */,
+			);
+			path = DTO;
+			sourceTree = "<group>";
+		};
+		BAD472492AD44F180021323A /* Error */ = {
+			isa = PBXGroup;
+			children = (
+				BAD4724A2AD44F370021323A /* DecodingError.swift */,
+				BAD472502AD450B00021323A /* APIError.swift */,
+			);
+			path = Error;
+			sourceTree = "<group>";
+		};
+		BAD4724C2AD44F460021323A /* View */ = {
+			isa = PBXGroup;
+			children = (
+				BAD4722F2AD448BA0021323A /* ViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		BAD4724D2AD44F6B0021323A /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				BAD472472AD44EFD0021323A /* DecodingManager.swift */,
+				BAD472542AD452370021323A /* KeywordArgument.swift */,
+				BAD472582AD4563D0021323A /* LanguageCode.swift */,
+			);
+			path = Utility;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -123,6 +206,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BAD472382AD448BC0021323A /* LaunchScreen.storyboard in Resources */,
+				BAD472402AD44BA40021323A /* SecretKey.plist in Resources */,
 				BAD472352AD448BC0021323A /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -134,8 +218,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BAD472552AD452370021323A /* KeywordArgument.swift in Sources */,
+				BAD472462AD44C9E0021323A /* PapagoDTO.swift in Sources */,
 				BAD472302AD448BA0021323A /* ViewController.swift in Sources */,
 				BAD4722C2AD448BA0021323A /* AppDelegate.swift in Sources */,
+				BAD472592AD4563D0021323A /* LanguageCode.swift in Sources */,
+				BAD4724F2AD4506B0021323A /* NetworkManager.swift in Sources */,
+				BAD4724B2AD44F370021323A /* DecodingError.swift in Sources */,
+				BAD472532AD451480021323A /* NetworkConfiguration.swift in Sources */,
+				BAD472512AD450B00021323A /* APIError.swift in Sources */,
+				BAD472482AD44EFD0021323A /* DecodingManager.swift in Sources */,
 				BAD4722E2AD448BA0021323A /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
