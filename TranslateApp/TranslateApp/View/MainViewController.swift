@@ -11,7 +11,7 @@ import Vision
 
 class MainViewController: UIViewController {
     private var button: UIButton = {
-       let button = UIButton()
+        let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("카메라 켜기", for: .normal)
         button.setTitleColor(.white, for: .normal)
@@ -25,9 +25,8 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
-        configureTextRecognition()
     }
-
+    
     private func configureUI() {
         let safeArea = view.safeAreaLayoutGuide
         view.backgroundColor = .systemBackground
@@ -39,61 +38,35 @@ class MainViewController: UIViewController {
             button.centerYAnchor.constraint(equalTo: safeArea.centerYAnchor),
         ])
     }
-    
-    private func configureTextRecognition() {
-        textRecognitionRequest = VNRecognizeTextRequest(completionHandler: {(request, error) in
-            if let results = request.results, !results.isEmpty {
-                if let requestResults = request.results as? [VNRecognizedTextObservation] {
-                    DispatchQueue.main.async {
-                        self.resultViewController.addText(recognizedText: requestResults)
-                    }
-                }
-            }
-        })
-        do {
-            print(try textRecognitionRequest.supportedRecognitionLanguages())
-            textRecognitionRequest.revision = VNRecognizeTextRequestRevision3
-            textRecognitionRequest.recognitionLevel = .accurate
-            textRecognitionRequest.recognitionLanguages = ["en-US", "fr-FR", "it-IT", "de-DE", "es-ES", "pt-BR", "zh-Hans", "zh-Hant", "yue-Hans", "yue-Hant", "ko-KR", "ja-JP", "ru-RU", "uk-UA"]
-    //        textRecognitionRequest.usesLanguageCorrection = true
-        } catch {
-            
-        }
-        
-        
-    }
-    
+}
+
+extension MainViewController {
     @objc private func startVisionKit() {
-        let scan = VNDocumentCameraViewController()
-        scan.delegate = self
-        self.present(scan, animated: true)
+        let dataScanner = DataScannerViewController(recognizedDataTypes: [.text()],
+                                                    qualityLevel: .fast,
+                                                    recognizesMultipleItems: true,
+                                                    isHighFrameRateTrackingEnabled: false,
+                                                    isHighlightingEnabled: true)
+        dataScanner.delegate = self
+        self.present(dataScanner, animated: true)
+        try? dataScanner.startScanning()
     }
-    
-    func processImage(image: UIImage) {
-        guard let cgImage = image.cgImage else { return }
-        
-        let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
-        do {
-            try handler.perform([textRecognitionRequest])
-        } catch {
-            
+}
+
+extension MainViewController: DataScannerViewControllerDelegate {
+    func dataScanner(_ dataScanner: DataScannerViewController, didAdd addedItems: [RecognizedItem], allItems: [RecognizedItem]) {
+        addedItems.forEach { item in
+            switch item {
+            case .text(let text):
+                let input = Input(frame: CGRect(origin: text.bounds.bottomLeft,
+                                                size: CGSize(width: text.bounds.topRight.x - text.bounds.topLeft.x,
+                                                             height: text.bounds.topRight.y - text.bounds.topRight.y)),
+                                  text: text.transcript)
+            default:
+                return
+            }
         }
     }
 }
 
-extension MainViewController: VNDocumentCameraViewControllerDelegate {
-    func documentCameraViewController(_ controller: VNDocumentCameraViewController, didFinishWith scan: VNDocumentCameraScan) {
-        controller.dismiss(animated: true) {
-            DispatchQueue.global(qos: .userInitiated).async {
-                for pageNumber in 0 ..< scan.pageCount {
-                    let image = scan.imageOfPage(at: pageNumber)
-                    self.processImage(image: image)
-                }
-                DispatchQueue.main.async {
-                    self.navigationController?.pushViewController(self.resultViewController, animated: true)
-                }
-            }
-        }
-    }
-}
 

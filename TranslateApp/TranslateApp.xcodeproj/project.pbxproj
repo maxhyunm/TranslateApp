@@ -23,6 +23,8 @@
 		BAD472592AD4563D0021323A /* LanguageCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD472582AD4563D0021323A /* LanguageCode.swift */; };
 		BAD4725B2AD4EAFC0021323A /* ResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD4725A2AD4EAFC0021323A /* ResultViewController.swift */; };
 		BAD4725D2AD4EB550021323A /* RecognizedTextDataSourceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD4725C2AD4EB550021323A /* RecognizedTextDataSourceType.swift */; };
+		BAD4725F2AD5664B0021323A /* Input.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD4725E2AD5664B0021323A /* Input.swift */; };
+		BAD472612AD56DD00021323A /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD472602AD56DD00021323A /* MainViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +46,8 @@
 		BAD472582AD4563D0021323A /* LanguageCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageCode.swift; sourceTree = "<group>"; };
 		BAD4725A2AD4EAFC0021323A /* ResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultViewController.swift; sourceTree = "<group>"; };
 		BAD4725C2AD4EB550021323A /* RecognizedTextDataSourceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecognizedTextDataSourceType.swift; sourceTree = "<group>"; };
+		BAD4725E2AD5664B0021323A /* Input.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Input.swift; sourceTree = "<group>"; };
+		BAD472602AD56DD00021323A /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -139,6 +143,7 @@
 				BAD4722F2AD448BA0021323A /* MainViewController.swift */,
 				BAD4725A2AD4EAFC0021323A /* ResultViewController.swift */,
 				BAD4725C2AD4EB550021323A /* RecognizedTextDataSourceType.swift */,
+				BAD472602AD56DD00021323A /* MainViewModel.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -149,6 +154,7 @@
 				BAD472472AD44EFD0021323A /* DecodingManager.swift */,
 				BAD472542AD452370021323A /* KeywordArgument.swift */,
 				BAD472582AD4563D0021323A /* LanguageCode.swift */,
+				BAD4725E2AD5664B0021323A /* Input.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -224,10 +230,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BAD4725F2AD5664B0021323A /* Input.swift in Sources */,
 				BAD472552AD452370021323A /* KeywordArgument.swift in Sources */,
 				BAD4725D2AD4EB550021323A /* RecognizedTextDataSourceType.swift in Sources */,
 				BAD472462AD44C9E0021323A /* PapagoDTO.swift in Sources */,
 				BAD472302AD448BA0021323A /* MainViewController.swift in Sources */,
+				BAD472612AD56DD00021323A /* MainViewModel.swift in Sources */,
 				BAD4722C2AD448BA0021323A /* AppDelegate.swift in Sources */,
 				BAD472592AD4563D0021323A /* LanguageCode.swift in Sources */,
 				BAD4724F2AD4506B0021323A /* NetworkManager.swift in Sources */,
