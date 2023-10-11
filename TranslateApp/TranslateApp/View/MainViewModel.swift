@@ -6,3 +6,38 @@
 //
 
 import Foundation
+import RxSwift
+import RxCocoa
+
+final class MainViewModel: MainViewModelType, MainViewModelOutputsType, ObservableObject {
+    let repository: TranslaterRepository
+    var inputs: MainViewModelInputsType { return self }
+    var outputs: MainViewModelOutputsType { return self }
+    var inputItems = BehaviorRelay<[Item]>(value: [])
+    var outputItems = BehaviorRelay<[Item]>(value: [])
+    let disposeBag = DisposeBag()
+    
+    init(repository: TranslaterRepository) {
+        self.repository = repository
+        bindItems()
+    }
+}
+
+extension MainViewModel: MainViewModelInputsType {
+    func scanText(_ input: [Item], source: Languages?, target: Languages) {
+        input.forEach {
+            repository.translate(source: source, target: target, text: $0.text)
+        }
+    }
+}
+
+extension MainViewModel {
+    func bindItems() {
+        repository.outputItems
+            .subscribe(on: MainScheduler.instance)
+            .bind { [weak self] outputs in
+                self?.outputItems.accept(outputs)
+            }
+            .disposed(by: disposeBag)
+    }
+}

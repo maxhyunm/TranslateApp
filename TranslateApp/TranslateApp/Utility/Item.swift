@@ -7,11 +7,11 @@
 
 import Foundation
 
-struct Input {
-    let frame: CGRect
+struct Item {
+    let frame: CGRect?
     let text: String
     
-    init(frame: CGRect, text: String) {
+    init(frame: CGRect? = nil, text: String) {
         self.frame = frame
         self.text = text
     }

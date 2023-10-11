@@ -8,12 +8,15 @@
 import Foundation
 
 enum NetworkConfiguration {
-    case papagoAPI
+    case translater(query: [KeywordArgument])
+    case languageCheck(query: [KeywordArgument])
     
     var url: String {
         switch self {
-        case .papagoAPI:
+        case .translater:
             return "https://openapi.naver.com/v1/papago/n2mt"
+        case .languageCheck:
+            return "https://openapi.naver.com/v1/papago/detectLangs"
         }
     }
     
@@ -24,22 +27,33 @@ enum NetworkConfiguration {
         }
         
         switch self {
-        case .papagoAPI:
+        case .translater, .languageCheck:
             guard let papagoId = plist.value(forKey: "PapagoClientId"),
                   let papagoSecret = plist.value(forKey: "PapagoClientSecret") else {
                 return nil
             }
             return [KeywordArgument(key: "X-Naver-Client-Id", value: papagoId),
-                    KeywordArgument(key: "X-Naver-Client-Secret", value: papagoSecret)]
+                    KeywordArgument(key: "X-Naver-Client-Secret", value: papagoSecret),
+                    KeywordArgument(key: "Content-Type", value: "application/x-www-form-urlencoded;charset=UTF-8")]
         }
     }
     
-    func getQuery(source: LanguageCode, target: LanguageCode, text: String) -> [KeywordArgument] {
+    var queryItem: [URLQueryItem] {
         switch self {
-        case .papagoAPI:
-            return [KeywordArgument(key: "source", value: source.rawValue),
-                    KeywordArgument(key: "target", value: target.rawValue),
-                    KeywordArgument(key: "text", value: text)]
+        case .translater(let query), .languageCheck(let query):
+            var result = [URLQueryItem]()
+            query.forEach {
+                guard let value = $0.value as? String else { return }
+                result.append(URLQueryItem(name: $0.key, value: value))
+            }
+            return result
+        }
+    }
+    
+    var httpMethod: String {
+        switch self {
+        case .translater, .languageCheck:
+            return "POST"
         }
     }
 }
