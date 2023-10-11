@@ -19,7 +19,7 @@ final class TranslaterRepository {
         var source = source
         if source == nil {
             let query = [KeywordArgument(key: "query", value: text)]
-            networkManager.fetchData(.languageCheck(query: query)) { result in
+            networkManager.fetchData(.languageCheck(body: query)) { result in
                 switch result {
                 case .success(let data):
                     do {
@@ -39,7 +39,7 @@ final class TranslaterRepository {
         let query = [KeywordArgument(key: "source", value: source.rawValue),
                      KeywordArgument(key: "target", value: target.rawValue),
                      KeywordArgument(key: "text", value: text)]
-        networkManager.fetchData(.translater(query: query)) { [weak self] result in
+        networkManager.fetchData(.translater(body: query)) { [weak self] result in
             guard let self else { return }
             
             switch result {

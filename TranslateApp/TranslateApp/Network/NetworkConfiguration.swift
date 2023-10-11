@@ -8,8 +8,8 @@
 import Foundation
 
 enum NetworkConfiguration {
-    case translater(query: [KeywordArgument])
-    case languageCheck(query: [KeywordArgument])
+    case translater(body: [KeywordArgument])
+    case languageCheck(body: [KeywordArgument])
     
     var url: String {
         switch self {
@@ -40,9 +40,9 @@ enum NetworkConfiguration {
     
     var queryItem: [URLQueryItem] {
         switch self {
-        case .translater(let query), .languageCheck(let query):
+        case .translater(let body), .languageCheck(let body):
             var result = [URLQueryItem]()
-            query.forEach {
+            body.forEach {
                 guard let value = $0.value as? String else { return }
                 result.append(URLQueryItem(name: $0.key, value: value))
             }
