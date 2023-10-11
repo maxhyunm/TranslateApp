@@ -30,6 +30,8 @@
 		BAD4726E2AD63AA80021323A /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = BAD4726D2AD63AA80021323A /* RxSwift */; };
 		BAD472702AD64EB10021323A /* TranslaterRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD4726F2AD64EB10021323A /* TranslaterRepository.swift */; };
 		BAD472722AD6589D0021323A /* LanguageCheckDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD472712AD6589D0021323A /* LanguageCheckDTO.swift */; };
+		BAD472742AD7083E0021323A /* DataScannerViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD472732AD7083E0021323A /* DataScannerViewController+.swift */; };
+		BAD472762AD710CE0021323A /* ResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD472752AD710CE0021323A /* ResultViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +56,8 @@
 		BAD472622AD56F5B0021323A /* ViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelType.swift; sourceTree = "<group>"; };
 		BAD4726F2AD64EB10021323A /* TranslaterRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslaterRepository.swift; sourceTree = "<group>"; };
 		BAD472712AD6589D0021323A /* LanguageCheckDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageCheckDTO.swift; sourceTree = "<group>"; };
+		BAD472732AD7083E0021323A /* DataScannerViewController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DataScannerViewController+.swift"; sourceTree = "<group>"; };
+		BAD472752AD710CE0021323A /* ResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -155,6 +159,8 @@
 				BAD4722F2AD448BA0021323A /* MainViewController.swift */,
 				BAD472602AD56DD00021323A /* MainViewModel.swift */,
 				BAD472622AD56F5B0021323A /* ViewModelType.swift */,
+				BAD472732AD7083E0021323A /* DataScannerViewController+.swift */,
+				BAD472752AD710CE0021323A /* ResultViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -263,9 +269,11 @@
 				BAD472722AD6589D0021323A /* LanguageCheckDTO.swift in Sources */,
 				BAD472532AD451480021323A /* NetworkConfiguration.swift in Sources */,
 				BAD472512AD450B00021323A /* APIError.swift in Sources */,
+				BAD472742AD7083E0021323A /* DataScannerViewController+.swift in Sources */,
 				BAD472632AD56F5B0021323A /* ViewModelType.swift in Sources */,
 				BAD472482AD44EFD0021323A /* DecodingManager.swift in Sources */,
 				BAD4722E2AD448BA0021323A /* SceneDelegate.swift in Sources */,
+				BAD472762AD710CE0021323A /* ResultViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

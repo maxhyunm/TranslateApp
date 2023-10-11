@@ -15,9 +15,17 @@ final class MainViewController: UIViewController {
     private var button: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("카메라 켜기", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = .blue
+        button.setTitle("번역하기", for: .normal)
+        button.setTitleColor(.black, for: .normal)
+        button.titleLabel?.font = .preferredFont(forTextStyle: .headline)
+        button.backgroundColor = .white
+        button.layer.cornerRadius = 50
+        button.clipsToBounds = true
+        
+        NSLayoutConstraint.activate([
+            button.widthAnchor.constraint(equalToConstant: 100),
+            button.heightAnchor.constraint(equalToConstant: 100)
+        ])
         return button
     }()
     
@@ -52,9 +60,7 @@ final class MainViewController: UIViewController {
         return label
     }()
     
-    private var textRecognitionRequest = VNRecognizeTextRequest()
     private let viewModel: MainViewModelType
-    private var disposeBag = DisposeBag()
 
     init(viewModel: MainViewModelType) {
         self.viewModel = viewModel
@@ -65,21 +71,31 @@ final class MainViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        try? dataScanner.startScanning()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        dataScanner.stopScanning()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureUI()
         configureScanner()
-        bindScanner()
+        configureUI()
     }
     
     private func configureUI() {
         let safeArea = view.safeAreaLayoutGuide
         view.backgroundColor = .systemBackground
+        button.addTarget(self, action: #selector(startTranslate), for: .touchUpInside)
         view.addSubview(button)
-        button.addTarget(self, action: #selector(startScan), for: .touchUpInside)
+        
         NSLayoutConstraint.activate([
             button.centerXAnchor.constraint(equalTo: safeArea.centerXAnchor),
-            button.centerYAnchor.constraint(equalTo: safeArea.centerYAnchor),
+            button.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor, constant: -80),
         ])
     }
 }
@@ -87,43 +103,35 @@ final class MainViewController: UIViewController {
 extension MainViewController {
     private func configureScanner() {
         dataScanner.delegate = self
-        scrollView.addSubview(textLabel)
-        dataScanner.overlayContainerView.addSubview(scrollView)
+        
+        addChild(dataScanner)
+        
+        dataScanner.view.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(dataScanner.view)
         
         NSLayoutConstraint.activate([
-            scrollView.centerXAnchor.constraint(equalTo: dataScanner.overlayContainerView.centerXAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: dataScanner.overlayContainerView.bottomAnchor),
-            scrollView.widthAnchor.constraint(equalTo: dataScanner.overlayContainerView.widthAnchor),
-            scrollView.heightAnchor.constraint(equalTo: dataScanner.overlayContainerView.heightAnchor, multiplier: 0.3),
-            textLabel.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            textLabel.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
-            textLabel.leftAnchor.constraint(equalTo: scrollView.leftAnchor),
-            textLabel.heightAnchor.constraint(equalTo: scrollView.heightAnchor)
+            dataScanner.view.leadingAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.leadingAnchor
+            ),
+            dataScanner.view.trailingAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.trailingAnchor
+            ),
+            dataScanner.view.topAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.topAnchor
+            ),
+            dataScanner.view.bottomAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.bottomAnchor
+            )
         ])
+        
+        dataScanner.didMove(toParent: self)
     }
-    
-    private func addLayerToScanner(_ items: [Item]) {
-        var newText = ""
-        items.forEach { item in
-            newText += item.text
-        }
-        textLabel.text = newText
-    }
-    
-    private func bindScanner() {
-        viewModel.outputs.outputItems
-            .subscribe(on: MainScheduler.instance)
-            .bind { [weak self] outputs in
-                DispatchQueue.main.async {
-                    self?.addLayerToScanner(outputs)
-                }
-            }
-            .disposed(by: disposeBag)
-    }
-    
-    @objc private func startScan() {
-        self.present(dataScanner, animated: true)
-        try? dataScanner.startScanning()
+
+
+    @objc private func startTranslate() {
+        viewModel.inputs.startTranslate(source: Languages.korean, target: Languages.english)
+        let result = ResultViewController(viewModel.outputs)
+        present(result, animated: true)
     }
 }
 
@@ -141,7 +149,7 @@ extension MainViewController: DataScannerViewControllerDelegate {
                 return
             }
         }
-        viewModel.inputs.scanText(inputs, source: Languages.korean, target: Languages.english)
+        viewModel.inputs.scanText(inputs)
     }
 }
 

@@ -24,8 +24,13 @@ final class MainViewModel: MainViewModelType, MainViewModelOutputsType, Observab
 }
 
 extension MainViewModel: MainViewModelInputsType {
-    func scanText(_ input: [Item], source: Languages?, target: Languages) {
-        input.forEach {
+    func scanText(_ input: [Item]) {
+        inputItems.accept(input)
+        
+    }
+    
+    func startTranslate(source: Languages?, target: Languages) {
+        inputItems.value.forEach {
             repository.translate(source: source, target: target, text: $0.text)
         }
     }

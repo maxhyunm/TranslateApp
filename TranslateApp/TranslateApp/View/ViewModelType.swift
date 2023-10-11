@@ -13,7 +13,8 @@ protocol MainViewModelType {
 }
 
 protocol MainViewModelInputsType {
-    func scanText(_ input: [Item], source: Languages?, target: Languages)
+    func scanText(_ input: [Item])
+    func startTranslate(source: Languages?, target: Languages)
 }
 
 protocol MainViewModelOutputsType {
