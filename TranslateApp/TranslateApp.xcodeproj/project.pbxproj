@@ -31,6 +31,7 @@
 		BAD472702AD64EB10021323A /* TranslaterRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD4726F2AD64EB10021323A /* TranslaterRepository.swift */; };
 		BAD472722AD6589D0021323A /* LanguageCheckDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD472712AD6589D0021323A /* LanguageCheckDTO.swift */; };
 		BAD472762AD710CE0021323A /* ResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD472752AD710CE0021323A /* ResultViewController.swift */; };
+		BAD4729C2AD84E110021323A /* TextPickerField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD4729B2AD84E110021323A /* TextPickerField.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,6 +57,7 @@
 		BAD4726F2AD64EB10021323A /* TranslaterRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslaterRepository.swift; sourceTree = "<group>"; };
 		BAD472712AD6589D0021323A /* LanguageCheckDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageCheckDTO.swift; sourceTree = "<group>"; };
 		BAD472752AD710CE0021323A /* ResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultViewController.swift; sourceTree = "<group>"; };
+		BAD4729B2AD84E110021323A /* TextPickerField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextPickerField.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,9 +99,8 @@
 				BAD472422AD44C470021323A /* Network */,
 				BAD4724D2AD44F6B0021323A /* Utility */,
 				BAD472492AD44F180021323A /* Error */,
-				BAD4724C2AD44F460021323A /* View */,
-				BAD472342AD448BC0021323A /* Assets.xcassets */,
-				BAD472362AD448BC0021323A /* LaunchScreen.storyboard */,
+				BAD4729E2AD852750021323A /* Presentation */,
+				BAD4729D2AD852570021323A /* Resource */,
 				BAD472392AD448BC0021323A /* Info.plist */,
 				BAD4723F2AD44BA40021323A /* SecretKey.plist */,
 			);
@@ -154,10 +155,8 @@
 		BAD4724C2AD44F460021323A /* View */ = {
 			isa = PBXGroup;
 			children = (
-				BAD4722F2AD448BA0021323A /* MainViewController.swift */,
-				BAD472602AD56DD00021323A /* MainViewModel.swift */,
-				BAD472622AD56F5B0021323A /* ViewModelType.swift */,
-				BAD472752AD710CE0021323A /* ResultViewController.swift */,
+				BAD4729F2AD852CC0021323A /* Main */,
+				BAD472A02AD852DD0021323A /* Result */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -171,6 +170,42 @@
 				BAD4725E2AD5664B0021323A /* Item.swift */,
 			);
 			path = Utility;
+			sourceTree = "<group>";
+		};
+		BAD4729D2AD852570021323A /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				BAD472342AD448BC0021323A /* Assets.xcassets */,
+				BAD472362AD448BC0021323A /* LaunchScreen.storyboard */,
+			);
+			path = Resource;
+			sourceTree = "<group>";
+		};
+		BAD4729E2AD852750021323A /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				BAD4724C2AD44F460021323A /* View */,
+				BAD472622AD56F5B0021323A /* ViewModelType.swift */,
+			);
+			path = Presentation;
+			sourceTree = "<group>";
+		};
+		BAD4729F2AD852CC0021323A /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				BAD472602AD56DD00021323A /* MainViewModel.swift */,
+				BAD4722F2AD448BA0021323A /* MainViewController.swift */,
+				BAD4729B2AD84E110021323A /* TextPickerField.swift */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		BAD472A02AD852DD0021323A /* Result */ = {
+			isa = PBXGroup;
+			children = (
+				BAD472752AD710CE0021323A /* ResultViewController.swift */,
+			);
+			path = Result;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -269,6 +304,7 @@
 				BAD472632AD56F5B0021323A /* ViewModelType.swift in Sources */,
 				BAD472482AD44EFD0021323A /* DecodingManager.swift in Sources */,
 				BAD4722E2AD448BA0021323A /* SceneDelegate.swift in Sources */,
+				BAD4729C2AD84E110021323A /* TextPickerField.swift in Sources */,
 				BAD472762AD710CE0021323A /* ResultViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

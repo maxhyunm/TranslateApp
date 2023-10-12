@@ -27,23 +27,8 @@ final class MainViewController: UIViewController {
         return button
     }()
     
-    private let sourceLanguage: UITextField = {
-        let textField = UITextField()
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.placeholder = "언어 선택"
-        textField.borderStyle = .roundedRect
-        textField.textAlignment = .center
-        return textField
-    }()
-    
-    private let targetLanguage: UITextField = {
-        let textField = UITextField()
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.placeholder = "언어 선택"
-        textField.borderStyle = .roundedRect
-        textField.textAlignment = .center
-        return textField
-    }()
+    private let sourceLanguage = TextPickerField(placeholder: "언어 선택")
+    private let targetLanguage = TextPickerField(placeholder: "언어 선택")
     
     private let arrowIcon: UIImageView = {
         let icon = UIImageView(image: UIImage(systemName: "arrow.forward.circle.fill"))
@@ -52,14 +37,15 @@ final class MainViewController: UIViewController {
         return icon
     }()
     
-    private let sourcePickerView = UIPickerView()
-    private let targetPickerView = UIPickerView()
-    
-    private let dataScanner = DataScannerViewController(recognizedDataTypes: [.text()],
-                                                        qualityLevel: .balanced,
-                                                        recognizesMultipleItems: false,
-                                                        isHighFrameRateTrackingEnabled: true,
-                                                        isHighlightingEnabled: true)
+    private let dataScanner: DataScannerViewController = {
+        let scanner = DataScannerViewController(recognizedDataTypes: [.text()],
+                                                qualityLevel: .balanced,
+                                                recognizesMultipleItems: false,
+                                                isHighFrameRateTrackingEnabled: true,
+                                                isHighlightingEnabled: true)
+        scanner.view.translatesAutoresizingMaskIntoConstraints = false
+        return scanner
+    }()
 
     private let viewModel: MainViewModelType
     private var disposeBag = DisposeBag()
@@ -134,33 +120,8 @@ final class MainViewController: UIViewController {
 
 extension MainViewController {
     private func configureLanguagePicker() {
-        sourceLanguage.inputView = sourcePickerView
-        targetLanguage.inputView = targetPickerView
-        
-        Observable.just(Languages.sourceMenu).bind(to: sourcePickerView.rx.itemTitles) { _, item in
-            return item
-        }.disposed(by: disposeBag)
-        
-        Observable.just(Languages.targetMenu).bind(to: targetPickerView.rx.itemTitles) { _, item in
-            return item
-        }.disposed(by: disposeBag)
-        
-        sourcePickerView.rx.itemSelected.subscribe { [weak self] (row, _) in
-            guard let self else { return }
-            self.sourceLanguage.text = Languages.sourceMenu[row]
-            self.sourceLanguage.resignFirstResponder()
-        }.disposed(by: disposeBag)
-        
-        targetPickerView.rx.itemSelected.subscribe { [weak self] (row, _) in
-            guard let self else { return }
-            self.targetLanguage.text = Languages.targetMenu[row]
-            self.targetLanguage.resignFirstResponder()
-        }.disposed(by: disposeBag)
-        
-        sourcePickerView.selectRow(0, inComponent: 0, animated: false)
-        targetPickerView.selectRow(0, inComponent: 0, animated: false)
-        sourceLanguage.text = Languages.sourceMenu.first
-        targetLanguage.text = Languages.targetMenu.first
+        sourceLanguage.bindWithPickerView(dataSource: Languages.sourceMenu)
+        targetLanguage.bindWithPickerView(dataSource: Languages.targetMenu)
     }
 }
 
@@ -169,23 +130,13 @@ extension MainViewController {
         dataScanner.delegate = self
         
         addChild(dataScanner)
-        
-        dataScanner.view.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(dataScanner.view)
         
         NSLayoutConstraint.activate([
-            dataScanner.view.leadingAnchor.constraint(
-                equalTo: view.safeAreaLayoutGuide.leadingAnchor
-            ),
-            dataScanner.view.trailingAnchor.constraint(
-                equalTo: view.safeAreaLayoutGuide.trailingAnchor
-            ),
-            dataScanner.view.topAnchor.constraint(
-                equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 50
-            ),
-            dataScanner.view.bottomAnchor.constraint(
-                equalTo: view.safeAreaLayoutGuide.bottomAnchor
-            )
+            dataScanner.view.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            dataScanner.view.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            dataScanner.view.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 50),
+            dataScanner.view.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
         
         dataScanner.didMove(toParent: self)
@@ -193,7 +144,9 @@ extension MainViewController {
 }
 
 extension MainViewController: DataScannerViewControllerDelegate {
-    func dataScanner(_ dataScanner: DataScannerViewController, didAdd addedItems: [RecognizedItem], allItems: [RecognizedItem]) {
+    func dataScanner(_ dataScanner: DataScannerViewController,
+                     didAdd addedItems: [RecognizedItem],
+                     allItems: [RecognizedItem]) {
         guard let item = addedItems.first else { return }
         if case .text(let text) = item {
             let newInput = Item(frame: CGRect(origin: text.bounds.bottomLeft,
