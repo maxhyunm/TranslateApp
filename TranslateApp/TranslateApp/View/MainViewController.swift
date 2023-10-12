@@ -170,20 +170,14 @@ extension MainViewController {
 
 extension MainViewController: DataScannerViewControllerDelegate {
     func dataScanner(_ dataScanner: DataScannerViewController, didAdd addedItems: [RecognizedItem], allItems: [RecognizedItem]) {
-        
-        var inputs = [Item]()
-        addedItems.forEach { item in
-            switch item {
-            case .text(let text):
-                inputs.append(Item(frame: CGRect(origin: text.bounds.bottomLeft,
-                                                  size: CGSize(width: text.bounds.topRight.x - text.bounds.topLeft.x,
-                                                               height: text.bounds.topRight.y - text.bounds.topRight.y)),
-                                    text: text.transcript))
-            default:
-                return
-            }
+        guard let item = addedItems.first else { return }
+        if case .text(let text) = item {
+            let newInput = Item(frame: CGRect(origin: text.bounds.bottomLeft,
+                                              size: CGSize(width: text.bounds.topRight.x - text.bounds.topLeft.x,
+                                                           height: text.bounds.topRight.y - text.bounds.topRight.y)),
+                                text: text.transcript)
+            viewModel.inputs.scanText(newInput)
         }
-        viewModel.inputs.scanText(inputs)
     }
 }
 

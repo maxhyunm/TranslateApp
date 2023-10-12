@@ -13,8 +13,8 @@ final class MainViewModel: MainViewModelType, MainViewModelOutputsType, Observab
     let repository: TranslaterRepository
     var inputs: MainViewModelInputsType { return self }
     var outputs: MainViewModelOutputsType { return self }
-    var inputItems = [Item]()
-    var outputItems = BehaviorRelay<[Item]>(value: [])
+    var inputItem: Item? = nil
+    var outputItem = BehaviorRelay<Item?>(value: nil)
     let disposeBag = DisposeBag()
     
     init(repository: TranslaterRepository) {
@@ -24,21 +24,18 @@ final class MainViewModel: MainViewModelType, MainViewModelOutputsType, Observab
 }
 
 extension MainViewModel: MainViewModelInputsType {
-    func scanText(_ input: [Item]) {
-        inputItems = input
+    func scanText(_ input: Item) {
+        inputItem = input
     }
     
     func touchUpTranslate(source: String, target: String) {
-        var sourceLanguage = Languages.getLanguageType(for: source)
-        guard let targetLanguage = Languages.getLanguageType(for: target) else { return }
-        
-        inputItems.forEach { item in
-            guard let sourceLanguage else {
-                repository.autoTranslate(target: targetLanguage, item: item)
-                return
-            }
-            repository.translate(source: sourceLanguage, target: targetLanguage, item: item)
+        guard let item = inputItem,
+              let targetLanguage = Languages.getLanguageType(for: target) else { return }
+        guard let sourceLanguage = Languages.getLanguageType(for: source) else {
+            repository.autoTranslate(target: targetLanguage, item: item)
+            return
         }
+        repository.translate(source: sourceLanguage, target: targetLanguage, item: item)
     }
     
     func viewDidDisappear() {
@@ -48,10 +45,10 @@ extension MainViewModel: MainViewModelInputsType {
 
 extension MainViewModel {
     func bindOutput() {
-        repository.outputItems
+        repository.outputItem
             .subscribe(on: MainScheduler.instance)
-            .bind { [weak self] outputs in
-                self?.outputItems.accept(outputs)
+            .bind { [weak self] output in
+                self?.outputItem.accept(output)
             }
             .disposed(by: disposeBag)
     }

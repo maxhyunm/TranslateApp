@@ -54,21 +54,18 @@ class ResultViewController: UIViewController {
     }
     
     private func bindOutput() {
-        viewModel.outputs.outputItems
+        viewModel.outputs.outputItem
             .subscribe(on: MainScheduler.instance)
-            .bind { [weak self] outputs in
+            .bind { [weak self] output in
+                guard let output else { return }
                 DispatchQueue.main.async {
-                    self?.changeText(outputs)
+                    self?.changeText(output)
                 }
             }
             .disposed(by: disposeBag)
     }
     
-    private func changeText(_ items: [Item]) {
-        var newText = ""
-        items.forEach { item in
-            newText += item.text
-        }
-        textView.text = newText
+    private func changeText(_ item: Item) {
+        textView.text = item.text
     }
 }

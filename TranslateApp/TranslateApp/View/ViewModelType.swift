@@ -13,12 +13,12 @@ protocol MainViewModelType {
 }
 
 protocol MainViewModelInputsType {
-    func scanText(_ input: [Item])
+    func scanText(_ input: Item)
     func touchUpTranslate(source: String, target: String)
     func viewDidDisappear()
 }
 
 protocol MainViewModelOutputsType {
-    var inputItems: [Item] { get }
-    var outputItems: BehaviorRelay<[Item]> { get }
+    var inputItem: Item? { get }
+    var outputItem: BehaviorRelay<Item?> { get }
 }
