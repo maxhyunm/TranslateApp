@@ -45,6 +45,13 @@ final class MainViewController: UIViewController {
         return textField
     }()
     
+    private let arrowIcon: UIImageView = {
+        let icon = UIImageView(image: UIImage(systemName: "arrow.forward.circle.fill"))
+        icon.translatesAutoresizingMaskIntoConstraints = false
+        icon.tintColor = .systemTeal
+        return icon
+    }()
+    
     private let sourcePickerView = UIPickerView()
     private let targetPickerView = UIPickerView()
     
@@ -55,6 +62,7 @@ final class MainViewController: UIViewController {
                                                         isHighlightingEnabled: true)
 
     private let viewModel: MainViewModelType
+    private var disposeBag = DisposeBag()
 
     init(viewModel: MainViewModelType) {
         self.viewModel = viewModel
@@ -79,52 +87,32 @@ final class MainViewController: UIViewController {
         super.viewDidLoad()
         configureScanner()
         configureLanguagePicker()
+        configureTranslateButton()
         configureUI()
-    }
-    
-    private func configureLanguagePicker() {
-        let safeArea = view.safeAreaLayoutGuide
-        
-        sourceLanguage.inputView = sourcePickerView
-        targetLanguage.inputView = targetPickerView
-        sourcePickerView.delegate = self
-        sourcePickerView.dataSource = self
-        targetPickerView.delegate = self
-        targetPickerView.dataSource = self
-        
-        let icon = UIImageView(image: UIImage(systemName: "arrow.forward.circle.fill"))
-        icon.translatesAutoresizingMaskIntoConstraints = false
-        icon.tintColor = .systemTeal
-        
-        view.addSubview(sourceLanguage)
-        view.addSubview(icon)
-        view.addSubview(targetLanguage)
-        
-//        let toolBar = UIToolbar()
-//        toolBar.sizeToFit()
-//        let button = UIBarButtonItem(title: "선택", style: .plain, target: self, action: <#T##Selector?#>)
-        
-        NSLayoutConstraint.activate([
-            sourceLanguage.leftAnchor.constraint(equalTo: safeArea.leftAnchor),
-            sourceLanguage.widthAnchor.constraint(equalTo: targetLanguage.widthAnchor),
-            sourceLanguage.topAnchor.constraint(equalTo: safeArea.topAnchor),
-            icon.leftAnchor.constraint(equalTo: sourceLanguage.rightAnchor),
-            icon.centerYAnchor.constraint(equalTo: sourceLanguage.centerYAnchor),
-            icon.heightAnchor.constraint(equalTo: sourceLanguage.heightAnchor),
-            icon.widthAnchor.constraint(equalTo: icon.heightAnchor),
-            targetLanguage.leftAnchor.constraint(equalTo: icon.rightAnchor),
-            targetLanguage.centerYAnchor.constraint(equalTo: sourceLanguage.centerYAnchor),
-            targetLanguage.rightAnchor.constraint(equalTo: safeArea.rightAnchor)
-        ])
     }
     
     private func configureUI() {
         let safeArea = view.safeAreaLayoutGuide
         view.backgroundColor = .systemBackground
-        translateButton.addTarget(self, action: #selector(touchUpTranslate), for: .touchUpInside)
+        view.addSubview(sourceLanguage)
+        view.addSubview(arrowIcon)
+        view.addSubview(targetLanguage)
         view.addSubview(translateButton)
         
         NSLayoutConstraint.activate([
+            sourceLanguage.leftAnchor.constraint(equalTo: safeArea.leftAnchor),
+            sourceLanguage.widthAnchor.constraint(equalTo: targetLanguage.widthAnchor),
+            sourceLanguage.topAnchor.constraint(equalTo: safeArea.topAnchor),
+            
+            arrowIcon.leftAnchor.constraint(equalTo: sourceLanguage.rightAnchor),
+            arrowIcon.centerYAnchor.constraint(equalTo: sourceLanguage.centerYAnchor),
+            arrowIcon.heightAnchor.constraint(equalTo: sourceLanguage.heightAnchor),
+            arrowIcon.widthAnchor.constraint(equalTo: arrowIcon.heightAnchor),
+            
+            targetLanguage.leftAnchor.constraint(equalTo: arrowIcon.rightAnchor),
+            targetLanguage.centerYAnchor.constraint(equalTo: sourceLanguage.centerYAnchor),
+            targetLanguage.rightAnchor.constraint(equalTo: safeArea.rightAnchor),
+
             translateButton.centerXAnchor.constraint(equalTo: safeArea.centerXAnchor),
             translateButton.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor, constant: -80),
             translateButton.widthAnchor.constraint(equalToConstant: 100),
@@ -132,11 +120,47 @@ final class MainViewController: UIViewController {
         ])
     }
 
-    @objc private func touchUpTranslate() {
-        guard let source = sourceLanguage.text, let target = targetLanguage.text else { return }
-        viewModel.inputs.touchUpTranslate(source: source, target: target)
-        let result = ResultViewController(viewModel)
-        present(result, animated: true)
+    private func configureTranslateButton() {
+        translateButton.rx.tap.bind { [weak self] in
+            guard let self,
+                  let source = sourceLanguage.text,
+                  let target = targetLanguage.text else { return }
+            self.viewModel.inputs.touchUpTranslate(source: source, target: target)
+            let result = ResultViewController(self.viewModel)
+            self.present(result, animated: true)
+        }.disposed(by: disposeBag)
+    }
+}
+
+extension MainViewController {
+    private func configureLanguagePicker() {
+        sourceLanguage.inputView = sourcePickerView
+        targetLanguage.inputView = targetPickerView
+        
+        Observable.just(Languages.sourceMenu).bind(to: sourcePickerView.rx.itemTitles) { _, item in
+            return item
+        }.disposed(by: disposeBag)
+        
+        Observable.just(Languages.targetMenu).bind(to: targetPickerView.rx.itemTitles) { _, item in
+            return item
+        }.disposed(by: disposeBag)
+        
+        sourcePickerView.rx.itemSelected.subscribe { [weak self] (row, _) in
+            guard let self else { return }
+            self.sourceLanguage.text = Languages.sourceMenu[row]
+            self.sourceLanguage.resignFirstResponder()
+        }.disposed(by: disposeBag)
+        
+        targetPickerView.rx.itemSelected.subscribe { [weak self] (row, _) in
+            guard let self else { return }
+            self.targetLanguage.text = Languages.targetMenu[row]
+            self.targetLanguage.resignFirstResponder()
+        }.disposed(by: disposeBag)
+        
+        sourcePickerView.selectRow(0, inComponent: 0, animated: false)
+        targetPickerView.selectRow(0, inComponent: 0, animated: false)
+        sourceLanguage.text = Languages.sourceMenu.first
+        targetLanguage.text = Languages.targetMenu.first
     }
 }
 
@@ -181,37 +205,3 @@ extension MainViewController: DataScannerViewControllerDelegate {
     }
 }
 
-extension MainViewController: UIPickerViewDelegate, UIPickerViewDataSource {
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        1
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        switch pickerView {
-        case sourcePickerView:
-            return Languages.sourceMenu.count
-        default:
-            return Languages.targetMenu.count
-        }
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        switch pickerView {
-        case sourcePickerView:
-            return Languages.sourceMenu[row]
-        default:
-            return Languages.targetMenu[row]
-        }
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        switch pickerView {
-        case sourcePickerView:
-            sourceLanguage.text = Languages.sourceMenu[row]
-            sourceLanguage.resignFirstResponder()
-        default:
-            targetLanguage.text = Languages.targetMenu[row]
-            targetLanguage.resignFirstResponder()
-        }
-    }
-}
