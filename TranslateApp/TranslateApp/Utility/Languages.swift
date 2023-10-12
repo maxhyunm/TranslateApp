@@ -5,7 +5,7 @@
 //  Created by Min Hyun on 2023/10/10.
 //
 
-enum Languages: String, CustomStringConvertible {
+enum Languages: String, CustomStringConvertible, CaseIterable {
     case korean = "ko"
     case english = "en"
     case japanese = "ja"
@@ -19,6 +19,7 @@ enum Languages: String, CustomStringConvertible {
     case spanish = "es"
     case italian = "it"
     case french = "fr"
+    case unknown = "unk"
     
     var description: String {
         switch self {
@@ -48,6 +49,30 @@ enum Languages: String, CustomStringConvertible {
             return "이탈리아어"
         case .french:
             return "프랑스어"
+        case .unknown:
+            return "알 수 없음"
         }
+    }
+    
+    static let sourceMenu: [String] = {
+        var result = Self.allCases.filter { $0 != .unknown }.map { $0.description }
+        result.insert("언어 감지", at: 0)
+        return result
+    }()
+    
+    static let targetMenu: [String]  = {
+        return Self.allCases.filter { $0 != .unknown }.map { $0.description }
+    }()
+    
+    static let descriptionToLanguage: [String:Languages] = {
+        var result = Self.allCases.reduce(into: [:]) { $0[$1.description] = $1 }
+        return result
+    }()
+    
+    static func getLanguageType(for name: String) -> Languages? {
+        guard let language = descriptionToLanguage[name] else {
+            return nil
+        }
+        return language
     }
 }

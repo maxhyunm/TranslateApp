@@ -13,31 +13,41 @@ final class MainViewModel: MainViewModelType, MainViewModelOutputsType, Observab
     let repository: TranslaterRepository
     var inputs: MainViewModelInputsType { return self }
     var outputs: MainViewModelOutputsType { return self }
-    var inputItems = BehaviorRelay<[Item]>(value: [])
+    var inputItems = [Item]()
     var outputItems = BehaviorRelay<[Item]>(value: [])
     let disposeBag = DisposeBag()
     
     init(repository: TranslaterRepository) {
         self.repository = repository
-        bindItems()
+        bindOutput()
     }
 }
 
 extension MainViewModel: MainViewModelInputsType {
     func scanText(_ input: [Item]) {
-        inputItems.accept(input)
-        
+        inputItems = input
     }
     
-    func startTranslate(source: Languages?, target: Languages) {
-        inputItems.value.forEach {
-            repository.translate(source: source, target: target, text: $0.text)
+    func touchUpTranslate(source: String, target: String) {
+        var sourceLanguage = Languages.getLanguageType(for: source)
+        guard let targetLanguage = Languages.getLanguageType(for: target) else { return }
+        
+        inputItems.forEach { item in
+            guard let sourceLanguage else {
+                repository.autoTranslate(target: targetLanguage, item: item)
+                return
+            }
+            repository.translate(source: sourceLanguage, target: targetLanguage, item: item)
         }
+    }
+    
+    func viewDidDisappear() {
+        repository.resetOutputItem()
     }
 }
 
 extension MainViewModel {
-    func bindItems() {
+    func bindOutput() {
         repository.outputItems
             .subscribe(on: MainScheduler.instance)
             .bind { [weak self] outputs in

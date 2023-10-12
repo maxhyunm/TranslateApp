@@ -9,7 +9,7 @@ import UIKit
 import RxSwift
 
 class ResultViewController: UIViewController {
-    let viewModel: MainViewModelOutputsType
+    let viewModel: MainViewModelType
     private var disposeBag = DisposeBag()
     
     private let textView: UITextView = {
@@ -18,10 +18,11 @@ class ResultViewController: UIViewController {
         textView.backgroundColor = UIColor.gray.withAlphaComponent(0.5)
         textView.textColor = .white
         textView.font = .preferredFont(forTextStyle: .title3)
+        textView.isEditable = false
         return textView
     }()
     
-    init(_ viewModel: MainViewModelOutputsType) {
+    init(_ viewModel: MainViewModelType) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -36,6 +37,11 @@ class ResultViewController: UIViewController {
         bindOutput()
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        viewModel.inputs.viewDidDisappear()
+    }
+    
     private func configureUI() {
         view.addSubview(textView)
         
@@ -48,17 +54,17 @@ class ResultViewController: UIViewController {
     }
     
     private func bindOutput() {
-        viewModel.outputItems
+        viewModel.outputs.outputItems
             .subscribe(on: MainScheduler.instance)
             .bind { [weak self] outputs in
                 DispatchQueue.main.async {
-                    self?.addLayerToScanner(outputs)
+                    self?.changeText(outputs)
                 }
             }
             .disposed(by: disposeBag)
     }
     
-    private func addLayerToScanner(_ items: [Item]) {
+    private func changeText(_ items: [Item]) {
         var newText = ""
         items.forEach { item in
             newText += item.text

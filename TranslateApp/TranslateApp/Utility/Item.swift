@@ -7,9 +7,9 @@
 
 import Foundation
 
-struct Item {
+struct Item: Equatable, Sendable {
     let frame: CGRect?
-    let text: String
+    var text: String
     
     init(frame: CGRect? = nil, text: String) {
         self.frame = frame
