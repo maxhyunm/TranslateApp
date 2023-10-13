@@ -58,7 +58,7 @@ final class ResultViewController: UIViewController {
             .bind { [weak self] output in
                 guard let self else { return }
                 DispatchQueue.main.async {
-                    self.changeText(output)
+                    self.textView.text = output
                 }
             }
             .disposed(by: disposeBag)
@@ -80,9 +80,5 @@ final class ResultViewController: UIViewController {
                 }
             }
             .disposed(by: disposeBag)
-    }
-    
-    private func changeText(_ item: Item) {
-        textView.text = item.text
     }
 }

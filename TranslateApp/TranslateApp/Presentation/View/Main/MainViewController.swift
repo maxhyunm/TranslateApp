@@ -27,8 +27,8 @@ final class MainViewController: UIViewController {
         return button
     }()
     
-    private let sourceLanguage = TextPickerField(placeholder: "언어 선택")
-    private let targetLanguage = TextPickerField(placeholder: "언어 선택")
+    private let sourceLanguage = LanguagePickerField(placeholder: "언어 선택")
+    private let targetLanguage = LanguagePickerField(placeholder: "언어 선택")
     
     private let arrowIcon: UIImageView = {
         let icon = UIImageView(image: UIImage(systemName: "arrow.forward.circle.fill"))
@@ -149,14 +149,9 @@ extension MainViewController: DataScannerViewControllerDelegate {
     func dataScanner(_ dataScanner: DataScannerViewController,
                      didAdd addedItems: [RecognizedItem],
                      allItems: [RecognizedItem]) {
-        guard let item = addedItems.first else { return }
-        if case .text(let text) = item {
-            let newInput = Item(frame: CGRect(origin: text.bounds.bottomLeft,
-                                              size: CGSize(width: text.bounds.topRight.x - text.bounds.topLeft.x,
-                                                           height: text.bounds.topRight.y - text.bounds.topRight.y)),
-                                text: text.transcript)
-            viewModel.inputs.scanText(newInput)
-        }
+        guard let item = addedItems.first,
+              case .text(let text) = item else { return }
+        viewModel.inputs.scanText(text.transcript)
     }
 }
 

@@ -15,7 +15,7 @@ final class TranslaterRepository {
         self.networkManager = networkManager
     }
     
-    func checkLanguage(item: Item, completion: @escaping(Result<Languages, Error>) -> Void) {
+    func checkLanguage(for item: TranslateItem, completion: @escaping(Result<Languages, Error>) -> Void) {
         let query = [KeywordArgument(key: "query", value: item.text)]
         DispatchQueue.global(qos: .default).sync {
             networkManager.fetchData(.languageCheck(body: query)) { result in
@@ -38,10 +38,9 @@ final class TranslaterRepository {
         }
     }
     
-    func translate(source: Languages, target: Languages, item: Item, completion: @escaping(Result<Item, Error>) -> Void) {
-        var item = item
-        let query = [KeywordArgument(key: "source", value: source.rawValue),
-                     KeywordArgument(key: "target", value: target.rawValue),
+    func translate(for item: TranslateItem, completion: @escaping(Result<TranslateItem, Error>) -> Void) {
+        let query = [KeywordArgument(key: "source", value: item.source.rawValue),
+                     KeywordArgument(key: "target", value: item.target.rawValue),
                      KeywordArgument(key: "text", value: item.text)]
         
         DispatchQueue.global(qos: .default).sync {
