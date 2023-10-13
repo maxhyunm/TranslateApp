@@ -19,6 +19,7 @@ class TextPickerField: UITextField {
         self.placeholder = placeholder
         self.borderStyle = .roundedRect
         self.textAlignment = .center
+        self.font = .preferredFont(forTextStyle: .headline)
         self.inputView = pickerView
     }
     
@@ -33,8 +34,10 @@ class TextPickerField: UITextField {
 
         pickerView.rx.itemSelected.subscribe { [weak self] (row, _) in
             guard let self else { return }
-            self.text = dataSource[row]
-            self.resignFirstResponder()
+            DispatchQueue.main.async {
+                self.text = dataSource[row]
+                self.resignFirstResponder()
+            }
         }.disposed(by: disposeBag)
         
         pickerView.selectRow(0, inComponent: 0, animated: false)

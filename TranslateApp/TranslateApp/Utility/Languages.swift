@@ -6,6 +6,7 @@
 //
 
 enum Languages: String, CustomStringConvertible, CaseIterable {
+    case auto = "auto"
     case korean = "ko"
     case english = "en"
     case japanese = "ja"
@@ -23,6 +24,8 @@ enum Languages: String, CustomStringConvertible, CaseIterable {
     
     var description: String {
         switch self {
+        case .auto:
+            return "언어 감지"
         case .korean:
             return "한국어"
         case .english:
@@ -50,18 +53,17 @@ enum Languages: String, CustomStringConvertible, CaseIterable {
         case .french:
             return "프랑스어"
         case .unknown:
-            return "알 수 없음"
+            return "기타"
         }
     }
     
     static let sourceMenu: [String] = {
         var result = Self.allCases.filter { $0 != .unknown }.map { $0.description }
-        result.insert("언어 감지", at: 0)
         return result
     }()
     
     static let targetMenu: [String]  = {
-        return Self.allCases.filter { $0 != .unknown }.map { $0.description }
+        return Self.allCases.filter { $0 != .auto && $0 != .unknown }.map { $0.description }
     }()
     
     static let descriptionToLanguage: [String:Languages] = {

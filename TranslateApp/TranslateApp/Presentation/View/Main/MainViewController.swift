@@ -112,8 +112,10 @@ final class MainViewController: UIViewController {
                   let source = sourceLanguage.text,
                   let target = targetLanguage.text else { return }
             self.viewModel.inputs.touchUpTranslate(source: source, target: target)
-            let result = ResultViewController(self.viewModel)
-            self.present(result, animated: true)
+            let resultViewController = ResultViewController(self.viewModel)
+            DispatchQueue.main.async {
+                self.present(resultViewController, animated: true)
+            }
         }.disposed(by: disposeBag)
     }
 }

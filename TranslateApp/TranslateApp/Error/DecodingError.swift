@@ -8,7 +8,7 @@
 enum DecodingError: Error {
     case decodingFailure
     
-    var description: String {
+    var alertMessage: String {
         switch self {
         case .decodingFailure:
             return "디코딩 오류입니다."

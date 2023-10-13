@@ -7,6 +7,11 @@
 
 import RxCocoa
 
+protocol ViewModelWithError {
+    var errorMessage: BehaviorRelay<String?> { get }
+    func handle(error: Error)
+}
+
 protocol MainViewModelType {
     var inputs: MainViewModelInputsType { get }
     var outputs: any MainViewModelOutputsType { get }
@@ -19,6 +24,6 @@ protocol MainViewModelInputsType {
 }
 
 protocol MainViewModelOutputsType {
-    var inputItem: Item? { get }
     var outputItem: BehaviorRelay<Item?> { get }
+    var errorMessage: BehaviorRelay<String?> { get }
 }

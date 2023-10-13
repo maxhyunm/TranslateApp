@@ -33,7 +33,7 @@ final class NetworkManager {
         
         request.httpMethod = networkType.httpMethod
         
-        dataTask?.suspend()
+        dataTask?.cancel()
                 
         dataTask = URLSession.shared.dataTask(with: request) { data, response, error in
             if error != nil {

@@ -32,6 +32,8 @@
 		BAD472722AD6589D0021323A /* LanguageCheckDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD472712AD6589D0021323A /* LanguageCheckDTO.swift */; };
 		BAD472762AD710CE0021323A /* ResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD472752AD710CE0021323A /* ResultViewController.swift */; };
 		BAD4729C2AD84E110021323A /* TextPickerField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD4729B2AD84E110021323A /* TextPickerField.swift */; };
+		BAD472A22AD8E8820021323A /* AlertBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD472A12AD8E8820021323A /* AlertBuilder.swift */; };
+		BAD472A42AD8F1C90021323A /* TranslateError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD472A32AD8F1C90021323A /* TranslateError.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -58,6 +60,8 @@
 		BAD472712AD6589D0021323A /* LanguageCheckDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageCheckDTO.swift; sourceTree = "<group>"; };
 		BAD472752AD710CE0021323A /* ResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultViewController.swift; sourceTree = "<group>"; };
 		BAD4729B2AD84E110021323A /* TextPickerField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextPickerField.swift; sourceTree = "<group>"; };
+		BAD472A12AD8E8820021323A /* AlertBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertBuilder.swift; sourceTree = "<group>"; };
+		BAD472A32AD8F1C90021323A /* TranslateError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslateError.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -148,6 +152,7 @@
 			children = (
 				BAD4724A2AD44F370021323A /* DecodingError.swift */,
 				BAD472502AD450B00021323A /* APIError.swift */,
+				BAD472A32AD8F1C90021323A /* TranslateError.swift */,
 			);
 			path = Error;
 			sourceTree = "<group>";
@@ -168,6 +173,7 @@
 				BAD472582AD4563D0021323A /* Languages.swift */,
 				BAD472542AD452370021323A /* KeywordArgument.swift */,
 				BAD4725E2AD5664B0021323A /* Item.swift */,
+				BAD472A12AD8E8820021323A /* AlertBuilder.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -293,6 +299,7 @@
 				BAD472462AD44C9E0021323A /* TranslaterDTO.swift in Sources */,
 				BAD472302AD448BA0021323A /* MainViewController.swift in Sources */,
 				BAD472612AD56DD00021323A /* MainViewModel.swift in Sources */,
+				BAD472A22AD8E8820021323A /* AlertBuilder.swift in Sources */,
 				BAD4722C2AD448BA0021323A /* AppDelegate.swift in Sources */,
 				BAD472592AD4563D0021323A /* Languages.swift in Sources */,
 				BAD4724F2AD4506B0021323A /* NetworkManager.swift in Sources */,
@@ -306,6 +313,7 @@
 				BAD4722E2AD448BA0021323A /* SceneDelegate.swift in Sources */,
 				BAD4729C2AD84E110021323A /* TextPickerField.swift in Sources */,
 				BAD472762AD710CE0021323A /* ResultViewController.swift in Sources */,
+				BAD472A42AD8F1C90021323A /* TranslateError.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

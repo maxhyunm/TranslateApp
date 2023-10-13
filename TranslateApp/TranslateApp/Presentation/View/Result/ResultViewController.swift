@@ -15,7 +15,7 @@ class ResultViewController: UIViewController {
     private let textView: UITextView = {
         let textView = UITextView()
         textView.translatesAutoresizingMaskIntoConstraints = false
-        textView.backgroundColor = UIColor.gray.withAlphaComponent(0.5)
+        textView.backgroundColor = UIColor.darkGray.withAlphaComponent(0.7)
         textView.textColor = .white
         textView.font = .preferredFont(forTextStyle: .title3)
         textView.isEditable = false
@@ -35,6 +35,7 @@ class ResultViewController: UIViewController {
         super.viewDidLoad()
         configureUI()
         bindOutput()
+        bindError()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -43,6 +44,9 @@ class ResultViewController: UIViewController {
     }
     
     private func configureUI() {
+        if let sheetPresentationController = sheetPresentationController {
+            sheetPresentationController.detents = [.medium()]
+        }
         view.addSubview(textView)
         
         NSLayoutConstraint.activate([
@@ -57,9 +61,27 @@ class ResultViewController: UIViewController {
         viewModel.outputs.outputItem
             .subscribe(on: MainScheduler.instance)
             .bind { [weak self] output in
-                guard let output else { return }
+                guard let self,
+                      let output else { return }
                 DispatchQueue.main.async {
-                    self?.changeText(output)
+                    self.changeText(output)
+                }
+            }
+            .disposed(by: disposeBag)
+    }
+    
+    private func bindError() {
+        viewModel.outputs.errorMessage
+            .subscribe(on: MainScheduler.instance)
+            .bind { [weak self] errorMessage in
+                guard let self,
+                      let errorMessage else { return }
+                let alertBuilder = AlertBuilder(prefferedStyle: .alert)
+                    .setMessage(errorMessage)
+                    .addAction(.confirm)
+                    .build()
+                DispatchQueue.main.async {
+                    self.present(alertBuilder, animated: true)
                 }
             }
             .disposed(by: disposeBag)
