@@ -11,7 +11,6 @@ import RxCocoa
 
 class TextPickerField: UITextField {
     let pickerView = UIPickerView()
-    let disposeBag = DisposeBag()
     
     init(placeholder: String) {
         super.init(frame: .init())
@@ -27,7 +26,7 @@ class TextPickerField: UITextField {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func bindWithPickerView(dataSource: [String]) {
+    func bindWithPickerView(dataSource: [String], disposeBag: DisposeBag) {
         Observable.just(dataSource).bind(to: pickerView.rx.itemTitles) { _, item in
             return item
         }.disposed(by: disposeBag)

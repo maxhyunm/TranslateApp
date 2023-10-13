@@ -38,11 +38,6 @@ class ResultViewController: UIViewController {
         bindError()
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        viewModel.inputs.viewDidDisappear()
-    }
-    
     private func configureUI() {
         if let sheetPresentationController = sheetPresentationController {
             sheetPresentationController.detents = [.medium()]
@@ -61,8 +56,7 @@ class ResultViewController: UIViewController {
         viewModel.outputs.outputItem
             .subscribe(on: MainScheduler.instance)
             .bind { [weak self] output in
-                guard let self,
-                      let output else { return }
+                guard let self else { return }
                 DispatchQueue.main.async {
                     self.changeText(output)
                 }
@@ -74,11 +68,12 @@ class ResultViewController: UIViewController {
         viewModel.outputs.errorMessage
             .subscribe(on: MainScheduler.instance)
             .bind { [weak self] errorMessage in
-                guard let self,
-                      let errorMessage else { return }
+                guard let self else { return }
                 let alertBuilder = AlertBuilder(prefferedStyle: .alert)
                     .setMessage(errorMessage)
-                    .addAction(.confirm)
+                    .addAction(.confirm) { action in
+                        self.dismiss(animated: true)
+                    }
                     .build()
                 DispatchQueue.main.async {
                     self.present(alertBuilder, animated: true)

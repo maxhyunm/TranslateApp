@@ -24,7 +24,7 @@ final class TranslaterRepository {
                     do {
                         let languageCheck: LanguageCheckDTO = try DecodingManager.shared.decode(data)
                         guard let sourceLanguage = Languages(rawValue: languageCheck.languageCode),
-                              sourceLanguage != .auto  && sourceLanguage != .unknown else {
+                              sourceLanguage.isTranslatable else {
                             completion(.failure(TranslateError.languageNotAvailable))
                             return
                         }

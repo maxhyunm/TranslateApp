@@ -57,6 +57,15 @@ enum Languages: String, CustomStringConvertible, CaseIterable {
         }
     }
     
+    var isTranslatable: Bool {
+        switch self {
+        case .auto, .unknown:
+            return false
+        default:
+            return true
+        }
+    }
+    
     static let sourceMenu: [String] = {
         var result = Self.allCases.filter { $0 != .unknown }.map { $0.description }
         return result

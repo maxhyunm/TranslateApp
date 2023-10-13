@@ -15,7 +15,7 @@ enum APIError: Error {
     case invalidHTTPStatusCode
     case requestTimeOut
     
-    var alertMessage: String? {
+    var alertMessage: String {
         switch self {
         case .invalidURL:
             return "잘못된 URL입니다"

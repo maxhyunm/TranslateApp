@@ -8,7 +8,7 @@
 import RxCocoa
 
 protocol ViewModelWithError {
-    var errorMessage: BehaviorRelay<String?> { get }
+    var errorMessage: PublishRelay<String> { get }
     func handle(error: Error)
 }
 
@@ -20,10 +20,9 @@ protocol MainViewModelType {
 protocol MainViewModelInputsType {
     func scanText(_ input: Item)
     func touchUpTranslate(source: String, target: String)
-    func viewDidDisappear()
 }
 
 protocol MainViewModelOutputsType {
-    var outputItem: BehaviorRelay<Item?> { get }
-    var errorMessage: BehaviorRelay<String?> { get }
+    var outputItem: PublishRelay<Item> { get }
+    var errorMessage: PublishRelay<String> { get }
 }

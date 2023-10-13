@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import RxSwift
 import RxCocoa
 
 final class MainViewModel: MainViewModelType, MainViewModelOutputsType, ViewModelWithError {
@@ -14,8 +13,8 @@ final class MainViewModel: MainViewModelType, MainViewModelOutputsType, ViewMode
     var inputs: MainViewModelInputsType { return self }
     var outputs: MainViewModelOutputsType { return self }
     var inputItem: Item? = nil
-    var outputItem = BehaviorRelay<Item?>(value: nil)
-    var errorMessage = BehaviorRelay<String?>(value: nil)
+    var outputItem = PublishRelay<Item>()
+    var errorMessage = PublishRelay<String>()
     
     init(repository: TranslaterRepository) {
         self.repository = repository
@@ -46,9 +45,12 @@ extension MainViewModel: MainViewModelInputsType {
         guard let item = inputItem,
               let targetLanguage = Languages.getLanguageType(for: target),
               let sourceLanguage = Languages.getLanguageType(for: source),
-              targetLanguage != .auto || targetLanguage != .unknown else { return }
+              targetLanguage.isTranslatable else {
+            handle(error: TranslateError.languageNotAvailable)
+            return
+        }
         
-        if sourceLanguage == .auto || sourceLanguage == .unknown {
+        if !sourceLanguage.isTranslatable {
             self.repository.checkLanguage(item: item) { [weak self] result in
                 guard let self else { return }
                 
@@ -83,9 +85,5 @@ extension MainViewModel: MainViewModelInputsType {
                 self.handle(error: errorType)
             }
         }
-    }
-    
-    func viewDidDisappear() {
-        outputItem.accept(nil)
     }
 }
