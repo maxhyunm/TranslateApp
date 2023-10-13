@@ -19,21 +19,6 @@ final class MainViewModel: MainViewModelType, MainViewModelOutputsType, ViewMode
     init(repository: TranslaterRepository) {
         self.repository = repository
     }
-    
-    func handle(error: Error) {
-        DispatchQueue.main.async {
-            switch error {
-            case let errorType as APIError:
-                self.errorMessage.accept(errorType.alertMessage)
-            case let errorType as DecodingError:
-                self.errorMessage.accept(errorType.alertMessage)
-            case let errorType as TranslateError:
-                self.errorMessage.accept(errorType.alertMessage)
-            default:
-                self.errorMessage.accept(TranslateError.unknown.alertMessage)
-            }
-        }
-    }
 }
 
 extension MainViewModel: MainViewModelInputsType {
@@ -44,7 +29,7 @@ extension MainViewModel: MainViewModelInputsType {
     func touchUpTranslate(source: String, target: String) {
         guard let item = inputItem,
               let targetLanguage = Languages.getLanguageType(for: target),
-              let sourceLanguage = Languages.getLanguageType(for: source),
+              var sourceLanguage = Languages.getLanguageType(for: source),
               targetLanguage.isTranslatable else {
             handle(error: TranslateError.languageNotAvailable)
             return
@@ -56,6 +41,7 @@ extension MainViewModel: MainViewModelInputsType {
                 
                 switch result {
                 case .success(let language):
+                    sourceLanguage = language
                     self.translateItem(source: language, target: targetLanguage, item: item)
                 case .failure(let errorType):
                     self.outputItem.accept(item)
@@ -67,7 +53,9 @@ extension MainViewModel: MainViewModelInputsType {
             self.translateItem(source: sourceLanguage, target: targetLanguage, item: item)
         }
     }
-    
+}
+
+extension MainViewModel {    
     func translateItem(source: Languages, target: Languages, item: Item) {
         if source == target {
             self.outputItem.accept(item)

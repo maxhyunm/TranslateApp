@@ -9,7 +9,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class TextPickerField: UITextField {
+final class TextPickerField: UITextField {
     let pickerView = UIPickerView()
     
     init(placeholder: String) {

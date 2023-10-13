@@ -8,7 +8,7 @@
 import UIKit
 import RxSwift
 
-class ResultViewController: UIViewController {
+final class ResultViewController: UIViewController {
     let viewModel: MainViewModelType
     private var disposeBag = DisposeBag()
     

@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import RxCocoa
+import RxSwift
 
 final class TranslaterRepository {
     let networkManager: NetworkManager
@@ -25,8 +25,7 @@ final class TranslaterRepository {
                         let languageCheck: LanguageCheckDTO = try DecodingManager.shared.decode(data)
                         guard let sourceLanguage = Languages(rawValue: languageCheck.languageCode),
                               sourceLanguage.isTranslatable else {
-                            completion(.failure(TranslateError.languageNotAvailable))
-                            return
+                            throw TranslateError.languageNotAvailable
                         }
                         completion(.success(sourceLanguage))
                     } catch(let error) {

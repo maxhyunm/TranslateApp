@@ -7,11 +7,6 @@
 
 import RxCocoa
 
-protocol ViewModelWithError {
-    var errorMessage: PublishRelay<String> { get }
-    func handle(error: Error)
-}
-
 protocol MainViewModelType {
     var inputs: MainViewModelInputsType { get }
     var outputs: any MainViewModelOutputsType { get }
@@ -25,4 +20,24 @@ protocol MainViewModelInputsType {
 protocol MainViewModelOutputsType {
     var outputItem: PublishRelay<Item> { get }
     var errorMessage: PublishRelay<String> { get }
+}
+
+protocol ViewModelWithError {
+    var errorMessage: PublishRelay<String> { get }
+    func handle(error: Error)
+}
+
+extension ViewModelWithError {
+    func handle(error: Error) {
+        switch error {
+        case let errorType as APIError:
+            self.errorMessage.accept(errorType.alertMessage)
+        case let errorType as DecodingError:
+            self.errorMessage.accept(errorType.alertMessage)
+        case let errorType as TranslateError:
+            self.errorMessage.accept(errorType.alertMessage)
+        default:
+            self.errorMessage.accept(TranslateError.unknown.alertMessage)
+        }
+    }
 }

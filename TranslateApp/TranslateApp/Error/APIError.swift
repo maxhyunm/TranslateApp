@@ -5,8 +5,6 @@
 //  Created by Min Hyun on 2023/10/10.
 //
 
-import Foundation
-
 enum APIError: Error {
     case invalidURL
     case invalidAPIKey
