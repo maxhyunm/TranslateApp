@@ -5,6 +5,8 @@
 //  Created by Min Hyun on 2023/10/10.
 //
 
+import Foundation
+
 enum Languages: String, CustomStringConvertible, CaseIterable {
     case auto = "auto"
     case korean = "ko"
@@ -25,35 +27,35 @@ enum Languages: String, CustomStringConvertible, CaseIterable {
     var description: String {
         switch self {
         case .auto:
-            return "언어 감지"
+            return String(format: NSLocalizedString("languageAuto", comment: "언어 감지"))
         case .korean:
-            return "한국어"
+            return String(format: NSLocalizedString("languageKorean", comment: "한국어"))
         case .english:
-            return "영어"
+            return String(format: NSLocalizedString("languageEnglish", comment: "영어"))
         case .japanese:
-            return "일본어"
+            return String(format: NSLocalizedString("languageJapanese", comment: "일본어"))
         case .chineseSimple:
-            return "중국어(간체)"
+            return String(format: NSLocalizedString("languageChineseSimple", comment: "중국어(간체)"))
         case .chineseTraditional:
-            return "중국어(번체)"
+            return String(format: NSLocalizedString("languageChineseTraditional", comment: "중국어(번체)"))
         case .vietnamese:
-            return "베트남어"
+            return String(format: NSLocalizedString("languageVietnamese", comment: "베트남어"))
         case .indonesian:
-            return "인도네시아어"
+            return String(format: NSLocalizedString("languageIndonesian", comment: "인도네시아어"))
         case .thai:
-            return "태국어"
+            return String(format: NSLocalizedString("languageThai", comment: "태국어"))
         case .german:
-            return "독일어"
+            return String(format: NSLocalizedString("languageGerman", comment: "독일어"))
         case .russian:
-            return "러시아어"
+            return String(format: NSLocalizedString("languageRussian", comment: "러시아어"))
         case .spanish:
-            return "스페인어"
+            return String(format: NSLocalizedString("languageSpanish", comment: "스페인어"))
         case .italian:
-            return "이탈리아어"
+            return String(format: NSLocalizedString("languageItalian", comment: "이탈리아어"))
         case .french:
-            return "프랑스어"
+            return String(format: NSLocalizedString("languageFrench", comment: "프랑스어"))
         case .unknown:
-            return "기타"
+            return String(format: NSLocalizedString("languageUnknown", comment: "기타"))
         }
     }
     

@@ -45,7 +45,7 @@ struct AlertBuilder {
 extension AlertBuilder {
     final class AlertConfiguration {
         let prefferedStyle: UIAlertController.Style
-        var title: String = "오류"
+        var title: String = String(format: NSLocalizedString("error", comment: "오류"))
         var message: String = ""
         var actions: [UIAlertAction] = []
         
@@ -64,9 +64,9 @@ extension AlertBuilder {
         var title: String {
             switch self {
             case .confirm:
-                return "확인"
+                return String(format: NSLocalizedString("confirm", comment: "확인"))
             case .cancel:
-                return "취소"
+                return String(format: NSLocalizedString("cancel", comment: "취소"))
             case .other(let title, _):
                 return title
             }

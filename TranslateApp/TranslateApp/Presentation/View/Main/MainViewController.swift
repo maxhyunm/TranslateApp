@@ -21,9 +21,9 @@ final class MainViewController: UIViewController {
         let config = UIImage.SymbolConfiguration(pointSize: 50)
         button.setImage(UIImage(systemName: "arrow.left.arrow.right.circle",
                                 withConfiguration: config), for: .normal)
-        button.tintColor = ColorNamespace.buttonTint
+        button.tintColor = Colors.buttonTint
         button.titleLabel?.font = .preferredFont(forTextStyle: .headline)
-        button.backgroundColor = ColorNamespace.buttonBackground
+        button.backgroundColor = Colors.buttonBackground
         button.layer.cornerRadius = 50
         button.clipsToBounds = true
         return button
@@ -32,7 +32,7 @@ final class MainViewController: UIViewController {
     private let arrowIcon: UIImageView = {
         let icon = UIImageView(image: UIImage(systemName: "arrow.forward.circle.fill"))
         icon.translatesAutoresizingMaskIntoConstraints = false
-        icon.tintColor = ColorNamespace.iconTint
+        icon.tintColor = Colors.iconTint
         return icon
     }()
     
@@ -78,7 +78,7 @@ final class MainViewController: UIViewController {
     
     private func configureUI() {
         let safeArea = view.safeAreaLayoutGuide
-        view.backgroundColor = ColorNamespace.background
+        view.backgroundColor = Colors.background
         view.addSubview(sourceLanguage)
         view.addSubview(arrowIcon)
         view.addSubview(targetLanguage)
@@ -152,6 +152,15 @@ extension MainViewController: DataScannerViewControllerDelegate {
         guard let item = addedItems.first,
               case .text(let text) = item else { return }
         viewModel.inputs.scanText(text.transcript)
+    }
+}
+
+extension MainViewController {
+    enum Colors {
+        static let background: UIColor = CustomColors.darkBlue
+        static let buttonBackground: UIColor = CustomColors.pink
+        static let buttonTint: UIColor = CustomColors.darkBlue
+        static let iconTint: UIColor = CustomColors.yellow
     }
 }
 

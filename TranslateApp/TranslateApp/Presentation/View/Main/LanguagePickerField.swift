@@ -14,10 +14,11 @@ final class LanguagePickerField: UITextField {
     let category: Languages.Category
     
     let toolBar: UIToolbar = {
-        let toolBar = UIToolbar()
+        let toolBar = UIToolbar(frame: CGRect(origin: .zero, size: CGSize(width: UIScreen.main.bounds.width, height: 35)))
+        toolBar.translatesAutoresizingMaskIntoConstraints = false
         toolBar.barStyle = .default
         toolBar.isTranslucent = true
-        toolBar.tintColor = ColorNamespace.barButtonTitle
+        toolBar.tintColor = Colors.barButtonTitle
         toolBar.sizeToFit()
         return toolBar
     }()
@@ -39,9 +40,9 @@ final class LanguagePickerField: UITextField {
         adjustsFontForContentSizeCategory = true
         textAlignment = .center
         font = .preferredFont(forTextStyle: .headline)
-        backgroundColor = ColorNamespace.textFieldBackground
-        tintColor = ColorNamespace.textFieldBackground
-        textColor = ColorNamespace.textFieldText
+        backgroundColor = Colors.textFieldBackground
+        tintColor = Colors.textFieldBackground
+        textColor = Colors.textFieldText
         borderStyle = .roundedRect
         clipsToBounds = true
         layer.cornerRadius = 15
@@ -50,25 +51,25 @@ final class LanguagePickerField: UITextField {
     }
     
     func configureToolBar() {
-        let cancel = UIAction(title: "취소") { [weak self] _ in
+        let cancel = UIAction(title: String(format: NSLocalizedString("cancel", comment: "취소"))) { [weak self] _ in
             guard let self else { return }
             self.resignFirstResponder()
         }
-        
-        let select = UIAction(title: "선택") { [weak self] _ in
+
+        let select = UIAction(title: String(format: NSLocalizedString("select", comment: "선택"))) { [weak self] _ in
             guard let self else { return }
             let row = self.pickerView.selectedRow(inComponent: 0)
             self.text = self.category.menu[row]
             self.resignFirstResponder()
         }
-        
+
         let cancelButton = UIBarButtonItem(primaryAction: cancel)
         let selectButton = UIBarButtonItem(primaryAction: select)
         let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        
+
         toolBar.setItems([cancelButton, flexibleSpace, selectButton], animated: true)
         toolBar.isUserInteractionEnabled = true
-        
+
         self.inputAccessoryView = toolBar
     }
 
@@ -79,5 +80,13 @@ final class LanguagePickerField: UITextField {
 
         pickerView.selectRow(0, inComponent: 0, animated: false)
         self.text = category.menu.first
+    }
+}
+
+extension LanguagePickerField {
+    enum Colors {
+        static let barButtonTitle: UIColor = CustomColors.lightPurple
+        static let textFieldText: UIColor = .white
+        static let textFieldBackground: UIColor = CustomColors.lightPurple
     }
 }

@@ -15,8 +15,8 @@ final class ResultViewController: UIViewController {
     private let textView: UITextView = {
         let textView = UITextView()
         textView.translatesAutoresizingMaskIntoConstraints = false
-        textView.backgroundColor = ColorNamespace.textViewBackground
-        textView.textColor = ColorNamespace.textViewText
+        textView.backgroundColor = Colors.textViewBackground
+        textView.textColor = Colors.textViewText
         textView.font = .preferredFont(forTextStyle: .title3)
         textView.isEditable = false
         return textView
@@ -55,14 +55,14 @@ final class ResultViewController: UIViewController {
     }
     
     private func configureBarItem() {
-        let close = UIAction(title: "닫기") { [weak self] _ in
+        let close = UIAction(title: String(format: NSLocalizedString("close", comment: "닫기"))) { [weak self] _ in
             guard let self else { return }
             self.dismiss(animated: true)
         }
 
         let closeButton = UIBarButtonItem(primaryAction: close)
         
-        closeButton.tintColor = ColorNamespace.barButtonTitle
+        closeButton.tintColor = Colors.barButtonTitle
         
         self.navigationItem.rightBarButtonItem = closeButton
     }
@@ -95,5 +95,14 @@ final class ResultViewController: UIViewController {
                 }
             }
             .disposed(by: disposeBag)
+    }
+}
+
+
+extension ResultViewController {
+    enum Colors {
+        static let barButtonTitle: UIColor = CustomColors.lightPurple
+        static let textViewBackground: UIColor = CustomColors.grayWithAlpha
+        static let textViewText: UIColor = .white
     }
 }

@@ -34,9 +34,9 @@
 		BAD4729C2AD84E110021323A /* LanguagePickerField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD4729B2AD84E110021323A /* LanguagePickerField.swift */; };
 		BAD472A22AD8E8820021323A /* AlertBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD472A12AD8E8820021323A /* AlertBuilder.swift */; };
 		BAD472A42AD8F1C90021323A /* TranslateError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD472A32AD8F1C90021323A /* TranslateError.swift */; };
-		BAD472A82ADA6D670021323A /* UIButton+.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD472A72ADA6D670021323A /* UIButton+.swift */; };
-		BAD472AA2ADA6EA90021323A /* ButtonType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD472A92ADA6EA90021323A /* ButtonType.swift */; };
 		BAD472B02ADA7F570021323A /* ColorNamespace.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD472AF2ADA7F570021323A /* ColorNamespace.swift */; };
+		BAD472B52ADAC7E40021323A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = BAD472B72ADAC7E40021323A /* Localizable.strings */; };
+		BAD472BA2ADAD09B0021323A /* CustomColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD472B92ADAD09B0021323A /* CustomColors.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -65,9 +65,10 @@
 		BAD4729B2AD84E110021323A /* LanguagePickerField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguagePickerField.swift; sourceTree = "<group>"; };
 		BAD472A12AD8E8820021323A /* AlertBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertBuilder.swift; sourceTree = "<group>"; };
 		BAD472A32AD8F1C90021323A /* TranslateError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslateError.swift; sourceTree = "<group>"; };
-		BAD472A72ADA6D670021323A /* UIButton+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+.swift"; sourceTree = "<group>"; };
-		BAD472A92ADA6EA90021323A /* ButtonType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonType.swift; sourceTree = "<group>"; };
 		BAD472AF2ADA7F570021323A /* ColorNamespace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorNamespace.swift; sourceTree = "<group>"; };
+		BAD472B62ADAC7E40021323A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		BAD472B82ADAC81F0021323A /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
+		BAD472B92ADAD09B0021323A /* CustomColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomColors.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +105,7 @@
 		BAD4722A2AD448BA0021323A /* TranslateApp */ = {
 			isa = PBXGroup;
 			children = (
+				BAD472B72ADAC7E40021323A /* Localizable.strings */,
 				BAD472412AD44C3E0021323A /* App */,
 				BAD472432AD44C540021323A /* Model */,
 				BAD472422AD44C470021323A /* Network */,
@@ -181,7 +183,7 @@
 				BAD472542AD452370021323A /* KeywordArgument.swift */,
 				BAD4725E2AD5664B0021323A /* TranslateItem.swift */,
 				BAD472A12AD8E8820021323A /* AlertBuilder.swift */,
-				BAD472A92ADA6EA90021323A /* ButtonType.swift */,
+				BAD472B92ADAD09B0021323A /* CustomColors.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -210,7 +212,6 @@
 				BAD472602AD56DD00021323A /* MainViewModel.swift */,
 				BAD4722F2AD448BA0021323A /* MainViewController.swift */,
 				BAD4729B2AD84E110021323A /* LanguagePickerField.swift */,
-				BAD472A72ADA6D670021323A /* UIButton+.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -271,6 +272,7 @@
 			knownRegions = (
 				en,
 				Base,
+				ko,
 			);
 			mainGroup = BAD4721F2AD448BA0021323A;
 			packageReferences = (
@@ -291,6 +293,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BAD472382AD448BC0021323A /* LaunchScreen.storyboard in Resources */,
+				BAD472B52ADAC7E40021323A /* Localizable.strings in Resources */,
 				BAD472402AD44BA40021323A /* SecretKey.plist in Resources */,
 				BAD472352AD448BC0021323A /* Assets.xcassets in Resources */,
 			);
@@ -304,7 +307,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				BAD4725F2AD5664B0021323A /* TranslateItem.swift in Sources */,
-				BAD472A82ADA6D670021323A /* UIButton+.swift in Sources */,
 				BAD472552AD452370021323A /* KeywordArgument.swift in Sources */,
 				BAD472462AD44C9E0021323A /* TranslaterDTO.swift in Sources */,
 				BAD472302AD448BA0021323A /* MainViewController.swift in Sources */,
@@ -317,10 +319,10 @@
 				BAD472702AD64EB10021323A /* TranslaterRepository.swift in Sources */,
 				BAD472B02ADA7F570021323A /* ColorNamespace.swift in Sources */,
 				BAD472722AD6589D0021323A /* LanguageCheckDTO.swift in Sources */,
-				BAD472AA2ADA6EA90021323A /* ButtonType.swift in Sources */,
 				BAD472532AD451480021323A /* NetworkConfiguration.swift in Sources */,
 				BAD472512AD450B00021323A /* APIError.swift in Sources */,
 				BAD472632AD56F5B0021323A /* ViewModelType.swift in Sources */,
+				BAD472BA2ADAD09B0021323A /* CustomColors.swift in Sources */,
 				BAD472482AD44EFD0021323A /* DecodingManager.swift in Sources */,
 				BAD4722E2AD448BA0021323A /* SceneDelegate.swift in Sources */,
 				BAD4729C2AD84E110021323A /* LanguagePickerField.swift in Sources */,
@@ -340,6 +342,15 @@
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
+		BAD472B72ADAC7E40021323A /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BAD472B62ADAC7E40021323A /* en */,
+				BAD472B82ADAC81F0021323A /* ko */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
@@ -347,6 +358,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -407,6 +419,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
