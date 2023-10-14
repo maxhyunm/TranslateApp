@@ -34,6 +34,9 @@
 		BAD4729C2AD84E110021323A /* LanguagePickerField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD4729B2AD84E110021323A /* LanguagePickerField.swift */; };
 		BAD472A22AD8E8820021323A /* AlertBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD472A12AD8E8820021323A /* AlertBuilder.swift */; };
 		BAD472A42AD8F1C90021323A /* TranslateError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD472A32AD8F1C90021323A /* TranslateError.swift */; };
+		BAD472A82ADA6D670021323A /* UIButton+.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD472A72ADA6D670021323A /* UIButton+.swift */; };
+		BAD472AA2ADA6EA90021323A /* ButtonType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD472A92ADA6EA90021323A /* ButtonType.swift */; };
+		BAD472B02ADA7F570021323A /* ColorNamespace.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD472AF2ADA7F570021323A /* ColorNamespace.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -62,6 +65,9 @@
 		BAD4729B2AD84E110021323A /* LanguagePickerField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguagePickerField.swift; sourceTree = "<group>"; };
 		BAD472A12AD8E8820021323A /* AlertBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertBuilder.swift; sourceTree = "<group>"; };
 		BAD472A32AD8F1C90021323A /* TranslateError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslateError.swift; sourceTree = "<group>"; };
+		BAD472A72ADA6D670021323A /* UIButton+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+.swift"; sourceTree = "<group>"; };
+		BAD472A92ADA6EA90021323A /* ButtonType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonType.swift; sourceTree = "<group>"; };
+		BAD472AF2ADA7F570021323A /* ColorNamespace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorNamespace.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +110,7 @@
 				BAD4724D2AD44F6B0021323A /* Utility */,
 				BAD472492AD44F180021323A /* Error */,
 				BAD4729E2AD852750021323A /* Presentation */,
+				BAD472622AD56F5B0021323A /* ViewModelType.swift */,
 				BAD4729D2AD852570021323A /* Resource */,
 				BAD472392AD448BC0021323A /* Info.plist */,
 				BAD4723F2AD44BA40021323A /* SecretKey.plist */,
@@ -174,6 +181,7 @@
 				BAD472542AD452370021323A /* KeywordArgument.swift */,
 				BAD4725E2AD5664B0021323A /* TranslateItem.swift */,
 				BAD472A12AD8E8820021323A /* AlertBuilder.swift */,
+				BAD472A92ADA6EA90021323A /* ButtonType.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -191,7 +199,7 @@
 			isa = PBXGroup;
 			children = (
 				BAD4724C2AD44F460021323A /* View */,
-				BAD472622AD56F5B0021323A /* ViewModelType.swift */,
+				BAD472AF2ADA7F570021323A /* ColorNamespace.swift */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -202,6 +210,7 @@
 				BAD472602AD56DD00021323A /* MainViewModel.swift */,
 				BAD4722F2AD448BA0021323A /* MainViewController.swift */,
 				BAD4729B2AD84E110021323A /* LanguagePickerField.swift */,
+				BAD472A72ADA6D670021323A /* UIButton+.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -295,6 +304,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BAD4725F2AD5664B0021323A /* TranslateItem.swift in Sources */,
+				BAD472A82ADA6D670021323A /* UIButton+.swift in Sources */,
 				BAD472552AD452370021323A /* KeywordArgument.swift in Sources */,
 				BAD472462AD44C9E0021323A /* TranslaterDTO.swift in Sources */,
 				BAD472302AD448BA0021323A /* MainViewController.swift in Sources */,
@@ -305,7 +315,9 @@
 				BAD4724F2AD4506B0021323A /* NetworkManager.swift in Sources */,
 				BAD4724B2AD44F370021323A /* DecodingError.swift in Sources */,
 				BAD472702AD64EB10021323A /* TranslaterRepository.swift in Sources */,
+				BAD472B02ADA7F570021323A /* ColorNamespace.swift in Sources */,
 				BAD472722AD6589D0021323A /* LanguageCheckDTO.swift in Sources */,
+				BAD472AA2ADA6EA90021323A /* ButtonType.swift in Sources */,
 				BAD472532AD451480021323A /* NetworkConfiguration.swift in Sources */,
 				BAD472512AD450B00021323A /* APIError.swift in Sources */,
 				BAD472632AD56F5B0021323A /* ViewModelType.swift in Sources */,

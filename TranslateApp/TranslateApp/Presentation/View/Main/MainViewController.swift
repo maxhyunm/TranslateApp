@@ -12,28 +12,27 @@ import RxSwift
 import RxCocoa
 
 final class MainViewController: UIViewController {
+    private let sourceLanguage = LanguagePickerField(category: .source)
+    private let targetLanguage = LanguagePickerField(category: .target)
+    
     private var translateButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         let config = UIImage.SymbolConfiguration(pointSize: 50)
         button.setImage(UIImage(systemName: "arrow.left.arrow.right.circle",
                                 withConfiguration: config), for: .normal)
-        button.tintColor = UIColor(red: 0.54, green: 0.67, blue: 0.98, alpha: 1.00)
+        button.tintColor = ColorNamespace.buttonTint
         button.titleLabel?.font = .preferredFont(forTextStyle: .headline)
-        button.backgroundColor = .white
+        button.backgroundColor = ColorNamespace.buttonBackground
         button.layer.cornerRadius = 50
         button.clipsToBounds = true
-
         return button
     }()
-    
-    private let sourceLanguage = LanguagePickerField(category: .source)
-    private let targetLanguage = LanguagePickerField(category: .target)
     
     private let arrowIcon: UIImageView = {
         let icon = UIImageView(image: UIImage(systemName: "arrow.forward.circle.fill"))
         icon.translatesAutoresizingMaskIntoConstraints = false
-        icon.tintColor = UIColor(red: 0.54, green: 0.67, blue: 0.98, alpha: 1.00)
+        icon.tintColor = ColorNamespace.iconTint
         return icon
     }()
     
@@ -79,7 +78,7 @@ final class MainViewController: UIViewController {
     
     private func configureUI() {
         let safeArea = view.safeAreaLayoutGuide
-        view.backgroundColor = UIColor(red: 0.98, green: 0.88, blue: 0.45, alpha: 1.00)
+        view.backgroundColor = ColorNamespace.background
         view.addSubview(sourceLanguage)
         view.addSubview(arrowIcon)
         view.addSubview(targetLanguage)

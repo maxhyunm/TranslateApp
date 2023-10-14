@@ -17,7 +17,7 @@ final class LanguagePickerField: UITextField {
         let toolBar = UIToolbar()
         toolBar.barStyle = .default
         toolBar.isTranslucent = true
-        toolBar.tintColor = UIColor(red: 0.54, green: 0.67, blue: 0.98, alpha: 1.00)
+        toolBar.tintColor = ColorNamespace.barButtonTitle
         toolBar.sizeToFit()
         return toolBar
     }()
@@ -35,12 +35,17 @@ final class LanguagePickerField: UITextField {
     
     func configureUI() {
         translatesAutoresizingMaskIntoConstraints = false
-        borderStyle = .none
-        backgroundColor = .white
-        tintColor = UIColor(red: 0.98, green: 0.63, blue: 0.73, alpha: 1.00)
+        adjustsFontSizeToFitWidth = true
+        adjustsFontForContentSizeCategory = true
         textAlignment = .center
         font = .preferredFont(forTextStyle: .headline)
-        textColor = UIColor(red: 0.54, green: 0.67, blue: 0.98, alpha: 1.00)
+        backgroundColor = ColorNamespace.textFieldBackground
+        tintColor = ColorNamespace.textFieldBackground
+        textColor = ColorNamespace.textFieldText
+        borderStyle = .roundedRect
+        clipsToBounds = true
+        layer.cornerRadius = 15
+
         inputView = pickerView
     }
     

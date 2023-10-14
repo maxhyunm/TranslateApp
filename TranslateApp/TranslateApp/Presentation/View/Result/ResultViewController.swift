@@ -15,8 +15,8 @@ final class ResultViewController: UIViewController {
     private let textView: UITextView = {
         let textView = UITextView()
         textView.translatesAutoresizingMaskIntoConstraints = false
-        textView.backgroundColor = UIColor.darkGray.withAlphaComponent(0.8)
-        textView.textColor = .white
+        textView.backgroundColor = ColorNamespace.textViewBackground
+        textView.textColor = ColorNamespace.textViewText
         textView.font = .preferredFont(forTextStyle: .title3)
         textView.isEditable = false
         return textView
@@ -62,7 +62,7 @@ final class ResultViewController: UIViewController {
 
         let closeButton = UIBarButtonItem(primaryAction: close)
         
-        closeButton.tintColor = UIColor(red: 0.54, green: 0.67, blue: 0.98, alpha: 1.00)
+        closeButton.tintColor = ColorNamespace.barButtonTitle
         
         self.navigationItem.rightBarButtonItem = closeButton
     }
