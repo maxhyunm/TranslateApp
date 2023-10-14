@@ -18,7 +18,7 @@ final class MainViewController: UIViewController {
         let config = UIImage.SymbolConfiguration(pointSize: 50)
         button.setImage(UIImage(systemName: "arrow.left.arrow.right.circle",
                                 withConfiguration: config), for: .normal)
-        button.tintColor = .black
+        button.tintColor = UIColor(red: 0.54, green: 0.67, blue: 0.98, alpha: 1.00)
         button.titleLabel?.font = .preferredFont(forTextStyle: .headline)
         button.backgroundColor = .white
         button.layer.cornerRadius = 50
@@ -27,13 +27,13 @@ final class MainViewController: UIViewController {
         return button
     }()
     
-    private let sourceLanguage = LanguagePickerField(placeholder: "언어 선택")
-    private let targetLanguage = LanguagePickerField(placeholder: "언어 선택")
+    private let sourceLanguage = LanguagePickerField(category: .source)
+    private let targetLanguage = LanguagePickerField(category: .target)
     
     private let arrowIcon: UIImageView = {
         let icon = UIImageView(image: UIImage(systemName: "arrow.forward.circle.fill"))
         icon.translatesAutoresizingMaskIntoConstraints = false
-        icon.tintColor = .systemTeal
+        icon.tintColor = UIColor(red: 0.54, green: 0.67, blue: 0.98, alpha: 1.00)
         return icon
     }()
     
@@ -71,33 +71,33 @@ final class MainViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureScanner()
         configureLanguagePicker()
+        configureScanner()
         configureTranslateButton()
         configureUI()
     }
     
     private func configureUI() {
         let safeArea = view.safeAreaLayoutGuide
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = UIColor(red: 0.98, green: 0.88, blue: 0.45, alpha: 1.00)
         view.addSubview(sourceLanguage)
         view.addSubview(arrowIcon)
         view.addSubview(targetLanguage)
         view.addSubview(translateButton)
         
         NSLayoutConstraint.activate([
-            sourceLanguage.leftAnchor.constraint(equalTo: safeArea.leftAnchor),
+            sourceLanguage.leftAnchor.constraint(equalTo: safeArea.leftAnchor, constant: 10),
             sourceLanguage.widthAnchor.constraint(equalTo: targetLanguage.widthAnchor),
             sourceLanguage.topAnchor.constraint(equalTo: safeArea.topAnchor),
             
-            arrowIcon.leftAnchor.constraint(equalTo: sourceLanguage.rightAnchor),
+            arrowIcon.leftAnchor.constraint(equalTo: sourceLanguage.rightAnchor, constant: 10),
             arrowIcon.centerYAnchor.constraint(equalTo: sourceLanguage.centerYAnchor),
             arrowIcon.heightAnchor.constraint(equalTo: sourceLanguage.heightAnchor),
             arrowIcon.widthAnchor.constraint(equalTo: arrowIcon.heightAnchor),
             
-            targetLanguage.leftAnchor.constraint(equalTo: arrowIcon.rightAnchor),
+            targetLanguage.leftAnchor.constraint(equalTo: arrowIcon.rightAnchor, constant: 10),
             targetLanguage.centerYAnchor.constraint(equalTo: sourceLanguage.centerYAnchor),
-            targetLanguage.rightAnchor.constraint(equalTo: safeArea.rightAnchor),
+            targetLanguage.rightAnchor.constraint(equalTo: safeArea.rightAnchor, constant: -10),
 
             translateButton.centerXAnchor.constraint(equalTo: safeArea.centerXAnchor),
             translateButton.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor, constant: -80),
@@ -113,8 +113,9 @@ final class MainViewController: UIViewController {
                   let target = targetLanguage.text else { return }
             self.viewModel.inputs.touchUpTranslate(source: source, target: target)
             let resultViewController = ResultViewController(self.viewModel)
+            let resultNavigationControllr = UINavigationController(rootViewController: resultViewController)
             DispatchQueue.main.async {
-                self.present(resultViewController, animated: true)
+                self.present(resultNavigationControllr, animated: true)
             }
         }.disposed(by: disposeBag)
     }
@@ -122,8 +123,8 @@ final class MainViewController: UIViewController {
 
 extension MainViewController {
     private func configureLanguagePicker() {
-        sourceLanguage.bindWithPickerView(dataSource: Languages.sourceMenu, disposeBag: disposeBag)
-        targetLanguage.bindWithPickerView(dataSource: Languages.targetMenu, disposeBag: disposeBag)
+        sourceLanguage.bindWithPickerView(disposeBag: disposeBag)
+        targetLanguage.bindWithPickerView(disposeBag: disposeBag)
     }
 }
 

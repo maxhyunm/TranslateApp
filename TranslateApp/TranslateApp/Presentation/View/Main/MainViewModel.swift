@@ -73,6 +73,7 @@ extension MainViewModel {
             }
         }
     }
+    
     func translate(_ item: TranslateItem) {
         if item.source == item.target {
             self.outputItem.accept(item.text)

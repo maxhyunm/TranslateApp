@@ -15,7 +15,7 @@ final class ResultViewController: UIViewController {
     private let textView: UITextView = {
         let textView = UITextView()
         textView.translatesAutoresizingMaskIntoConstraints = false
-        textView.backgroundColor = UIColor.darkGray.withAlphaComponent(0.7)
+        textView.backgroundColor = UIColor.darkGray.withAlphaComponent(0.8)
         textView.textColor = .white
         textView.font = .preferredFont(forTextStyle: .title3)
         textView.isEditable = false
@@ -34,6 +34,7 @@ final class ResultViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
+        configureBarItem()
         bindOutput()
         bindError()
     }
@@ -41,6 +42,7 @@ final class ResultViewController: UIViewController {
     private func configureUI() {
         if let sheetPresentationController = sheetPresentationController {
             sheetPresentationController.detents = [.medium()]
+            sheetPresentationController.prefersGrabberVisible = true
         }
         view.addSubview(textView)
         
@@ -50,6 +52,19 @@ final class ResultViewController: UIViewController {
             textView.widthAnchor.constraint(equalTo: view.widthAnchor),
             textView.heightAnchor.constraint(equalTo: view.heightAnchor)
         ])
+    }
+    
+    private func configureBarItem() {
+        let close = UIAction(title: "닫기") { [weak self] _ in
+            guard let self else { return }
+            self.dismiss(animated: true)
+        }
+
+        let closeButton = UIBarButtonItem(primaryAction: close)
+        
+        closeButton.tintColor = UIColor(red: 0.54, green: 0.67, blue: 0.98, alpha: 1.00)
+        
+        self.navigationItem.rightBarButtonItem = closeButton
     }
     
     private func bindOutput() {

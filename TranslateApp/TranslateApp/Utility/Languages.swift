@@ -65,25 +65,28 @@ enum Languages: String, CustomStringConvertible, CaseIterable {
             return true
         }
     }
-    
-    static let sourceMenu: [String] = {
-        var result = Self.allCases.filter { $0 != .unknown }.map { $0.description }
-        return result
-    }()
-    
-    static let targetMenu: [String]  = {
-        return Self.allCases.filter { $0 != .auto && $0 != .unknown }.map { $0.description }
-    }()
-    
-    static let descriptionToLanguage: [String:Languages] = {
-        var result = Self.allCases.reduce(into: [:]) { $0[$1.description] = $1 }
-        return result
-    }()
-    
+
     static func getLanguageType(for name: String) -> Languages? {
+        let descriptionToLanguage = Self.allCases.reduce(into: [:]) { $0[$1.description] = $1 }
         guard let language = descriptionToLanguage[name] else {
             return nil
         }
         return language
+    }
+}
+
+extension Languages {
+    enum Category {
+        case source
+        case target
+        
+        var menu: [String] {
+            switch self {
+            case .source:
+                return Languages.allCases.filter { $0 != .unknown }.map { $0.description }
+            case .target:
+                return Languages.allCases.filter { $0 != .auto && $0 != .unknown }.map { $0.description }
+            }
+        }
     }
 }
