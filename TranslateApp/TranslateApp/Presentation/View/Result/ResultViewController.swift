@@ -9,7 +9,7 @@ import UIKit
 import RxSwift
 
 final class ResultViewController: UIViewController {
-    let viewModel: MainViewModelType
+    let viewModel: ResultViewModelType
     private var disposeBag = DisposeBag()
     
     private let textView: UITextView = {
@@ -22,7 +22,7 @@ final class ResultViewController: UIViewController {
         return textView
     }()
     
-    init(_ viewModel: MainViewModelType) {
+    init(_ viewModel: ResultViewModelType) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -33,10 +33,10 @@ final class ResultViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureUI()
-        configureBarItem()
         bindOutput()
         bindError()
+        configureUI()
+        configureBarItem()
     }
     
     private func configureUI() {
@@ -68,7 +68,7 @@ final class ResultViewController: UIViewController {
     }
     
     private func bindOutput() {
-        viewModel.outputs.outputItem
+        viewModel.outputItem
             .subscribe(on: MainScheduler.instance)
             .bind { [weak self] output in
                 guard let self else { return }
@@ -80,7 +80,7 @@ final class ResultViewController: UIViewController {
     }
     
     private func bindError() {
-        viewModel.outputs.errorMessage
+        viewModel.errorMessage
             .subscribe(on: MainScheduler.instance)
             .bind { [weak self] errorMessage in
                 guard let self else { return }

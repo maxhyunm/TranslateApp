@@ -18,6 +18,11 @@ protocol MainViewModelInputsType {
 }
 
 protocol MainViewModelOutputsType {
+    var errorMessage: PublishRelay<String> { get }
+    var resultViewModel: ResultViewModelType { get }
+}
+
+protocol ResultViewModelType {
     var outputItem: PublishRelay<String> { get }
     var errorMessage: PublishRelay<String> { get }
 }

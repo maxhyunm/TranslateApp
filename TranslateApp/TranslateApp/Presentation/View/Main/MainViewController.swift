@@ -111,7 +111,7 @@ final class MainViewController: UIViewController, URLSessionDelegate {
                   let source = sourceLanguage.text,
                   let target = targetLanguage.text else { return }
             self.viewModel.inputs.touchUpTranslate(source: source, target: target)
-            let resultViewController = ResultViewController(self.viewModel)
+            let resultViewController = ResultViewController(self.viewModel.outputs.resultViewModel)
             let resultNavigationControllr = UINavigationController(rootViewController: resultViewController)
             DispatchQueue.main.async {
                 self.present(resultNavigationControllr, animated: true)

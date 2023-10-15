@@ -46,6 +46,7 @@
 		BAD472DA2ADBAAFE0021323A /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = BAD472D92ADBAAFE0021323A /* RxSwift */; };
 		BAD472DC2ADBACC40021323A /* URLSessionDataTaskProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD472DB2ADBACC40021323A /* URLSessionDataTaskProtocol.swift */; };
 		BAD472DF2ADBB52B0021323A /* ViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD472DE2ADBB52B0021323A /* ViewModelTest.swift */; };
+		BAD472E32ADBBB720021323A /* ResultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD472E22ADBBB720021323A /* ResultViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -95,6 +96,7 @@
 		BAD472DB2ADBACC40021323A /* URLSessionDataTaskProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionDataTaskProtocol.swift; sourceTree = "<group>"; };
 		BAD472DD2ADBB4700021323A /* TranslateApp.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = TranslateApp.xctestplan; sourceTree = "<group>"; };
 		BAD472DE2ADBB52B0021323A /* ViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelTest.swift; sourceTree = "<group>"; };
+		BAD472E22ADBBB720021323A /* ResultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -260,6 +262,7 @@
 		BAD472A02AD852DD0021323A /* Result */ = {
 			isa = PBXGroup;
 			children = (
+				BAD472E22ADBBB720021323A /* ResultViewModel.swift */,
 				BAD472752AD710CE0021323A /* ResultViewController.swift */,
 			);
 			path = Result;
@@ -421,6 +424,7 @@
 				BAD472BA2ADAD09B0021323A /* CustomColors.swift in Sources */,
 				BAD472BC2ADB94F80021323A /* URLSessionProtocol.swift in Sources */,
 				BAD472482AD44EFD0021323A /* DecodingManager.swift in Sources */,
+				BAD472E32ADBBB720021323A /* ResultViewModel.swift in Sources */,
 				BAD4722E2AD448BA0021323A /* SceneDelegate.swift in Sources */,
 				BAD4729C2AD84E110021323A /* LanguagePickerField.swift in Sources */,
 				BAD472762AD710CE0021323A /* ResultViewController.swift in Sources */,

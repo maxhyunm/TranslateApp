@@ -14,7 +14,7 @@ final class MainViewModel: MainViewModelType, MainViewModelOutputsType, ViewMode
     var outputs: MainViewModelOutputsType { return self }
     var inputText: String = ""
     var translateItem: TranslateItem?
-    var outputItem = PublishRelay<String>()
+    var resultViewModel: ResultViewModelType = ResultViewModel()
     var errorMessage = PublishRelay<String>()
     
     init(repository: TranslatorRepository) {
@@ -48,7 +48,7 @@ extension MainViewModel {
     func setupTranslateItem(source: String, target: String) {
         guard let sourceLanguage = Languages.getLanguageType(for: source),
               let targetLanguage = Languages.getLanguageType(for: target) else {
-            outputItem.accept(inputText)
+            resultViewModel.outputItem.accept(inputText)
             handle(error: TranslateError.languageNotAvailable)
             return
         }
@@ -67,7 +67,7 @@ extension MainViewModel {
                 item.source = language
                 self.translate(item)
             case .failure(let errorType):
-                self.outputItem.accept(item.text)
+                self.resultViewModel.outputItem.accept(item.text)
                 self.handle(error: errorType)
                 return
             }
@@ -76,7 +76,7 @@ extension MainViewModel {
     
     func translate(_ item: TranslateItem) {
         if item.source == item.target {
-            self.outputItem.accept(item.text)
+            self.resultViewModel.outputItem.accept(item.text)
             return
         }
         
@@ -85,9 +85,9 @@ extension MainViewModel {
             
             switch result {
             case .success(let newItem):
-                self.outputItem.accept(newItem.text)
+                self.resultViewModel.outputItem.accept(newItem.text)
             case .failure(let errorType):
-                self.outputItem.accept(item.text)
+                self.resultViewModel.outputItem.accept(item.text)
                 self.handle(error: errorType)
             }
         }
