@@ -10,10 +10,10 @@ import RxSwift
 import RxCocoa
 
 final class LanguagePickerField: UITextField {
-    let pickerView = UIPickerView()
-    let category: Languages.Category
+    private let pickerView = UIPickerView()
+    private let category: Languages.Category
     
-    let toolBar: UIToolbar = {
+    private let toolbar: UIToolbar = {
         let toolBar = UIToolbar(frame: CGRect(origin: .zero, size: CGSize(width: UIScreen.main.bounds.width, height: 35)))
         toolBar.translatesAutoresizingMaskIntoConstraints = false
         toolBar.barStyle = .default
@@ -27,7 +27,7 @@ final class LanguagePickerField: UITextField {
         self.category = category
         super.init(frame: .init())
         configureUI()
-        configureToolBar()
+        configureToolbar()
     }
     
     required init?(coder: NSCoder) {
@@ -50,7 +50,7 @@ final class LanguagePickerField: UITextField {
         inputView = pickerView
     }
     
-    func configureToolBar() {
+    func configureToolbar() {
         let cancel = UIAction(title: String(format: NSLocalizedString("cancel", comment: "취소"))) { [weak self] _ in
             guard let self else { return }
             self.resignFirstResponder()
@@ -67,13 +67,13 @@ final class LanguagePickerField: UITextField {
         let selectButton = UIBarButtonItem(primaryAction: select)
         let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
 
-        toolBar.setItems([cancelButton, flexibleSpace, selectButton], animated: true)
-        toolBar.isUserInteractionEnabled = true
+        toolbar.setItems([cancelButton, flexibleSpace, selectButton], animated: true)
+        toolbar.isUserInteractionEnabled = true
 
-        self.inputAccessoryView = toolBar
+        self.inputAccessoryView = toolbar
     }
 
-    func bindWithPickerView(disposeBag: DisposeBag) {
+    func bindPickerView(disposeBag: DisposeBag) {
         Observable.just(category.menu).bind(to: pickerView.rx.itemTitles) { _, item in
             return item
         }.disposed(by: disposeBag)
@@ -85,8 +85,8 @@ final class LanguagePickerField: UITextField {
 
 extension LanguagePickerField {
     enum Colors {
-        static let barButtonTitle: UIColor = CustomColors.lightPurple
+        static let barButtonTitle: UIColor = .tintColor
         static let textFieldText: UIColor = .white
-        static let textFieldBackground: UIColor = CustomColors.lightPurple
+        static let textFieldBackground: UIColor = .gray
     }
 }

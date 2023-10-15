@@ -9,7 +9,7 @@ import UIKit
 import RxSwift
 
 final class ResultViewController: UIViewController {
-    let viewModel: ResultViewModelType
+    private let viewModel: ResultViewModelType
     private var disposeBag = DisposeBag()
     
     private let textView: UITextView = {
@@ -101,7 +101,7 @@ final class ResultViewController: UIViewController {
 
 extension ResultViewController {
     enum Colors {
-        static let barButtonTitle: UIColor = CustomColors.lightPurple
+        static let barButtonTitle: UIColor = .tintColor
         static let textViewBackground: UIColor = CustomColors.grayWithAlpha
         static let textViewText: UIColor = .white
     }

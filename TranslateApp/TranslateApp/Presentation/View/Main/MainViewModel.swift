@@ -12,9 +12,9 @@ final class MainViewModel: MainViewModelType, MainViewModelOutputsType, ViewMode
     let repository: TranslatorRepository
     var inputs: MainViewModelInputsType { return self }
     var outputs: MainViewModelOutputsType { return self }
-    var inputText: String = ""
-    var translateItem: TranslateItem?
     var resultViewModel: ResultViewModelType = ResultViewModel()
+    private var inputText: String = ""
+    private var translateItem: TranslateItem?
     var errorMessage = PublishRelay<String>()
     
     init(repository: TranslatorRepository) {

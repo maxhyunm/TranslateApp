@@ -111,7 +111,7 @@ final class MainViewController: UIViewController, URLSessionDelegate {
                   let source = sourceLanguage.text,
                   let target = targetLanguage.text else { return }
             self.viewModel.inputs.touchUpTranslate(source: source, target: target)
-            let resultViewController = ResultViewController(self.viewModel.outputs.resultViewModel)
+            let resultViewController = ResultViewController(self.viewModel.resultViewModel)
             let resultNavigationControllr = UINavigationController(rootViewController: resultViewController)
             DispatchQueue.main.async {
                 self.present(resultNavigationControllr, animated: true)
@@ -122,8 +122,8 @@ final class MainViewController: UIViewController, URLSessionDelegate {
 
 extension MainViewController {
     private func configureLanguagePicker() {
-        sourceLanguage.bindWithPickerView(disposeBag: disposeBag)
-        targetLanguage.bindWithPickerView(disposeBag: disposeBag)
+        sourceLanguage.bindPickerView(disposeBag: disposeBag)
+        targetLanguage.bindPickerView(disposeBag: disposeBag)
     }
 }
 
@@ -157,9 +157,9 @@ extension MainViewController: DataScannerViewControllerDelegate {
 
 extension MainViewController {
     enum Colors {
-        static let background: UIColor = CustomColors.darkBlue
-        static let buttonBackground: UIColor = CustomColors.pink
-        static let buttonTint: UIColor = CustomColors.darkBlue
+        static let background: UIColor = .darkGray
+        static let buttonBackground: UIColor = .white
+        static let buttonTint: UIColor = .darkGray
         static let iconTint: UIColor = CustomColors.yellow
     }
 }

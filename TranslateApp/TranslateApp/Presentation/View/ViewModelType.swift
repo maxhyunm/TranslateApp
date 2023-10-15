@@ -9,7 +9,8 @@ import RxCocoa
 
 protocol MainViewModelType {
     var inputs: MainViewModelInputsType { get }
-    var outputs: any MainViewModelOutputsType { get }
+    var outputs: MainViewModelOutputsType { get }
+    var resultViewModel: ResultViewModelType { get }
 }
 
 protocol MainViewModelInputsType {
@@ -19,7 +20,6 @@ protocol MainViewModelInputsType {
 
 protocol MainViewModelOutputsType {
     var errorMessage: PublishRelay<String> { get }
-    var resultViewModel: ResultViewModelType { get }
 }
 
 protocol ResultViewModelType {
