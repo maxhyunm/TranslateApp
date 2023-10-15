@@ -271,9 +271,9 @@
 		BAD472C22ADB9CBD0021323A /* TranslateAppTests */ = {
 			isa = PBXGroup;
 			children = (
-				BAD472DE2ADBB52B0021323A /* ViewModelTest.swift */,
 				BAD472DD2ADBB4700021323A /* TranslateApp.xctestplan */,
 				BAD472CA2ADB9CDD0021323A /* NetworkTexts.swift */,
+				BAD472DE2ADBB52B0021323A /* ViewModelTest.swift */,
 				BAD472C32ADB9CBD0021323A /* TranslateAppTests.swift */,
 				BAD472CC2ADB9D000021323A /* TestDouble.swift */,
 			);
