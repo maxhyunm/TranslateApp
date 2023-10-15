@@ -8,21 +8,21 @@
 import Foundation
 import RxSwift
 
-final class TranslaterRepository {
+final class TranslatorRepository {
     let networkManager: NetworkManager
     
     init(networkManager: NetworkManager) {
         self.networkManager = networkManager
     }
     
-    func checkLanguage(for item: TranslateItem, completion: @escaping(Result<Languages, Error>) -> Void) {
+    func detectLanguage(for item: TranslateItem, completion: @escaping(Result<Languages, Error>) -> Void) {
         let query = [KeywordArgument(key: "query", value: item.text)]
         DispatchQueue.global(qos: .default).sync {
-            networkManager.fetchData(.languageCheck(body: query)) { result in
+            networkManager.fetchData(.languageDetector(body: query)) { result in
                 switch result {
                 case .success(let data):
                     do {
-                        let languageCheck: LanguageCheckDTO = try DecodingManager.shared.decode(data)
+                        let languageCheck: LanguageDetectorDTO = try DecodingManager.shared.decode(data)
                         guard let sourceLanguage = Languages(rawValue: languageCheck.languageCode),
                               sourceLanguage.isTranslatable else {
                             throw TranslateError.languageNotAvailable
@@ -44,11 +44,11 @@ final class TranslaterRepository {
                      KeywordArgument(key: "text", value: item.text)]
         
         DispatchQueue.global(qos: .default).sync {
-            networkManager.fetchData(.translater(body: query)) { result in
+            networkManager.fetchData(.translator(body: query)) { result in
                 switch result {
                 case .success(let data):
                     do {
-                        let translatedData: TranslaterDTO = try DecodingManager.shared.decode(data)
+                        let translatedData: TranslatorDTO = try DecodingManager.shared.decode(data)
                         item.text = translatedData.message.result.translatedText
                         completion(.success(item))
                     } catch(let error) {

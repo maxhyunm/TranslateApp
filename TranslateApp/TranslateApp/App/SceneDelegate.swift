@@ -12,13 +12,20 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
-        
         window = UIWindow(windowScene: windowScene)
+        
         let networkManager = NetworkManager()
-        let repository = TranslaterRepository(networkManager: networkManager)
+        let repository = TranslatorRepository(networkManager: networkManager)
         let mainViewModel = MainViewModel(repository: repository)
         let mainViewController = MainViewController(viewModel: mainViewModel)
         let navigationViewController = UINavigationController(rootViewController: mainViewController)
+        let session: URLSession = {
+            let configuration = URLSessionConfiguration.default
+            configuration.waitsForConnectivity = true
+            return URLSession(configuration: configuration, delegate: mainViewController, delegateQueue: nil)
+        }()
+        networkManager.session = session
+        
         window?.rootViewController = navigationViewController
         window?.makeKeyAndVisible()
     }

@@ -31,7 +31,8 @@
 "invalidAPIKey" = "Network Error";
 "requestFailure" = "Network Error";
 "invalidData" = "Invalid Data";
-"invalidHTTPStatusCode" = "Network Error";
+"invalidResponse" = "Network Error";
+"invalidHTTPStatusCode" = "Network Error : Error Code ";
 "requestTimeOut" = "Request Time Out";
 "languageNotAvailable" = "Language Not Available";
 "unknown" = "Unknown Error";

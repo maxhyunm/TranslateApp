@@ -5,17 +5,17 @@
 //  Created by Min Hyun on 2023/10/09.
 //
 
-struct TranslaterDTO: Decodable {
+struct TranslatorDTO: Decodable {
     let message: Message
 }
 
-extension TranslaterDTO {
+extension TranslatorDTO {
     struct Message: Decodable {
         let result: Result
     }
 }
 
-extension TranslaterDTO.Message {
+extension TranslatorDTO.Message {
     struct Result: Decodable {
         let sourceLanguageType: String
         let targetLanguageType: String

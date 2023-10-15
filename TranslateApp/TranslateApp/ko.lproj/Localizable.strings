@@ -31,7 +31,8 @@
 "invalidAPIKey" = "네트워크 오류입니다";
 "requestFailure" = "연결에 실패하였습니다";
 "invalidData" = "유효하지 않은 데이터 형식입니다";
-"invalidHTTPStatusCode" = "네트워크 오류입니다";
+"invalidResponse" = "서버 응답 오류입니다";
+"invalidHTTPStatusCode" = "서버 응답 오류입니다 : 오류 코드 ";
 "requestTimeOut" = "네트워크 응답 시간 초과입니다";
 "languageNotAvailable" = "변환 불가한 언어입니다.";
 "unknown" = "알 수 없는 오류입니다";

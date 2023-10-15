@@ -11,7 +11,7 @@ import Vision
 import RxSwift
 import RxCocoa
 
-final class MainViewController: UIViewController {
+final class MainViewController: UIViewController, URLSessionDelegate {
     private let sourceLanguage = LanguagePickerField(category: .source)
     private let targetLanguage = LanguagePickerField(category: .target)
     
@@ -163,4 +163,3 @@ extension MainViewController {
         static let iconTint: UIColor = CustomColors.yellow
     }
 }
-

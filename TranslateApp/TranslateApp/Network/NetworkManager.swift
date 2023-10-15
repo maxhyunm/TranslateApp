@@ -8,15 +8,16 @@
 import Foundation
 
 final class NetworkManager {
-    private var dataTask: URLSessionDataTask?
- 
+    var session: URLSessionProtocol?
+    private var dataTask: URLSessionDataTaskProtocol?
+
     func fetchData(_ networkType: NetworkConfiguration, completion: @escaping(Result<Data, Error>) -> Void) {
         do {
             let request = try makeRequest(networkType)
             
             dataTask?.cancel()
             
-            dataTask = URLSession.shared.dataTask(with: request) { data, response, error in
+            dataTask = session?.dataTask(with: request) { data, response, error in
                 let result = self.checkResponse(data: data, response: response, error: error)
                 completion(result)
             }
@@ -57,9 +58,12 @@ final class NetworkManager {
             return .failure(APIError.requestFailure)
         }
         
-        guard let httpResponse = response as? HTTPURLResponse,
-              (200...299).contains(httpResponse.statusCode) else {
-            return .failure(APIError.invalidHTTPStatusCode)
+        guard let httpResponse = response as? HTTPURLResponse else {
+            return .failure(APIError.invalidResponse)
+        }
+        
+        guard (200...299).contains(httpResponse.statusCode) else {
+            return .failure(APIError.invalidHTTPStatusCode(statusCode: httpResponse.statusCode))
         }
         
         guard let data else {

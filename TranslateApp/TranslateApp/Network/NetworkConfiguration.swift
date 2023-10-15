@@ -8,14 +8,14 @@
 import Foundation
 
 enum NetworkConfiguration {
-    case translater(body: [KeywordArgument])
-    case languageCheck(body: [KeywordArgument])
+    case translator(body: [KeywordArgument])
+    case languageDetector(body: [KeywordArgument])
     
     var url: String {
         switch self {
-        case .translater:
+        case .translator:
             return "https://openapi.naver.com/v1/papago/n2mt"
-        case .languageCheck:
+        case .languageDetector:
             return "https://openapi.naver.com/v1/papago/detectLangs"
         }
     }
@@ -27,7 +27,7 @@ enum NetworkConfiguration {
         }
         
         switch self {
-        case .translater, .languageCheck:
+        case .translator, .languageDetector:
             guard let papagoId = plist.value(forKey: "PapagoClientId"),
                   let papagoSecret = plist.value(forKey: "PapagoClientSecret") else {
                 return nil
@@ -40,7 +40,7 @@ enum NetworkConfiguration {
     
     var queryItem: [URLQueryItem] {
         switch self {
-        case .translater(let body), .languageCheck(let body):
+        case .translator(let body), .languageDetector(let body):
             var result = [URLQueryItem]()
             body.forEach {
                 guard let value = $0.value as? String else { return }
@@ -52,7 +52,7 @@ enum NetworkConfiguration {
     
     var httpMethod: String {
         switch self {
-        case .translater, .languageCheck:
+        case .translator, .languageDetector:
             return "POST"
         }
     }

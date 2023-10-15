@@ -9,7 +9,7 @@ import Foundation
 import RxCocoa
 
 final class MainViewModel: MainViewModelType, MainViewModelOutputsType, ViewModelWithError {
-    let repository: TranslaterRepository
+    let repository: TranslatorRepository
     var inputs: MainViewModelInputsType { return self }
     var outputs: MainViewModelOutputsType { return self }
     var inputText: String = ""
@@ -17,7 +17,7 @@ final class MainViewModel: MainViewModelType, MainViewModelOutputsType, ViewMode
     var outputItem = PublishRelay<String>()
     var errorMessage = PublishRelay<String>()
     
-    init(repository: TranslaterRepository) {
+    init(repository: TranslatorRepository) {
         self.repository = repository
     }
 }
@@ -59,7 +59,7 @@ extension MainViewModel {
     }
     
     func autoTranslate(_ item: TranslateItem) {
-        self.repository.checkLanguage(for: item) { [weak self] result in
+        self.repository.detectLanguage(for: item) { [weak self] result in
             guard let self else { return }
             
             switch result {
