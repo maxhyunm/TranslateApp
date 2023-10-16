@@ -24,6 +24,7 @@
 "confirm" = "Confirm";
 "cancel" = "Cancel";
 "error" = "Error";
+"copy" = "Copy";
 "select" = "Select";
 "close" = "Close";
 "decodingFailure" = "Decoding Failure";

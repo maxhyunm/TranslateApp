@@ -59,12 +59,19 @@ final class ResultViewController: UIViewController {
             guard let self else { return }
             self.dismiss(animated: true)
         }
+        let copy = UIAction(title: String(format: NSLocalizedString("copy", comment: "복사"))) { [weak self] _ in
+            guard let self else { return }
+            UIPasteboard.general.string = self.textView.text
+        }
 
         let closeButton = UIBarButtonItem(primaryAction: close)
+        let copyButton = UIBarButtonItem(primaryAction: copy)
         
         closeButton.tintColor = Colors.barButtonTitle
+        copyButton.tintColor = Colors.barButtonTitle
         
         self.navigationItem.rightBarButtonItem = closeButton
+        self.navigationItem.leftBarButtonItem = copyButton
     }
     
     private func bindOutput() {

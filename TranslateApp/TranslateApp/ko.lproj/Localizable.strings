@@ -24,6 +24,7 @@
 "confirm" = "확인";
 "cancel" = "취소";
 "error" = "오류";
+"copy" = "복사";
 "select" = "선택";
 "close" = "닫기";
 "decodingFailure" = "디코딩 오류입니다";
