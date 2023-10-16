@@ -14,28 +14,28 @@ final class TranslatorRepository {
     init(networkManager: NetworkManager) {
         self.networkManager = networkManager
     }
-
+    
     func detectLanguage(_ text: String, completion: @escaping(Result<Languages, Error>) -> Void) {
         let query = [KeywordArgument(key: "query", value: text)]
-        DispatchQueue.global(qos: .default).sync {
-            networkManager.fetchData(.languageDetector(body: query)) { result in
-                switch result {
-                case .success(let data):
-                    do {
-                        let languageCheck: LanguageDetectorDTO = try DecodingManager.shared.decode(data)
-                        guard let sourceLanguage = Languages(rawValue: languageCheck.languageCode),
-                              sourceLanguage.isTranslatable else {
-                            throw TranslateError.languageNotAvailable
-                        }
-                        completion(.success(sourceLanguage))
-                    } catch(let error) {
-                        completion(.failure(error))
+        
+        networkManager.fetchData(.languageDetector(body: query)) { result in
+            switch result {
+            case .success(let data):
+                do {
+                    let languageCheck: LanguageDetectorDTO = try DecodingManager.shared.decode(data)
+                    guard let sourceLanguage = Languages(rawValue: languageCheck.languageCode),
+                          sourceLanguage.isTranslatable else {
+                        throw TranslateError.languageNotAvailable
                     }
-                case .failure(let error):
+                    completion(.success(sourceLanguage))
+                } catch(let error) {
                     completion(.failure(error))
                 }
+            case .failure(let error):
+                completion(.failure(error))
             }
         }
+        
     }
     
     func translate(source: Languages, target: Languages, text: String, completion: @escaping(Result<String, Error>) -> Void) {
@@ -43,19 +43,17 @@ final class TranslatorRepository {
                      KeywordArgument(key: "target", value: target.rawValue),
                      KeywordArgument(key: "text", value: text)]
         
-        DispatchQueue.global(qos: .default).sync {
-            networkManager.fetchData(.translator(body: query)) { result in
-                switch result {
-                case .success(let data):
-                    do {
-                        let translatedData: TranslatorDTO = try DecodingManager.shared.decode(data)
-                        completion(.success(translatedData.message.result.translatedText))
-                    } catch(let error) {
-                        completion(.failure(error))
-                    }
-                case .failure(let error):
+        networkManager.fetchData(.translator(body: query)) { result in
+            switch result {
+            case .success(let data):
+                do {
+                    let translatedData: TranslatorDTO = try DecodingManager.shared.decode(data)
+                    completion(.success(translatedData.message.result.translatedText))
+                } catch(let error) {
                     completion(.failure(error))
                 }
+            case .failure(let error):
+                completion(.failure(error))
             }
         }
     }
