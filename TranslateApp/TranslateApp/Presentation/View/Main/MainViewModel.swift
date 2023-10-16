@@ -38,7 +38,7 @@ extension MainViewModel: MainViewModelInputsType {
         if !sourceLanguage.isTranslatable {
             autoTranslate(source: sourceLanguage, target: targetLanguage)
         } else {
-            self.translate(source: sourceLanguage, target: targetLanguage, text: inputText)
+            self.translate(source: sourceLanguage, target: targetLanguage)
         }
     }
 }
@@ -50,7 +50,7 @@ extension MainViewModel {
             
             switch result {
             case .success(let language):
-                self.translate(source: language, target: target, text: inputText)
+                self.translate(source: language, target: target)
             case .failure(let errorType):
                 self.resultViewModel.outputItem.accept(inputText)
                 self.handle(error: errorType)
@@ -59,20 +59,20 @@ extension MainViewModel {
         }
     }
     
-    func translate(source: Languages, target: Languages, text: String) {
+    func translate(source: Languages, target: Languages) {
         if source == target {
-            self.resultViewModel.outputItem.accept(text)
+            self.resultViewModel.outputItem.accept(inputText)
             return
         }
         
-        self.repository.translate(source: source, target: target, text: text) { [weak self] result in
+        self.repository.translate(source: source, target: target, text: inputText) { [weak self] result in
             guard let self else { return }
             
             switch result {
             case .success(let outputText):
                 self.resultViewModel.outputItem.accept(outputText)
             case .failure(let errorType):
-                self.resultViewModel.outputItem.accept(text)
+                self.resultViewModel.outputItem.accept(inputText)
                 self.handle(error: errorType)
             }
         }
