@@ -157,9 +157,9 @@ extension MainViewController: DataScannerViewControllerDelegate {
 
 extension MainViewController {
     enum Colors {
-        static let background: UIColor = .darkGray
-        static let buttonBackground: UIColor = .white
-        static let buttonTint: UIColor = .darkGray
-        static let iconTint: UIColor = CustomColors.yellow
+        static let background: UIColor = CustomColors.darkBlue
+        static let buttonBackground: UIColor = CustomColors.yellow
+        static let buttonTint: UIColor = CustomColors.darkBlue
+        static let iconTint: UIColor = CustomColors.pink
     }
 }
