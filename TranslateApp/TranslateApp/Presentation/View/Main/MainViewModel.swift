@@ -13,8 +13,7 @@ final class MainViewModel: MainViewModelType, MainViewModelOutputsType, ViewMode
     var inputs: MainViewModelInputsType { return self }
     var outputs: MainViewModelOutputsType { return self }
     var resultViewModel: ResultViewModelType = ResultViewModel()
-    private var inputText: String = ""
-    private var translateItem: TranslateItem?
+    private(set) var inputText: String = ""
     var errorMessage = PublishRelay<String>()
     
     init(repository: TranslatorRepository) {
@@ -28,66 +27,52 @@ extension MainViewModel: MainViewModelInputsType {
     }
     
     func touchUpTranslate(source: String, target: String) {
-        setupTranslateItem(source: source, target: target)
-        
-        guard let item = translateItem,
-              item.target.isTranslatable else {
+        guard let sourceLanguage = Languages.getLanguageType(for: source),
+              let targetLanguage = Languages.getLanguageType(for: target),
+              targetLanguage.isTranslatable else {
+            resultViewModel.outputItem.accept(inputText)
             handle(error: TranslateError.languageNotAvailable)
             return
         }
-        
-        if !item.source.isTranslatable {
-            autoTranslate(item)
+
+        if !sourceLanguage.isTranslatable {
+            autoTranslate(source: sourceLanguage, target: targetLanguage)
         } else {
-            self.translate(item)
+            self.translate(source: sourceLanguage, target: targetLanguage, text: inputText)
         }
     }
 }
 
 extension MainViewModel {
-    func setupTranslateItem(source: String, target: String) {
-        guard let sourceLanguage = Languages.getLanguageType(for: source),
-              let targetLanguage = Languages.getLanguageType(for: target) else {
-            resultViewModel.outputItem.accept(inputText)
-            handle(error: TranslateError.languageNotAvailable)
-            return
-        }
-        
-        translateItem = TranslateItem(source: sourceLanguage,
-                                      target: targetLanguage,
-                                      text: inputText)
-    }
-    
-    func autoTranslate(_ item: TranslateItem) {
-        self.repository.detectLanguage(for: item) { [weak self] result in
+    func autoTranslate(source: Languages, target: Languages) {
+        self.repository.detectLanguage(inputText) { [weak self] result in
             guard let self else { return }
             
             switch result {
             case .success(let language):
-                item.source = language
-                self.translate(item)
+                self.translate(source: language, target: target, text: inputText)
             case .failure(let errorType):
-                self.resultViewModel.outputItem.accept(item.text)
+                self.resultViewModel.outputItem.accept(inputText)
                 self.handle(error: errorType)
                 return
             }
         }
     }
     
-    func translate(_ item: TranslateItem) {
-        if item.source == item.target {
-            self.resultViewModel.outputItem.accept(item.text)
+    func translate(source: Languages, target: Languages, text: String) {
+        if source == target {
+            self.resultViewModel.outputItem.accept(text)
             return
         }
         
-        self.repository.translate(for: item) { [weak self] result in
+        self.repository.translate(source: source, target: target, text: text) { [weak self] result in
             guard let self else { return }
             
             switch result {
-            case .success(let newItem):
-                self.resultViewModel.outputItem.accept(newItem.text)
+            case .success(let outputText):
+                self.resultViewModel.outputItem.accept(outputText)
             case .failure(let errorType):
-                self.resultViewModel.outputItem.accept(item.text)
+                self.resultViewModel.outputItem.accept(text)
                 self.handle(error: errorType)
             }
         }

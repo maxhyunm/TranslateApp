@@ -100,7 +100,7 @@ final class ResultViewController: UIViewController {
 
 
 extension ResultViewController {
-    enum Colors {
+    struct Colors {
         static let barButtonTitle: UIColor = .tintColor
         static let textViewBackground: UIColor = CustomColors.grayWithAlpha
         static let textViewText: UIColor = .white

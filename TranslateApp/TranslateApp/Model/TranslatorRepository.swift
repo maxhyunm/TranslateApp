@@ -14,9 +14,9 @@ final class TranslatorRepository {
     init(networkManager: NetworkManager) {
         self.networkManager = networkManager
     }
-    
-    func detectLanguage(for item: TranslateItem, completion: @escaping(Result<Languages, Error>) -> Void) {
-        let query = [KeywordArgument(key: "query", value: item.text)]
+
+    func detectLanguage(_ text: String, completion: @escaping(Result<Languages, Error>) -> Void) {
+        let query = [KeywordArgument(key: "query", value: text)]
         DispatchQueue.global(qos: .default).sync {
             networkManager.fetchData(.languageDetector(body: query)) { result in
                 switch result {
@@ -38,10 +38,10 @@ final class TranslatorRepository {
         }
     }
     
-    func translate(for item: TranslateItem, completion: @escaping(Result<TranslateItem, Error>) -> Void) {
-        let query = [KeywordArgument(key: "source", value: item.source.rawValue),
-                     KeywordArgument(key: "target", value: item.target.rawValue),
-                     KeywordArgument(key: "text", value: item.text)]
+    func translate(source: Languages, target: Languages, text: String, completion: @escaping(Result<String, Error>) -> Void) {
+        let query = [KeywordArgument(key: "source", value: source.rawValue),
+                     KeywordArgument(key: "target", value: target.rawValue),
+                     KeywordArgument(key: "text", value: text)]
         
         DispatchQueue.global(qos: .default).sync {
             networkManager.fetchData(.translator(body: query)) { result in
@@ -49,8 +49,7 @@ final class TranslatorRepository {
                 case .success(let data):
                     do {
                         let translatedData: TranslatorDTO = try DecodingManager.shared.decode(data)
-                        item.text = translatedData.message.result.translatedText
-                        completion(.success(item))
+                        completion(.success(translatedData.message.result.translatedText))
                     } catch(let error) {
                         completion(.failure(error))
                     }

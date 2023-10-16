@@ -45,7 +45,6 @@ final class LanguagePickerField: UITextField {
         textColor = Colors.textFieldText
         borderStyle = .roundedRect
         clipsToBounds = true
-//        layer.cornerRadius = 15
         layer.borderWidth = 1
         layer.borderColor = Colors.textFieldBorder
 
@@ -86,7 +85,7 @@ final class LanguagePickerField: UITextField {
 }
 
 extension LanguagePickerField {
-    enum Colors {
+    struct Colors {
         static let barButtonTitle: UIColor = .tintColor
         static let textFieldText: UIColor = .white
         static let textFieldBackground: UIColor = CustomColors.darkBlue
