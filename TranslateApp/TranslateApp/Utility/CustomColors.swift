@@ -7,7 +7,7 @@
 
 import UIKit
 
-enum CustomColors {
+struct CustomColors {
     static let yellow = UIColor(red: 0.94, green: 0.90, blue: 0.56, alpha: 1.00)
     static let darkBlue = UIColor(red: 0.16, green: 0.18, blue: 0.36, alpha: 1.00)
     static let pink = UIColor(red: 0.96, green: 0.32, blue: 0.89, alpha: 1.00)
