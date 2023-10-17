@@ -11,7 +11,7 @@ protocol ToastShowable where Self: UIViewController {}
 
 extension ToastShowable {
     func showToast(_ message: String, withDuration: Double, delay: Double) {
-        let toastLabel = UILabel(frame: CGRect(x: view.frame.size.width/2 - 75, y: 100, width: 170, height: 35))
+        let toastLabel = UILabel(frame: CGRect(x: view.frame.size.width/2 - 75, y: 150, width: 170, height: 35))
         toastLabel.backgroundColor = CustomColors.blackWithAlpha
         toastLabel.textColor = .white
         toastLabel.font = UIFont.systemFont(ofSize: 14.0)

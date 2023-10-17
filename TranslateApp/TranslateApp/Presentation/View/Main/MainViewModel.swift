@@ -12,8 +12,8 @@ final class MainViewModel: MainViewModelType, MainViewModelOutputsType, ViewMode
     let repository: TranslatorRepository
     var inputs: MainViewModelInputsType { return self }
     var outputs: MainViewModelOutputsType { return self }
-    var resultViewModel: ResultViewModelType = ResultViewModel()
     private(set) var inputText: String = ""
+    var outputItem = PublishRelay<String>()
     var errorMessage = PublishRelay<String>()
     
     init(repository: TranslatorRepository) {
@@ -24,13 +24,13 @@ final class MainViewModel: MainViewModelType, MainViewModelOutputsType, ViewMode
 extension MainViewModel: MainViewModelInputsType {
     func scanText(_ input: String) {
         inputText = input
+        outputItem.accept(input)
     }
     
     func touchUpTranslate(source: String, target: String) {
         guard let sourceLanguage = Languages.getLanguageType(for: source),
               let targetLanguage = Languages.getLanguageType(for: target),
               targetLanguage.isTranslatable else {
-            resultViewModel.outputItem.accept(inputText)
             handle(error: TranslateError.languageNotAvailable)
             return
         }
@@ -52,7 +52,6 @@ extension MainViewModel {
             case .success(let language):
                 self.translate(source: language, target: target)
             case .failure(let errorType):
-                self.resultViewModel.outputItem.accept(inputText)
                 self.handle(error: errorType)
                 return
             }
@@ -61,7 +60,6 @@ extension MainViewModel {
     
     func translate(source: Languages, target: Languages) {
         if source == target {
-            self.resultViewModel.outputItem.accept(inputText)
             return
         }
         
@@ -70,9 +68,8 @@ extension MainViewModel {
             
             switch result {
             case .success(let outputText):
-                self.resultViewModel.outputItem.accept(outputText)
+                self.outputItem.accept(outputText)
             case .failure(let errorType):
-                self.resultViewModel.outputItem.accept(inputText)
                 self.handle(error: errorType)
             }
         }

@@ -14,6 +14,6 @@ struct CustomColors {
     static let lightPurple = UIColor(red: 0.61, green: 0.62, blue: 0.98, alpha: 1.00)
     static let cyan = UIColor(red: 0.57, green: 1.00, blue: 0.86, alpha: 1.00)
     static let grayWithAlpha = UIColor.darkGray.withAlphaComponent(0.8)
-    static let whiteWithAlpha = UIColor.white.withAlphaComponent(0.3)
+    static let whiteWithAlpha = UIColor.white.withAlphaComponent(0.7)
     static let blackWithAlpha = UIColor.black.withAlphaComponent(0.7)
 }

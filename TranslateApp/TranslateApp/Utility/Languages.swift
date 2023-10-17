@@ -68,9 +68,10 @@ enum Languages: String, CustomStringConvertible, CaseIterable {
         }
     }
 
-    static func getLanguageType(for name: String) -> Languages? {
+    static func getLanguageType(for name: String?) -> Languages? {
         let descriptionToLanguage = Self.allCases.reduce(into: [:]) { $0[$1.description] = $1 }
-        guard let language = descriptionToLanguage[name] else {
+        guard let name,
+              let language = descriptionToLanguage[name] else {
             return nil
         }
         return language

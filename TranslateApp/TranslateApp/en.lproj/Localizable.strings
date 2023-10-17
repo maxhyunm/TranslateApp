@@ -37,3 +37,4 @@
 "requestTimeOut" = "Request Time Out";
 "languageNotAvailable" = "Language Not Available";
 "unknown" = "Unknown Error";
+"copyToastMessage" = "Copied To Clipboard";

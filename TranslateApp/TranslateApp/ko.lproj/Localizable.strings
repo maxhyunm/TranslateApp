@@ -37,4 +37,4 @@
 "requestTimeOut" = "네트워크 응답 시간 초과입니다";
 "languageNotAvailable" = "변환 불가한 언어입니다.";
 "unknown" = "알 수 없는 오류입니다";
-
+"copyToastMessage" = "클립보드에 복사되었습니다";
