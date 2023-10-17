@@ -8,7 +8,7 @@
 import UIKit
 import RxSwift
 
-final class ResultViewController: UIViewController {
+final class ResultViewController: UIViewController, ToastShowable {
     private let viewModel: ResultViewModelType
     private var disposeBag = DisposeBag()
     
@@ -61,6 +61,7 @@ final class ResultViewController: UIViewController {
         }
         let copy = UIAction(title: String(format: NSLocalizedString("copy", comment: "복사"))) { [weak self] _ in
             guard let self else { return }
+            self.showToast("클립보드에 복사되었습니다", withDuration: 5.0, delay: 0.1)
             UIPasteboard.general.string = self.textView.text
         }
 

@@ -45,6 +45,7 @@
 		BAD472DC2ADBACC40021323A /* URLSessionDataTaskProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD472DB2ADBACC40021323A /* URLSessionDataTaskProtocol.swift */; };
 		BAD472DF2ADBB52B0021323A /* ViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD472DE2ADBB52B0021323A /* ViewModelTest.swift */; };
 		BAD472E32ADBBB720021323A /* ResultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD472E22ADBBB720021323A /* ResultViewModel.swift */; };
+		BAD472ED2ADE276B0021323A /* ToastShowable.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD472EC2ADE276B0021323A /* ToastShowable.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -93,6 +94,7 @@
 		BAD472DD2ADBB4700021323A /* TranslateApp.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = TranslateApp.xctestplan; sourceTree = "<group>"; };
 		BAD472DE2ADBB52B0021323A /* ViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelTest.swift; sourceTree = "<group>"; };
 		BAD472E22ADBBB720021323A /* ResultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultViewModel.swift; sourceTree = "<group>"; };
+		BAD472EC2ADE276B0021323A /* ToastShowable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastShowable.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -208,7 +210,7 @@
 		BAD4724C2AD44F460021323A /* View */ = {
 			isa = PBXGroup;
 			children = (
-				BAD472622AD56F5B0021323A /* ViewModelType.swift */,
+				BAD472EB2ADE275E0021323A /* Protocol */,
 				BAD4729F2AD852CC0021323A /* Main */,
 				BAD472A02AD852DD0021323A /* Result */,
 			);
@@ -279,6 +281,15 @@
 			children = (
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		BAD472EB2ADE275E0021323A /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+				BAD472622AD56F5B0021323A /* ViewModelType.swift */,
+				BAD472EC2ADE276B0021323A /* ToastShowable.swift */,
+			);
+			path = Protocol;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -405,6 +416,7 @@
 				BAD472302AD448BA0021323A /* MainViewController.swift in Sources */,
 				BAD472612AD56DD00021323A /* MainViewModel.swift in Sources */,
 				BAD472A22AD8E8820021323A /* AlertBuilder.swift in Sources */,
+				BAD472ED2ADE276B0021323A /* ToastShowable.swift in Sources */,
 				BAD4722C2AD448BA0021323A /* AppDelegate.swift in Sources */,
 				BAD472592AD4563D0021323A /* Languages.swift in Sources */,
 				BAD4724F2AD4506B0021323A /* NetworkManager.swift in Sources */,

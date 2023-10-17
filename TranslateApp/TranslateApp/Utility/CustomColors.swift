@@ -15,4 +15,5 @@ enum CustomColors {
     static let cyan = UIColor(red: 0.57, green: 1.00, blue: 0.86, alpha: 1.00)
     static let grayWithAlpha = UIColor.darkGray.withAlphaComponent(0.8)
     static let whiteWithAlpha = UIColor.white.withAlphaComponent(0.3)
+    static let blackWithAlpha = UIColor.black.withAlphaComponent(0.7)
 }
