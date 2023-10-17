@@ -64,8 +64,8 @@
         ├── TranslateApp
         │   ├── en.lproj
         │   │   └── Localizable.strings
-        │   └── ko.lproj
-        │       └── Localizable.strings
+        │   ├── ko.lproj
+        │   │   └── Localizable.strings
         │   ├── App
         │   │   ├── AppDelegate.swift
         │   │   └── SceneDelegate.swift
@@ -84,22 +84,23 @@
         │   │   ├── CustomColors.swift
         │   │   ├── DecodingManager.swift
         │   │   ├── KeywordArgument.swift
-        │   │   ├── Languages.swift
-        │   │   └── TranslateItem.swift
+        │   │   └── Languages.swift
         │   ├── Error
         │   │   ├── APIError.swift
         │   │   ├── DecodingError.swift
         │   │   └── TranslateError.swift
         │   ├── Presentation
         │   │   └── View
+        │   │       ├── Protocol
+        │   │       │   ├── ToastShowable.swift
+        │   │       │   └── ViewModelType.swift
         │   │       ├── Main
         │   │       │   ├── LanguagePickerField.swift
         │   │       │   ├── MainViewController.swift
         │   │       │   └── MainViewModel.swift
-        │   │       ├── Result
-        │   │       │   ├── ResultViewController.swift
-        │   │       │   └── ResultViewModel.swift
-        │   │       └── ViewModelType.swift
+        │   │       └── Result
+        │   │           ├── ResultViewController.swift
+        │   │           └── ResultViewModel.swift
         │   ├── Resource
         │   │   └── Assets.xcassets
         │   ├── Info.plist
@@ -110,7 +111,6 @@
             ├── TestDouble.swift
             ├── NetworkTexts.swift
             └── ViewModelTest.swift
-
 ### UML
 <img src="https://hackmd.io/_uploads/r1Y6ROiZT.png"><br>
 
