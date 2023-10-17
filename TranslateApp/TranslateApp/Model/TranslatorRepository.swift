@@ -22,24 +22,26 @@ final class TranslatorRepository {
             let query = [KeywordArgument(key: "query", value: text)]
             
             let result = networkManager.fetchData(.languageDetector(body: query))
-            result.subscribe(onNext: { data in
-                do {
-                    let languageCheck: LanguageDetectorDTO = try DecodingManager.shared.decode(data)
-                    guard let sourceLanguage = Languages(rawValue: languageCheck.languageCode),
-                          sourceLanguage.isTranslatable else {
-                        observable.on(.error(TranslateError.languageNotAvailable))
+            result.subscribe(
+                onNext: { data in
+                    do {
+                        let languageCheck: LanguageDetectorDTO = try DecodingManager.shared.decode(data)
+                        guard let sourceLanguage = Languages(rawValue: languageCheck.languageCode),
+                              sourceLanguage.isTranslatable else {
+                            observable.on(.error(TranslateError.languageNotAvailable))
+                            return
+                        }
+                        observable.on(.next(sourceLanguage))
+                        return
+                    } catch(let error) {
+                        observable.on(.error(error))
                         return
                     }
-                    observable.on(.next(sourceLanguage))
-                    return
-                } catch(let error) {
+                },
+                onError: { error in
                     observable.on(.error(error))
                     return
-                }
-            }, onError: { error in
-                observable.on(.error(error))
-                return
-            })
+                })
             .disposed(by: disposeBag)
             
             return Disposables.create()
@@ -54,19 +56,21 @@ final class TranslatorRepository {
                          KeywordArgument(key: "text", value: text)]
             
             let result = networkManager.fetchData(.translator(body: query))
-            result.subscribe(onNext: { data in
-                do {
-                    let translatedData: TranslatorDTO = try DecodingManager.shared.decode(data)
-                    observable.on(.next(translatedData.message.result.translatedText))
-                    return
-                } catch(let error) {
+            result.subscribe(
+                onNext: { data in
+                    do {
+                        let translatedData: TranslatorDTO = try DecodingManager.shared.decode(data)
+                        observable.on(.next(translatedData.message.result.translatedText))
+                        return
+                    } catch(let error) {
+                        observable.on(.error(error))
+                        return
+                    }
+                },
+                onError: { error in
                     observable.on(.error(error))
                     return
-                }
-            }, onError: { error in
-                observable.on(.error(error))
-                return
-            })
+                })
             .disposed(by: disposeBag)
             
             return Disposables.create()

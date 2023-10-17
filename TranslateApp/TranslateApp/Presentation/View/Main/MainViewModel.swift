@@ -48,25 +48,27 @@ extension MainViewModel: MainViewModelInputsType {
 extension MainViewModel {
     func autoTranslate(source: Languages, target: Languages) {
         let result = repository.detectLanguage(inputText)
-        result.subscribe(onNext: { [weak self] language in
-            self?.translate(source: language, target: target)
-        }, onError: {[weak self] error in
-            self?.handle(error: error)
-        })
+        result.subscribe(
+            onNext: { [weak self] language in
+                self?.translate(source: language, target: target)
+            },
+            onError: {[weak self] error in
+                self?.handle(error: error)
+            })
         .disposed(by: disposeBag)
     }
     
     func translate(source: Languages, target: Languages) {
-        if source == target {
-            return
-        }
+        if source == target { return }
         
         let result = repository.translate(source: source, target: target, text: inputText)
-        result.subscribe(onNext: { [weak self] output in
-            self?.outputItem.accept(output)
-        }, onError: { [weak self] error in
-            self?.handle(error: error)
-        })
+        result.subscribe(
+            onNext: { [weak self] output in
+                self?.outputItem.accept(output)
+            },
+            onError: { [weak self] error in
+                self?.handle(error: error)
+            })
         .disposed(by: disposeBag)
     }
 }

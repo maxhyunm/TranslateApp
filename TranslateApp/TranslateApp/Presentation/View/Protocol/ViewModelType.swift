@@ -30,17 +30,16 @@ protocol ViewModelWithError {
 
 extension ViewModelWithError {
     func handle(error: Error) {
-        DispatchQueue.main.async {
-            switch error {
-            case let errorType as APIError:
-                self.errorMessage.accept(errorType.alertMessage)
-            case let errorType as DecodingError:
-                self.errorMessage.accept(errorType.alertMessage)
-            case let errorType as TranslateError:
-                self.errorMessage.accept(errorType.alertMessage)
-            default:
-                self.errorMessage.accept(TranslateError.unknown.alertMessage)
-            }
+        switch error {
+        case let errorType as APIError:
+            self.errorMessage.accept(errorType.alertMessage)
+        case let errorType as DecodingError:
+            self.errorMessage.accept(errorType.alertMessage)
+        case let errorType as TranslateError:
+            self.errorMessage.accept(errorType.alertMessage)
+        default:
+            self.errorMessage.accept(TranslateError.unknown.alertMessage)
         }
+        
     }
 }
