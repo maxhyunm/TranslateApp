@@ -1,3 +1,5 @@
+# README
+
 # WHAAT: Auto Translate 🔠
 
 <img src="https://hackmd.io/_uploads/rkGEOs9-T.png" width="300"><br><BR>
@@ -47,7 +49,7 @@
 |2023.10.14.| NetworkManager 내부 메서드 분리<br>ColorNamespace 추가<br>Localization 추가 |
 |2023.10.15.| 네트워크 테스트 추가<br>ResultViewModel 분리 |
 |2023.10.16.| 아이콘 및 런치스크린 생성<br>Copy 작업 추가 |
-|2023.10.17.| Toast 메시지 기능 추가<br>README 작성 |
+|2023.10.17.| Toast 메시지 기능 추가<br>ResultViewController -> TextLabel로 변경<br>README 작성 |
 
 <a id="3."></a></br>
 ## 🛠️ 활용 기술
@@ -94,13 +96,11 @@
         │   │       ├── Protocol
         │   │       │   ├── ToastShowable.swift
         │   │       │   └── ViewModelType.swift
-        │   │       ├── Main
-        │   │       │   ├── LanguagePickerField.swift
-        │   │       │   ├── MainViewController.swift
-        │   │       │   └── MainViewModel.swift
-        │   │       └── Result
-        │   │           ├── ResultViewController.swift
-        │   │           └── ResultViewModel.swift
+        │   │       └── Main
+        │   │           ├── LanguagePickerField.swift
+        │   │           ├── TextLabel.swift
+        │   │           ├── MainViewController.swift
+        │   │           └── MainViewModel.swift
         │   ├── Resource
         │   │   └── Assets.xcassets
         │   ├── Info.plist
@@ -111,15 +111,16 @@
             ├── TestDouble.swift
             ├── NetworkTexts.swift
             └── ViewModelTest.swift
+
 ### UML
-<img src="https://hackmd.io/_uploads/r1Y6ROiZT.png"><br>
+<img src="https://hackmd.io/_uploads/ryt6Eb3WT.png"><br>
 
 <a id="5."></a></br>
 ## 📱 실행 화면
 
 | 언어 감지 번역 | 선택 언어 번역 | 결과 복사 |
 |:-:|:-:|:-:|
-|<img src="https://file.notion.so/f/f/26c8d86e-7094-42a2-9751-594e7aa0a176/dd7f7c5d-67af-465b-aee3-9d41770ad6c4/KakaoTalk_Photo_2023-10-17-11-52-52_002.gif?id=cd7be091-3f62-420a-b097-821a41e13200&table=block&spaceId=26c8d86e-7094-42a2-9751-594e7aa0a176&expirationTimestamp=1697601600000&signature=vTgdFQfNSL4d4jMfLoyTw6eA3RYqyJb1sMRPhw67BYw" width="250">|<img src="https://file.notion.so/f/f/26c8d86e-7094-42a2-9751-594e7aa0a176/05783c07-202f-4d54-b6fd-7fa9bd611129/KakaoTalk_Photo_2023-10-17-11-52-51_001.gif?id=906c956e-8dcc-47fe-9269-d717acdfc638&table=block&spaceId=26c8d86e-7094-42a2-9751-594e7aa0a176&expirationTimestamp=1697601600000&signature=HNpbeGy95CNMdSXdVBDcaiGSzK11E_5bnGwRITnp8lQ" width="250">|<img src="https://file.notion.so/f/f/26c8d86e-7094-42a2-9751-594e7aa0a176/c52f1034-67b6-43e4-9d4a-b5a90174dfd9/KakaoTalk_Photo_2023-10-17-11-40-14_002.gif?id=e3989e97-78dd-486e-859e-31425082b372&table=block&spaceId=26c8d86e-7094-42a2-9751-594e7aa0a176&expirationTimestamp=1697601600000&signature=W5XUdpDDn7KoYNT_y1Z-jBri3OFBtWNZoVBnQgwPZeM" width="250">|
+|<img src="" width="250">|<img src="" width="250">|<img src="" width="250">|
 
 
 <a id="6."></a></br>
@@ -134,7 +135,6 @@
 protocol MainViewModelType {
     var inputs: MainViewModelInputsType { get }
     var outputs: MainViewModelOutputsType { get }
-    var resultViewModel: ResultViewModelType { get }
 }
 
 protocol MainViewModelInputsType {
@@ -143,10 +143,6 @@ protocol MainViewModelInputsType {
 }
 
 protocol MainViewModelOutputsType {
-    var errorMessage: PublishRelay<String> { get }
-}
-
-protocol ResultViewModelType {
     var outputItem: PublishRelay<String> { get }
     var errorMessage: PublishRelay<String> { get }
 }
@@ -201,8 +197,17 @@ extension MainViewController: DataScannerViewControllerDelegate {
     func dataScanner(_ dataScanner: DataScannerViewController,
                      didAdd addedItems: [RecognizedItem],
                      allItems: [RecognizedItem]) {
+       translateLabel.removeFromSuperview()
+        
         guard let item = addedItems.first,
               case .text(let text) = item else { return }
+
+        let frame = CGRect(x: text.bounds.topLeft.x,
+                           y: dataScanner.view.frame.origin.y + text.bounds.topLeft.y,
+                           width: text.bounds.topRight.x - text.bounds.topLeft.x,
+                           height: text.bounds.bottomRight.y - text.bounds.topRight.y)
+
+        translateLabel.resetLabel(frame: frame)
         viewModel.inputs.scanText(text.transcript)
     }
 }
@@ -218,23 +223,24 @@ extension MainViewController: DataScannerViewControllerDelegate {
 <div markdown="1">
     
 ```swift
-final class ResultViewModel: ResultViewModelType, ViewModelWithError {
+final class MainViewModel: MainViewModelType, MainViewModelOutputsType, ViewModelWithError {
+    ...
     var outputItem = PublishRelay<String>()
     var errorMessage = PublishRelay<String>()
+    ...
 }
 ```
     
 ```swift
 private func bindOutput() {
-viewModel.outputItem
-    .subscribe(on: MainScheduler.instance)
-    .bind { [weak self] output in
-        guard let self else { return }
-        DispatchQueue.main.async {
-            self.textView.text = output
+    viewModel.outputs.outputItem
+        .subscribe(on: MainScheduler.instance)
+        .bind { [weak self] output in
+            guard let self else { return }
+            self.translateLabel.text = output
+            self.view.addSubview(self.translateLabel)
         }
-    }
-    .disposed(by: disposeBag)
+        .disposed(by: disposeBag)
 }
 ```
 
@@ -325,6 +331,91 @@ final class DecodingManager {
 </div>
 </details>
     
+#### 🌟 UITextField와 UIPickerView를 활용한 선택창 구현
+`Text Field`에 `Picker View`를 연결한 `LanguagePickerField` 타입을 생성하여 언어 선택이 가능하도록 구현하였습니다.
+<details>
+<summary>상세코드</summary>
+<div markdown="1">
+
+```swift
+final class LanguagePickerField: UITextField {
+    private let pickerView = UIPickerView()
+    
+    ...
+    
+    inputView = pickerView
+    
+    ...
+    
+    func bindPickerView(disposeBag: DisposeBag) {
+        Observable.just(category.menu).bind(to: pickerView.rx.itemTitles) { _, item in
+            return item
+        }.disposed(by: disposeBag)
+
+        pickerView.selectRow(0, inComponent: 0, animated: false)
+        self.text = category.menu.first
+    }
+    
+    ...
+    
+}
+```
+    
+</div>
+</details>
+    
+#### 🌟 UIToolBar 활용
+`UIToolBar`와 `flexibleSpace`를 활용하여 PickerView 상단 버튼을 구현하였습니다.
+<details>
+<summary>상세코드</summary>
+<div markdown="1">
+    
+```swift
+private let toolbar: UIToolbar = {
+    let toolBar = UIToolbar(frame: CGRect(origin: .zero, size: CGSize(width: UIScreen.main.bounds.width, height: 35)))
+    toolBar.translatesAutoresizingMaskIntoConstraints = false
+    toolBar.barStyle = .default
+    toolBar.isTranslucent = true
+    toolBar.tintColor = Colors.barButtonTitle
+    toolBar.sizeToFit()
+    return toolBar
+}()
+    
+...
+    
+let cancelButton = UIBarButtonItem(primaryAction: cancel)
+let selectButton = UIBarButtonItem(primaryAction: select)
+let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+
+toolbar.setItems([cancelButton, flexibleSpace, selectButton], animated: true)
+toolbar.isUserInteractionEnabled = true
+self.inputAccessoryView = toolbar
+```
+    
+</div>
+</details>
+
+#### 🌟 GestureRecognizer 활용
+`label`에 `Long Press Guesture`를 연결하여 오래 터치하면 클립보드에 복사를 할 수 있도록 구현하였습니다.
+<details>
+<summary>상세코드</summary>
+<div markdown="1">
+    
+```swift
+private func addGestureRecognizer() {
+    let gestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
+    translateLabel.addGestureRecognizer(gestureRecognizer)
+}
+
+@objc private func handleLongPress() {
+    showToast(Constants.copyToastMessage, withDuration: 3.0, delay: 0.1)
+    UIPasteboard.general.string = translateLabel.text
+}
+```
+    
+</div>
+</details>
+    
 #### 🌟 Localization 추가
 지역화를 위한 처리를 추가하여 영어와 한국어로 활용할 수 있도록 하였습니다.
 <details>
@@ -365,71 +456,7 @@ case .chineseSimple:
 </div>
 </details>
     
-#### 🌟 UIToolBar 활용
-`UIToolBar`와 `flexibleSpace`를 활용하여 PickerView 상단 버튼을 구현하였습니다.
     
-<details>
-<summary>상세코드</summary>
-<div markdown="1">
-    
-```swift
-private let toolbar: UIToolbar = {
-    let toolBar = UIToolbar(frame: CGRect(origin: .zero, size: CGSize(width: UIScreen.main.bounds.width, height: 35)))
-    toolBar.translatesAutoresizingMaskIntoConstraints = false
-    toolBar.barStyle = .default
-    toolBar.isTranslucent = true
-    toolBar.tintColor = Colors.barButtonTitle
-    toolBar.sizeToFit()
-    return toolBar
-}()
-    
-...
-    
-let cancelButton = UIBarButtonItem(primaryAction: cancel)
-let selectButton = UIBarButtonItem(primaryAction: select)
-let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-
-toolbar.setItems([cancelButton, flexibleSpace, selectButton], animated: true)
-toolbar.isUserInteractionEnabled = true
-self.inputAccessoryView = toolbar
-```
-    
-</div>
-</details>
-
-#### 🌟 UITextField와 UIPickerView를 활용한 선택창 구현
-`Text Field`에 `Picker View`를 연결한 `LanguagePickerField` 타입을 생성하여 언어 선택이 가능하도록 구현하였습니다.
-<details>
-<summary>상세코드</summary>
-<div markdown="1">
-
-```swift
-final class LanguagePickerField: UITextField {
-    private let pickerView = UIPickerView()
-    
-    ...
-    
-    inputView = pickerView
-    
-    ...
-    
-    func bindPickerView(disposeBag: DisposeBag) {
-        Observable.just(category.menu).bind(to: pickerView.rx.itemTitles) { _, item in
-            return item
-        }.disposed(by: disposeBag)
-
-        pickerView.selectRow(0, inComponent: 0, animated: false)
-        self.text = category.menu.first
-    }
-    
-    ...
-    
-}
-```
-    
-</div>
-</details>
-
 <a id="7."></a></br>
 ## 🧨 트러블 슈팅
 ### 1️⃣ 뷰컨트롤러 내부에 DataScannerViewController 배치
@@ -457,42 +484,17 @@ private func configureScanner() {
 }
 ```
 
-
-### 2️⃣ Data Scanner의 설정과 번역 결과 표시
+### 2️⃣ UILabel의 위치 설정
 **🚨 문제점**</br>
-`DataScannerViewContoller`를 활용하면 스캔한 텍스트의 위치정보도 함께 얻을 수 있습니다. 때문에 처음에는 카메라가 인식한 모든 텍스트 위치에 `Label`을 올려 실시간으로 번역된 내용을 표시하려고 했습니다. 이를 위해 `Data Scanner`의 `recognizesMultipleItems`를 `true`로 설정하고, 함께 인식한 내용을 모두 전송하였습니다.
-그러나 이렇게 하니 인식 중인 단어가 여러 건이 되면 한 번에 많은 수의 API를 호출하여, OpenAPI의 하루 사용량을 금방 넘겨버리는 이슈가 발생했습니다. 사용량 제한이 없는 API를 활용한다면 좋은 방향이 되겠지만, OpenAPI만을 사용하는 이번 프로젝트에 활용하기에는 적절하지 않다고 판단되었습니다.
+`DataScannerViewContoller`를 활용하면 스캔한 텍스트의 위치정보도 함께 얻을 수 있습니다. 때문에 카메라가 인식한 텍스트 위치에 `Label`을 올려 실시간으로 번역된 내용을 표시하면 좋겠다는 생각이 들었습니다. 이를 위해 `UILabel`에 `frame` 정보를 넘겨주었지만, 계속해서 크기와 위치를 잡지 못하고 상단으로 올라가는 오류가 있었습니다.<br>
+<img src="https://hackmd.io/_uploads/SyGvFg3ba.png" width="200"><br>
 
 **💡 해결 방법**</br>
-사용자가 원하는 한 건의 텍스트만 번역할 수 있도록 `Data Scanner`의 설정을 조절하였습니다. 선택한 영역의 번역만 이루어지기 때문에 굳이 한정된 크기의 `Label`을 활용할 필요가 없다고 판단되어 번역 결과는 `Half Sheet` 형태로 새 뷰 컨트롤러에 띄울 수 있도록 설정하였습니다.
-```swift
-private func configureTranslateButton() {
-    translateButton.rx.tap.bind { [weak self] in
-        guard let self,
-              let source = sourceLanguage.text,
-              let target = targetLanguage.text else { return }
-        self.viewModel.inputs.touchUpTranslate(source: source, target: target)
-        let resultViewController = ResultViewController(self.viewModel.resultViewModel)
-        let resultNavigationControllr = UINavigationController(rootViewController: resultViewController)
-        DispatchQueue.main.async {
-            self.present(resultNavigationControllr, animated: true)
-        }
-    }.disposed(by: disposeBag)
-}
-```
+`label`의 `translatesAutoresizingMaskIntoConstraints` 설정이 `false`로 되어 있기 때문에 해당 내용을 적용하지 못하는 것을 확인하였습니다. 해당 설정을 삭제하여 해결하였습니다.<br>
+<img src="https://hackmd.io/_uploads/SyGPYg3bT.png" width="200"><br>
     
-```swift
-final class ResultViewController: UIViewController {
-    ...
-    if let sheetPresentationController = sheetPresentationController {
-        sheetPresentationController.detents = [.medium()]
-        sheetPresentationController.prefersGrabberVisible = true
-    }
-    ...
-}
-```
 
-### 3️⃣ UIToolBar Frame 문제
+### 3️⃣ UIToolBar Frame
 **🚨 문제점**</br>
 버튼 처리를 위해 UIToolBar를 연결한 후 PickerView를 활성화하면 아래와 같은 Constraint 오류가 계속하여 발생하였습니다. 
 <img src="https://hackmd.io/_uploads/SJHDSo9-6.png" width="400">
@@ -507,23 +509,22 @@ let toolBar = UIToolbar(frame: CGRect(origin: .zero, size: CGSize(width: UIScree
 
 <a id="8."></a></br>
 ## 📚 참고 자료
+> 🍎 : Apple Developer Documentations
+> 🟢 : Naver Developers
+> ⚪️ : 기타 자료
 
-> 🍎 : Apple Developer Documentations<br>
-> 🟢 : Naver Developers<br>
-> ⚪️ : 기타 자료<br>
-
-<br>
-
-[🍎 URLSession](https://developer.apple.com/documentation/foundation/urlsession)<br>
-[🍎 URLRequest](https://developer.apple.com/documentation/foundation/urlrequest)<br>
-[🍎 URLComponents](https://developer.apple.com/documentation/foundation/urlcomponents)<br>
-[🍎 UIAlertController](https://developer.apple.com/documentation/uikit/uialertcontroller)<br>
-[🍎 DataScannerViewController](https://developer.apple.com/documentation/visionkit/datascannerviewcontroller)<br>
-[🍎 Scanning data with the camera](https://developer.apple.com/documentation/visionkit/scanning_data_with_the_camera)<br>
-[🍎 UIPickerView](https://developer.apple.com/documentation/uikit/uipickerview)<br>
-[🍎 UIToolbar](https://developer.apple.com/documentation/uikit/uitoolbar)<br>
-[🟢 파파고 번역 API](https://developers.naver.com/docs/papago/papago-nmt-overview.md)<br>
-[🟢 파파고 언어 감지 API](https://developers.naver.com/docs/papago/papago-detectlangs-overview.md)<br>
-[⚪️ RxSwift](https://github.com/ReactiveX/RxSwift)<br>
+[🍎 URLSession](https://developer.apple.com/documentation/foundation/urlsession)
+[🍎 URLRequest](https://developer.apple.com/documentation/foundation/urlrequest)
+[🍎 URLComponents](https://developer.apple.com/documentation/foundation/urlcomponents)
+[🍎 UIAlertController](https://developer.apple.com/documentation/uikit/uialertcontroller)
+[🍎 DataScannerViewController](https://developer.apple.com/documentation/visionkit/datascannerviewcontroller)
+[🍎 Scanning data with the camera](https://developer.apple.com/documentation/visionkit/scanning_data_with_the_camera)
+[🍎 UIPickerView](https://developer.apple.com/documentation/uikit/uipickerview)
+[🍎 UIToolbar](https://developer.apple.com/documentation/uikit/uitoolbar)
+[🍎 Bounds](https://developer.apple.com/documentation/uikit/uiview/1622580-bounds)
+[🍎 Frame](https://developer.apple.com/documentation/uikit/uiview/1622621-frame)
+[🟢 파파고 번역 API](https://developers.naver.com/docs/papago/papago-nmt-overview.md)
+[🟢 파파고 언어 감지 API](https://developers.naver.com/docs/papago/papago-detectlangs-overview.md)
+[⚪️ RxSwift](https://github.com/ReactiveX/RxSwift)
 [⚪️ Kodeco : New Scanning and Text Capabilities with VisionKit](https://www.kodeco.com/36652642-new-scanning-and-text-capabilities-with-visionkit)
 </br>
