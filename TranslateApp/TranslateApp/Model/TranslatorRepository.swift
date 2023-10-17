@@ -10,51 +10,66 @@ import RxSwift
 
 final class TranslatorRepository {
     let networkManager: NetworkManager
+    let disposeBag = DisposeBag()
     
     init(networkManager: NetworkManager) {
         self.networkManager = networkManager
     }
     
-    func detectLanguage(_ text: String, completion: @escaping(Result<Languages, Error>) -> Void) {
-        let query = [KeywordArgument(key: "query", value: text)]
-        
-        networkManager.fetchData(.languageDetector(body: query)) { result in
-            switch result {
-            case .success(let data):
+    func detectLanguage(_ text: String) -> Observable<Languages> {
+        return Observable.create { [weak self] observable in
+            guard let self else { return Disposables.create() }
+            let query = [KeywordArgument(key: "query", value: text)]
+            
+            let result = networkManager.fetchData(.languageDetector(body: query))
+            result.subscribe(onNext: { data in
                 do {
                     let languageCheck: LanguageDetectorDTO = try DecodingManager.shared.decode(data)
                     guard let sourceLanguage = Languages(rawValue: languageCheck.languageCode),
                           sourceLanguage.isTranslatable else {
-                        throw TranslateError.languageNotAvailable
+                        observable.on(.error(TranslateError.languageNotAvailable))
+                        return
                     }
-                    completion(.success(sourceLanguage))
+                    observable.on(.next(sourceLanguage))
+                    return
                 } catch(let error) {
-                    completion(.failure(error))
+                    observable.on(.error(error))
+                    return
                 }
-            case .failure(let error):
-                completion(.failure(error))
-            }
+            }, onError: { error in
+                observable.on(.error(error))
+                return
+            })
+            .disposed(by: disposeBag)
+            
+            return Disposables.create()
         }
-        
     }
     
-    func translate(source: Languages, target: Languages, text: String, completion: @escaping(Result<String, Error>) -> Void) {
-        let query = [KeywordArgument(key: "source", value: source.rawValue),
-                     KeywordArgument(key: "target", value: target.rawValue),
-                     KeywordArgument(key: "text", value: text)]
-        
-        networkManager.fetchData(.translator(body: query)) { result in
-            switch result {
-            case .success(let data):
+    func translate(source: Languages, target: Languages, text: String) -> Observable<String> {
+        return Observable.create { [weak self] observable in
+            guard let self else { return Disposables.create() }
+            let query = [KeywordArgument(key: "source", value: source.rawValue),
+                         KeywordArgument(key: "target", value: target.rawValue),
+                         KeywordArgument(key: "text", value: text)]
+            
+            let result = networkManager.fetchData(.translator(body: query))
+            result.subscribe(onNext: { data in
                 do {
                     let translatedData: TranslatorDTO = try DecodingManager.shared.decode(data)
-                    completion(.success(translatedData.message.result.translatedText))
+                    observable.on(.next(translatedData.message.result.translatedText))
+                    return
                 } catch(let error) {
-                    completion(.failure(error))
+                    observable.on(.error(error))
+                    return
                 }
-            case .failure(let error):
-                completion(.failure(error))
-            }
+            }, onError: { error in
+                observable.on(.error(error))
+                return
+            })
+            .disposed(by: disposeBag)
+            
+            return Disposables.create()
         }
     }
 }

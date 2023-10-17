@@ -190,8 +190,11 @@ extension MainViewController {
             .subscribe(on: MainScheduler.instance)
             .bind { [weak self] output in
                 guard let self else { return }
-                self.translateLabel.text = output
-                self.view.addSubview(self.translateLabel)
+                
+                DispatchQueue.main.async {
+                    self.translateLabel.text = output
+                    self.view.addSubview(self.translateLabel)
+                }
             }
             .disposed(by: disposeBag)
     }
@@ -201,13 +204,16 @@ extension MainViewController {
             .subscribe(on: MainScheduler.instance)
             .bind { [weak self] errorMessage in
                 guard let self else { return }
-                let alertBuilder = AlertBuilder(prefferedStyle: .alert)
-                    .setMessage(errorMessage)
-                    .addAction(.confirm) { action in
-                        self.dismiss(animated: true)
-                    }
-                    .build()
-                self.present(alertBuilder, animated: true)
+                
+                DispatchQueue.main.async {
+                    let alertBuilder = AlertBuilder(prefferedStyle: .alert)
+                        .setMessage(errorMessage)
+                        .addAction(.confirm) { action in
+                            self.dismiss(animated: true)
+                        }
+                        .build()
+                    self.present(alertBuilder, animated: true)
+                }
             }
             .disposed(by: disposeBag)
     }

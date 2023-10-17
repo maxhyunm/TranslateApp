@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import RxSwift
 import RxCocoa
 
 final class MainViewModel: MainViewModelType, MainViewModelOutputsType, ViewModelWithError {
@@ -15,6 +16,7 @@ final class MainViewModel: MainViewModelType, MainViewModelOutputsType, ViewMode
     private(set) var inputText: String = ""
     var outputItem = PublishRelay<String>()
     var errorMessage = PublishRelay<String>()
+    let disposeBag = DisposeBag()
     
     init(repository: TranslatorRepository) {
         self.repository = repository
@@ -45,17 +47,13 @@ extension MainViewModel: MainViewModelInputsType {
 
 extension MainViewModel {
     func autoTranslate(source: Languages, target: Languages) {
-        self.repository.detectLanguage(inputText) { [weak self] result in
-            guard let self else { return }
-            
-            switch result {
-            case .success(let language):
-                self.translate(source: language, target: target)
-            case .failure(let errorType):
-                self.handle(error: errorType)
-                return
-            }
-        }
+        let result = repository.detectLanguage(inputText)
+        result.subscribe(onNext: { [weak self] language in
+            self?.translate(source: language, target: target)
+        }, onError: {[weak self] error in
+            self?.handle(error: error)
+        })
+        .disposed(by: disposeBag)
     }
     
     func translate(source: Languages, target: Languages) {
@@ -63,15 +61,12 @@ extension MainViewModel {
             return
         }
         
-        self.repository.translate(source: source, target: target, text: inputText) { [weak self] result in
-            guard let self else { return }
-            
-            switch result {
-            case .success(let outputText):
-                self.outputItem.accept(outputText)
-            case .failure(let errorType):
-                self.handle(error: errorType)
-            }
-        }
+        let result = repository.translate(source: source, target: target, text: inputText)
+        result.subscribe(onNext: { [weak self] output in
+            self?.outputItem.accept(output)
+        }, onError: { [weak self] error in
+            self?.handle(error: error)
+        })
+        .disposed(by: disposeBag)
     }
 }

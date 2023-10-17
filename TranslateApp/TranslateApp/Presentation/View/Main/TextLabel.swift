@@ -10,7 +10,6 @@ import UIKit
 final class TextLabel: UILabel {
     init() {
         super.init(frame: .init())
-        translatesAutoresizingMaskIntoConstraints = false
         textColor = .black
         textAlignment = .center
         backgroundColor = Colors.labelBackground

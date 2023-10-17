@@ -6,26 +6,40 @@
 //
 
 import Foundation
+import RxSwift
 
 final class NetworkManager {
     var session: URLSessionProtocol?
-    private var dataTask: URLSessionDataTaskProtocol?
-
-    func fetchData(_ networkType: NetworkConfiguration, completion: @escaping(Result<Data, Error>) -> Void) {
-        do {
-            let request = try makeRequest(networkType)
+    
+    func fetchData(_ networkType: NetworkConfiguration) -> Observable<Data> {
+        return Observable.create { [weak self] observer in
+            guard let self, let session else { return Disposables.create() }
             
-            dataTask?.cancel()
-            
-            dataTask = session?.dataTask(with: request) { data, response, error in
-                let result = self.checkResponse(data: data, response: response, error: error)
-                completion(result)
+            do {
+                let request = try self.makeRequest(networkType)
+                let dataTask: URLSessionDataTaskProtocol = session.dataTask(with: request) { data, response, error in
+                    
+                    let result = self.checkResponse(data: data, response: response, error: error)
+                    
+                    switch result {
+                    case .success(let data):
+                        observer.on(.next(data))
+                        observer.on(.completed)
+                    case .failure(let error):
+                        observer.on(.error(error))
+                        return
+                    }
+                }
+                dataTask.resume()
+                
+                return Disposables.create {
+                    dataTask.cancel()
+                }
+                
+            } catch(let error) {
+                observer.on(.error(error))
+                return Disposables.create()
             }
-            
-            dataTask?.resume()
-            
-        } catch(let error) {
-            completion(.failure(error))
         }
     }
     
