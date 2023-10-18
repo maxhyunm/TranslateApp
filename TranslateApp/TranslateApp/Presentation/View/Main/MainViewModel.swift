@@ -34,43 +34,33 @@ extension MainViewModel: MainViewModelInputsType {
             handle(error: TranslateError.languageNotAvailable)
             return
         }
-
+        
         if !sourceLanguage.isTranslatable {
             autoTranslate(source: sourceLanguage, target: targetLanguage)
+                .subscribe(onNext: { self.outputItem.accept($0)},
+                           onError: { self.handle(error: $0)})
+                .disposed(by: disposeBag)
         } else {
-            self.translate(source: sourceLanguage, target: targetLanguage)
+            translate(source: sourceLanguage, target: targetLanguage)
+                .subscribe(onNext: { self.outputItem.accept($0)},
+                           onError: { self.handle(error: $0)})
+                .disposed(by: disposeBag)
         }
     }
 }
 
 extension MainViewModel {
-    func autoTranslate(source: Languages, target: Languages) {
-        let result = repository.detectLanguage(outputItem.value)
-        result.subscribe(
-            onNext: { [weak self] language in
-                self?.translate(source: language, target: target)
-            },
-            onError: {[weak self] error in
-                self?.handle(error: error)
-            })
-        .disposed(by: disposeBag)
+    func autoTranslate(source: Languages, target: Languages) -> Observable<String> {
+        return repository.detectLanguage(outputItem.value)
+            .flatMap { language -> Observable<String> in
+                return self.translate(source: language, target: target)
+            }
     }
     
-    func translate(source: Languages, target: Languages) {
+    func translate(source: Languages, target: Languages) -> Observable<String> {
         guard source.canTranslate(to:target) else {
-            if source == target { return }
-            handle(error: TranslateError.languageNotAvailable)
-            return
+            return .error(TranslateError.languageNotAvailable)
         }
-        
-        let result = repository.translate(source: source, target: target, text: outputItem.value)
-        result.subscribe(
-            onNext: { [weak self] output in
-                self?.outputItem.accept(output)
-            },
-            onError: { [weak self] error in
-                self?.handle(error: error)
-            })
-        .disposed(by: disposeBag)
+        return repository.translate(source: source, target: target, text: outputItem.value)
     }
 }
