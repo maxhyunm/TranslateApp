@@ -15,16 +15,14 @@ final class MainViewController: UIViewController, URLSessionDelegate, ToastShowa
     private let sourceLanguage = LanguagePickerField(category: .source)
     private let targetLanguage = LanguagePickerField(category: .target)
     private let translateLabel = TextLabel()
-    private var isTranslating = false {
-        didSet {
-            configureTranslateButton()
-        }
-    }
+    private var isTranslating = BehaviorRelay<Bool>(value: false)
     
     private var translateButton: UIButton = {
         let button = UIButton()
         let config = UIImage.SymbolConfiguration(pointSize: Constants.buttonTextSize)
-        button.setImage(UIImage(systemName: Constants.buttonImageName, withConfiguration: config), for: .normal)
+        button.setImage(UIImage(systemName: Constants.buttonImageName,
+                                withConfiguration: config),
+                        for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.titleLabel?.font = .preferredFont(forTextStyle: .headline)
         button.tintColor = Colors.buttonTint
@@ -77,8 +75,8 @@ final class MainViewController: UIViewController, URLSessionDelegate, ToastShowa
         super.viewDidLoad()
         configureLanguagePicker()
         configureScanner()
-        configureTranslateButton()
         addGestureRecognizer()
+        bindTranslateStatus()
         bindTranslateButton()
         bindOutput()
         bindError()
@@ -139,24 +137,6 @@ extension MainViewController {
         dataScanner.didMove(toParent: self)
     }
     
-    private func configureTranslateButton() {
-        let config = UIImage.SymbolConfiguration(pointSize: Constants.buttonTextSize)
-        switch isTranslating {
-        case true:
-            self.translateButton.backgroundColor = Colors.buttonReverseBackground
-            self.translateButton.tintColor = Colors.buttonReverseTint
-            self.translateButton.setImage(UIImage(systemName: Constants.buttonReverseImageName,
-                                                  withConfiguration: config),
-                                          for: .normal)
-        case false:
-            self.translateButton.backgroundColor = Colors.buttonBackground
-            self.translateButton.tintColor = Colors.buttonTint
-            self.translateButton.setImage(UIImage(systemName: Constants.buttonImageName,
-                                                  withConfiguration: config),
-                                          for: .normal)
-        }
-    }
-    
     private func addGestureRecognizer() {
         let gestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
         translateLabel.addGestureRecognizer(gestureRecognizer)
@@ -169,19 +149,44 @@ extension MainViewController {
 }
 
 extension MainViewController {
+    private func bindTranslateStatus() {
+        let config = UIImage.SymbolConfiguration(pointSize: Constants.buttonTextSize)
+        isTranslating
+            .observe(on: MainScheduler.instance)
+            .bind { [weak self] status in
+                guard let self else { return }
+                switch status {
+                case true:
+                    self.translateButton.backgroundColor = Colors.buttonReverseBackground
+                    self.translateButton.tintColor = Colors.buttonReverseTint
+                    self.translateButton.setImage(UIImage(systemName: Constants.buttonReverseImageName,
+                                                          withConfiguration: config),
+                                                  for: .normal)
+                    self.dataScanner.stopScanning()
+                case false:
+                    self.translateButton.backgroundColor = Colors.buttonBackground
+                    self.translateButton.tintColor = Colors.buttonTint
+                    self.translateButton.setImage(UIImage(systemName: Constants.buttonImageName,
+                                                          withConfiguration: config),
+                                                  for: .normal)
+                    try? self.dataScanner.startScanning()
+                }
+            }
+            .disposed(by: disposeBag)
+    }
+    
     private func bindTranslateButton() {
         translateButton.rx.tap.bind { [weak self] in
             guard let self,
                   let source = sourceLanguage.text,
                   let target = targetLanguage.text else { return }
             
-            if isTranslating {
-                try? self.dataScanner.startScanning()
-            } else {
-                self.dataScanner.stopScanning()
+            self.isTranslating.accept(!self.isTranslating.value)
+            
+            if isTranslating.value {
                 self.viewModel.inputs.touchUpTranslate(source: source, target: target)
             }
-            self.isTranslating = !self.isTranslating
+            
         }.disposed(by: disposeBag)
     }
     

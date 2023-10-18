@@ -13,8 +13,7 @@ final class MainViewModel: MainViewModelType, MainViewModelOutputsType, ViewMode
     let repository: TranslatorRepository
     var inputs: MainViewModelInputsType { return self }
     var outputs: MainViewModelOutputsType { return self }
-    private(set) var inputText: String = ""
-    var outputItem = PublishRelay<String>()
+    var outputItem = BehaviorRelay<String>(value: "")
     var errorMessage = PublishRelay<String>()
     let disposeBag = DisposeBag()
     
@@ -25,7 +24,6 @@ final class MainViewModel: MainViewModelType, MainViewModelOutputsType, ViewMode
 
 extension MainViewModel: MainViewModelInputsType {
     func scanText(_ input: String) {
-        inputText = input
         outputItem.accept(input)
     }
     
@@ -47,7 +45,7 @@ extension MainViewModel: MainViewModelInputsType {
 
 extension MainViewModel {
     func autoTranslate(source: Languages, target: Languages) {
-        let result = repository.detectLanguage(inputText)
+        let result = repository.detectLanguage(outputItem.value)
         result.subscribe(
             onNext: { [weak self] language in
                 self?.translate(source: language, target: target)
@@ -61,7 +59,7 @@ extension MainViewModel {
     func translate(source: Languages, target: Languages) {
         if source == target { return }
         
-        let result = repository.translate(source: source, target: target, text: inputText)
+        let result = repository.translate(source: source, target: target, text: outputItem.value)
         result.subscribe(
             onNext: { [weak self] output in
                 self?.outputItem.accept(output)

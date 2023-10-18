@@ -19,7 +19,7 @@ protocol MainViewModelInputsType {
 }
 
 protocol MainViewModelOutputsType {
-    var outputItem: PublishRelay<String> { get }
+    var outputItem: BehaviorRelay<String> { get }
     var errorMessage: PublishRelay<String> { get }
 }
 
