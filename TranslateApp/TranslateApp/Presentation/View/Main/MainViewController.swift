@@ -187,33 +187,29 @@ extension MainViewController {
     
     private func bindOutput() {
         viewModel.outputs.outputItem
-            .subscribe(on: MainScheduler.instance)
+            .observe(on: MainScheduler.instance)
             .bind { [weak self] output in
                 guard let self else { return }
                 
-                DispatchQueue.main.async {
-                    self.translateLabel.text = output
-                    self.view.addSubview(self.translateLabel)
-                }
+                self.translateLabel.text = output
+                self.view.addSubview(self.translateLabel)
             }
             .disposed(by: disposeBag)
     }
     
     private func bindError() {
         viewModel.outputs.errorMessage
-            .subscribe(on: MainScheduler.instance)
+            .observe(on: MainScheduler.instance)
             .bind { [weak self] errorMessage in
                 guard let self else { return }
                 
-                DispatchQueue.main.async {
-                    let alertBuilder = AlertBuilder(prefferedStyle: .alert)
-                        .setMessage(errorMessage)
-                        .addAction(.confirm) { action in
-                            self.dismiss(animated: true)
-                        }
-                        .build()
-                    self.present(alertBuilder, animated: true)
-                }
+                let alertBuilder = AlertBuilder(prefferedStyle: .alert)
+                    .setMessage(errorMessage)
+                    .addAction(.confirm) { action in
+                        self.dismiss(animated: true)
+                    }
+                    .build()
+                self.present(alertBuilder, animated: true)
             }
             .disposed(by: disposeBag)
     }
