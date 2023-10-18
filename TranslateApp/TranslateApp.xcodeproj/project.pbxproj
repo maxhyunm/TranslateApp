@@ -12,7 +12,6 @@
 		BAD472302AD448BA0021323A /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD4722F2AD448BA0021323A /* MainViewController.swift */; };
 		BAD472352AD448BC0021323A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BAD472342AD448BC0021323A /* Assets.xcassets */; };
 		BAD472382AD448BC0021323A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BAD472362AD448BC0021323A /* LaunchScreen.storyboard */; };
-		BAD472402AD44BA40021323A /* SecretKey.plist in Resources */ = {isa = PBXBuildFile; fileRef = BAD4723F2AD44BA40021323A /* SecretKey.plist */; };
 		BAD472462AD44C9E0021323A /* TranslatorDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD472452AD44C9E0021323A /* TranslatorDTO.swift */; };
 		BAD472482AD44EFD0021323A /* DecodingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD472472AD44EFD0021323A /* DecodingManager.swift */; };
 		BAD4724B2AD44F370021323A /* DecodingError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD4724A2AD44F370021323A /* DecodingError.swift */; };
@@ -45,6 +44,7 @@
 		BAD472DF2ADBB52B0021323A /* ViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD472DE2ADBB52B0021323A /* ViewModelTest.swift */; };
 		BAD472ED2ADE276B0021323A /* ToastShowable.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD472EC2ADE276B0021323A /* ToastShowable.swift */; };
 		BAD472EF2ADE6AEC0021323A /* TextLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD472EE2ADE6AEC0021323A /* TextLabel.swift */; };
+		BAD472F32ADF88A40021323A /* SecretKey.plist in Resources */ = {isa = PBXBuildFile; fileRef = BAD472F22ADF88A40021323A /* SecretKey.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,7 +65,6 @@
 		BAD472342AD448BC0021323A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BAD472372AD448BC0021323A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BAD472392AD448BC0021323A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		BAD4723F2AD44BA40021323A /* SecretKey.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = SecretKey.plist; sourceTree = "<group>"; };
 		BAD472452AD44C9E0021323A /* TranslatorDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslatorDTO.swift; sourceTree = "<group>"; };
 		BAD472472AD44EFD0021323A /* DecodingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecodingManager.swift; sourceTree = "<group>"; };
 		BAD4724A2AD44F370021323A /* DecodingError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecodingError.swift; sourceTree = "<group>"; };
@@ -93,6 +92,7 @@
 		BAD472DE2ADBB52B0021323A /* ViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelTest.swift; sourceTree = "<group>"; };
 		BAD472EC2ADE276B0021323A /* ToastShowable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastShowable.swift; sourceTree = "<group>"; };
 		BAD472EE2ADE6AEC0021323A /* TextLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextLabel.swift; sourceTree = "<group>"; };
+		BAD472F22ADF88A40021323A /* SecretKey.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = SecretKey.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,7 +152,7 @@
 				BAD4729E2AD852750021323A /* Presentation */,
 				BAD4729D2AD852570021323A /* Resource */,
 				BAD472392AD448BC0021323A /* Info.plist */,
-				BAD4723F2AD44BA40021323A /* SecretKey.plist */,
+				BAD472F22ADF88A40021323A /* SecretKey.plist */,
 			);
 			path = TranslateApp;
 			sourceTree = "<group>";
@@ -378,9 +378,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BAD472F32ADF88A40021323A /* SecretKey.plist in Resources */,
 				BAD472382AD448BC0021323A /* LaunchScreen.storyboard in Resources */,
 				BAD472B52ADAC7E40021323A /* Localizable.strings in Resources */,
-				BAD472402AD44BA40021323A /* SecretKey.plist in Resources */,
 				BAD472352AD448BC0021323A /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

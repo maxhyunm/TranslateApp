@@ -12,6 +12,7 @@ import RxCocoa
 final class LanguagePickerField: UITextField {
     private let pickerView = UIPickerView()
     var dataSource = BehaviorRelay<[String]>(value: [])
+    let disposeBag = DisposeBag()
     
     private let toolbar: UIToolbar = {
         let toolBar = UIToolbar(frame: CGRect(origin: .zero, size: CGSize(width: UIScreen.main.bounds.width, height: 35)))
@@ -73,7 +74,7 @@ final class LanguagePickerField: UITextField {
         self.inputAccessoryView = toolbar
     }
 
-    func bindPickerView(disposeBag: DisposeBag) {
+    func bindPickerView() {
         dataSource.bind(to: pickerView.rx.itemTitles) { _, item in
             return item
         }.disposed(by: disposeBag)

@@ -116,8 +116,8 @@ extension MainViewController {
     }
     
     private func configureLanguagePicker() {
-        sourceLanguage.bindPickerView(disposeBag: disposeBag)
-        targetLanguage.bindPickerView(disposeBag: disposeBag)
+        sourceLanguage.bindPickerView()
+        targetLanguage.bindPickerView()
         sourceLanguage.dataSource.accept(Languages.allMenu)
         targetLanguage.dataSource.accept(Languages.auto.translatableMenu)
     }
