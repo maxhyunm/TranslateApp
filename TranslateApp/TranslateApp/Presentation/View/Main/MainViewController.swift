@@ -14,7 +14,7 @@ import RxCocoa
 final class MainViewController: UIViewController, URLSessionDelegate, ToastShowable {
     private let sourceLanguage = LanguagePickerField(category: .source)
     private let targetLanguage = LanguagePickerField(category: .target)
-    private let translateLabel = TextLabel()
+    private let textLabel = TextLabel()
     private var isTranslating = BehaviorRelay<Bool>(value: false)
     
     private var translateButton: UIButton = {
@@ -139,12 +139,12 @@ extension MainViewController {
     
     private func addGestureRecognizer() {
         let gestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
-        translateLabel.addGestureRecognizer(gestureRecognizer)
+        textLabel.addGestureRecognizer(gestureRecognizer)
     }
     
     @objc private func handleLongPress() {
         showToast(Constants.copyToastMessage, withDuration: 3.0, delay: 0.1)
-        UIPasteboard.general.string = translateLabel.text
+        UIPasteboard.general.string = textLabel.text
     }
 }
 
@@ -196,8 +196,8 @@ extension MainViewController {
             .bind { [weak self] output in
                 guard let self else { return }
                 
-                self.translateLabel.text = output
-                self.view.addSubview(self.translateLabel)
+                self.textLabel.text = output
+                self.view.addSubview(self.textLabel)
             }
             .disposed(by: disposeBag)
     }
@@ -224,7 +224,7 @@ extension MainViewController: DataScannerViewControllerDelegate {
     func dataScanner(_ dataScanner: DataScannerViewController,
                      didAdd addedItems: [RecognizedItem],
                      allItems: [RecognizedItem]) {
-        translateLabel.removeFromSuperview()
+        textLabel.removeFromSuperview()
         
         guard let item = addedItems.first,
               case .text(let text) = item else { return }
@@ -234,7 +234,7 @@ extension MainViewController: DataScannerViewControllerDelegate {
                            width: text.bounds.topRight.x - text.bounds.topLeft.x,
                            height: text.bounds.bottomRight.y - text.bounds.topRight.y)
         
-        translateLabel.resetLabel(frame: frame)
+        textLabel.resetLabel(frame: frame)
         viewModel.inputs.scanText(text.transcript)
     }
 }
