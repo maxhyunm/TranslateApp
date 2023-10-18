@@ -57,7 +57,11 @@ extension MainViewModel {
     }
     
     func translate(source: Languages, target: Languages) {
-        if source == target { return }
+        guard source.canTranslate(to:target) else {
+            if source == target { return }
+            handle(error: TranslateError.languageNotAvailable)
+            return
+        }
         
         let result = repository.translate(source: source, target: target, text: outputItem.value)
         result.subscribe(

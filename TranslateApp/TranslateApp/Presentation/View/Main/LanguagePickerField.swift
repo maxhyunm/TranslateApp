@@ -11,7 +11,7 @@ import RxCocoa
 
 final class LanguagePickerField: UITextField {
     private let pickerView = UIPickerView()
-    private let category: Languages.Category
+    var dataSource = BehaviorRelay<[String]>(value: [])
     
     private let toolbar: UIToolbar = {
         let toolBar = UIToolbar(frame: CGRect(origin: .zero, size: CGSize(width: UIScreen.main.bounds.width, height: 35)))
@@ -23,8 +23,7 @@ final class LanguagePickerField: UITextField {
         return toolBar
     }()
     
-    init(category: Languages.Category) {
-        self.category = category
+    init() {
         super.init(frame: .init())
         configureUI()
         configureToolbar()
@@ -60,7 +59,7 @@ final class LanguagePickerField: UITextField {
         let select = UIAction(title: String(format: NSLocalizedString("select", comment: "선택"))) { [weak self] _ in
             guard let self else { return }
             let row = self.pickerView.selectedRow(inComponent: 0)
-            self.text = self.category.menu[row]
+            self.text = self.dataSource.value[row]
             self.resignFirstResponder()
         }
 
@@ -75,12 +74,15 @@ final class LanguagePickerField: UITextField {
     }
 
     func bindPickerView(disposeBag: DisposeBag) {
-        Observable.just(category.menu).bind(to: pickerView.rx.itemTitles) { _, item in
+        dataSource.bind(to: pickerView.rx.itemTitles) { _, item in
             return item
         }.disposed(by: disposeBag)
-
-        pickerView.selectRow(0, inComponent: 0, animated: false)
-        self.text = category.menu.first
+        
+        dataSource.bind { [weak self] source in
+            guard let self else { return }
+            self.pickerView.selectRow(0, inComponent: 0, animated: false)
+            self.text = dataSource.value.first
+        }.disposed(by: disposeBag)
     }
 }
 

@@ -67,6 +67,41 @@ enum Languages: String, CustomStringConvertible, CaseIterable {
             return true
         }
     }
+    
+    private var translatables: [Languages] {
+        switch self {
+        case .auto:
+            return Self.allCases.filter { ![.auto, .unknown].contains($0) }
+        case .unknown:
+            return []
+        case .korean:
+            return Self.allCases.filter { ![.auto, .unknown, .korean].contains($0) }
+        case .english:
+            return [.korean, .japanese,.chineseSimple, .chineseTraditional, .french]
+        case .japanese:
+            return [.korean, .english, .chineseSimple, .chineseTraditional]
+        case .chineseSimple:
+            return [.korean, .english, .japanese, .chineseTraditional]
+        case .chineseTraditional:
+            return [.korean, .english, .japanese, .chineseSimple]
+        case .french:
+            return [.korean, .english]
+        default:
+            return [.korean]
+        }
+    }
+    
+    static let allMenu: [String] = Languages.allCases.filter { $0 != .unknown }.map { $0.description }
+    
+    var translatableMenu: [String] {
+        return self.translatables.map { $0.description }
+    }
+    
+    func canTranslate(to target: Languages) -> Bool {
+        if !target.isTranslatable { return false }
+        
+        return self.translatables.contains(target) ? true : false
+    }
 
     static func getLanguageType(for name: String?) -> Languages? {
         let descriptionToLanguage = Self.allCases.reduce(into: [:]) { $0[$1.description] = $1 }
@@ -78,18 +113,3 @@ enum Languages: String, CustomStringConvertible, CaseIterable {
     }
 }
 
-extension Languages {
-    enum Category {
-        case source
-        case target
-        
-        var menu: [String] {
-            switch self {
-            case .source:
-                return Languages.allCases.filter { $0 != .unknown }.map { $0.description }
-            case .target:
-                return Languages.allCases.filter { $0 != .auto && $0 != .unknown }.map { $0.description }
-            }
-        }
-    }
-}

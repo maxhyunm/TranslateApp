@@ -12,8 +12,8 @@ import RxSwift
 import RxCocoa
 
 final class MainViewController: UIViewController, URLSessionDelegate, ToastShowable {
-    private let sourceLanguage = LanguagePickerField(category: .source)
-    private let targetLanguage = LanguagePickerField(category: .target)
+    private let sourceLanguage = LanguagePickerField()
+    private let targetLanguage = LanguagePickerField()
     private let textLabel = TextLabel()
     private var isTranslating = BehaviorRelay<Bool>(value: false)
     
@@ -76,6 +76,7 @@ final class MainViewController: UIViewController, URLSessionDelegate, ToastShowa
         configureLanguagePicker()
         configureScanner()
         addGestureRecognizer()
+        bindTextField()
         bindTranslateStatus()
         bindTranslateButton()
         bindOutput()
@@ -117,6 +118,8 @@ extension MainViewController {
     private func configureLanguagePicker() {
         sourceLanguage.bindPickerView(disposeBag: disposeBag)
         targetLanguage.bindPickerView(disposeBag: disposeBag)
+        sourceLanguage.dataSource.accept(Languages.allMenu)
+        targetLanguage.dataSource.accept(Languages.auto.translatableMenu)
     }
     
     private func configureScanner() {
@@ -143,12 +146,20 @@ extension MainViewController {
     }
     
     @objc private func handleLongPress() {
-        showToast(Constants.copyToastMessage, withDuration: 3.0, delay: 0.1)
+        showToast(Constants.copyToastMessage, withDuration: Constants.longPressDuration, delay: Constants.longPressDelay)
         UIPasteboard.general.string = textLabel.text
     }
 }
 
 extension MainViewController {
+    private func bindTextField() {
+        sourceLanguage.rx.text.changed.bind { [weak self] language in
+            guard let self,
+                  let language = Languages.getLanguageType(for: language) else { return }
+            self.targetLanguage.dataSource.accept(language.translatableMenu)
+        }.disposed(by: disposeBag)
+    }
+    
     private func bindTranslateStatus() {
         let config = UIImage.SymbolConfiguration(pointSize: Constants.buttonTextSize)
         isTranslating
@@ -250,6 +261,8 @@ extension MainViewController {
         static let buttonReverseImageName: String = "arrow.uturn.backward.circle"
         static let iconImageName: String = "arrow.forward.circle.fill"
         static let copyToastMessage: String = String(format: NSLocalizedString("copyToastMessage", comment: "클립보드에 복사"))
+        static let longPressDuration: Double = 3.0
+        static let longPressDelay: Double = 0.1
     }
     
     struct Colors {
