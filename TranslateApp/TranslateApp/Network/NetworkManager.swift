@@ -18,24 +18,18 @@ final class NetworkManager {
             do {
                 let request = try self.makeRequest(networkType)
                 let dataTask: URLSessionDataTaskProtocol = session.dataTask(with: request) { data, response, error in
-                    
-                    let result = self.checkResponse(data: data, response: response, error: error)
-                    
-                    switch result {
-                    case .success(let data):
-                        observer.on(.next(data))
+                    do {
+                        let result = try self.checkResponse(data: data, response: response, error: error)
+                        observer.on(.next(result))
                         observer.on(.completed)
-                    case .failure(let error):
+                    } catch(let error) {
                         observer.on(.error(error))
-                        return
                     }
                 }
                 dataTask.resume()
-                
                 return Disposables.create {
                     dataTask.cancel()
                 }
-                
             } catch(let error) {
                 observer.on(.error(error))
                 return Disposables.create()
@@ -67,23 +61,24 @@ final class NetworkManager {
         return request
     }
     
-    private func checkResponse(data: Data?, response: URLResponse?, error: Error?) -> Result<Data, Error> {
+    
+    private func checkResponse(data: Data?, response: URLResponse?, error: Error?) throws -> Data {
         if error != nil {
-            return .failure(APIError.requestFailure)
+            throw APIError.requestFailure
         }
         
         guard let httpResponse = response as? HTTPURLResponse else {
-            return .failure(APIError.invalidResponse)
+            throw APIError.invalidResponse
         }
         
         guard (200...299).contains(httpResponse.statusCode) else {
-            return .failure(APIError.invalidHTTPStatusCode(statusCode: httpResponse.statusCode))
+            throw APIError.invalidHTTPStatusCode(statusCode: httpResponse.statusCode)
         }
         
         guard let data else {
-            return .failure(APIError.invalidData)
+            throw APIError.invalidData
         }
         
-        return .success(data)
+        return data
     }
 }
