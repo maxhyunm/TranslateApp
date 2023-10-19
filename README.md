@@ -120,7 +120,7 @@
 
 | 언어 감지 번역 | 선택 언어 번역 | 결과 복사 |
 |:-:|:-:|:-:|
-|<img src="" width="250">|<img src="" width="250">|<img src="" width="250">|
+|<img src="https://file.notion.so/f/f/26c8d86e-7094-42a2-9751-594e7aa0a176/8e2d8df7-76a2-49ce-9096-8732069a052d/whaat3.gif?id=a3f4682b-97b4-4c44-92ed-048a171ae065&table=block&spaceId=26c8d86e-7094-42a2-9751-594e7aa0a176&expirationTimestamp=1697810400000&signature=stVfJJMW8laCcLwayzcLNtYCWhx0H3788uu4LIkypT8" width="250">|<img src="https://file.notion.so/f/f/26c8d86e-7094-42a2-9751-594e7aa0a176/464f71c3-6e16-423e-8d6d-56f50fcb0a22/whaat2.gif?id=be069aeb-cbb8-41da-9281-1159a4d4cc63&table=block&spaceId=26c8d86e-7094-42a2-9751-594e7aa0a176&expirationTimestamp=1697810400000&signature=13W0Wyb3YoTnGIViA4dVThMYRAc3EIvS1hwd-ySjAjg" width="250">|<img src="https://file.notion.so/f/f/26c8d86e-7094-42a2-9751-594e7aa0a176/9f4afc4f-86ba-4717-a1c9-099b6a5f6973/whaat1.gif?id=7823d2bf-84cf-46da-8870-5b12967f0766&table=block&spaceId=26c8d86e-7094-42a2-9751-594e7aa0a176&expirationTimestamp=1697810400000&signature=qH2_Pl4qLjEFiBW3tbrugC0I2Jlc3LkFPcIo7pEEkbA" width="250">|
 
 
 <a id="6."></a></br>
