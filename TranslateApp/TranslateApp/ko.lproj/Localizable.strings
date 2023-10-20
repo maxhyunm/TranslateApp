@@ -1,0 +1,40 @@
+/* 
+  Localizable.strings
+  TranslateApp
+
+  Created by Min Hyun on 2023/10/14.
+  
+*/
+
+"languageAuto" = "언어 감지";
+"languageKorean" = "한국어";
+"languageEnglish" = "영어";
+"languageJapanese" = "일본어";
+"languageChineseSimple" = "중국어(간체)";
+"languageChineseTraditional" = "중국어(번체)";
+"languageVietnamese" = "베트남어";
+"languageIndonesian" = "인도네시아어";
+"languageThai" = "태국어";
+"languageGerman" = "독일어";
+"languageRussian" = "러시아어";
+"languageSpanish" = "스페인어";
+"languageItalian" = "이탈리아어";
+"languageFrench" = "프랑스어";
+"languageUnknown" = "기타";
+"confirm" = "확인";
+"cancel" = "취소";
+"error" = "오류";
+"copy" = "복사";
+"select" = "선택";
+"close" = "닫기";
+"decodingFailure" = "디코딩 오류입니다";
+"invalidURL" = "잘못된 URL입니다";
+"invalidAPIKey" = "네트워크 오류입니다";
+"requestFailure" = "연결에 실패하였습니다";
+"invalidData" = "유효하지 않은 데이터 형식입니다";
+"invalidResponse" = "서버 응답 오류입니다";
+"invalidHTTPStatusCode" = "서버 응답 오류입니다 : 오류 코드 ";
+"requestTimeOut" = "네트워크 응답 시간 초과입니다";
+"languageNotAvailable" = "변환 불가한 언어입니다.";
+"unknown" = "알 수 없는 오류입니다";
+"copyToastMessage" = "클립보드에 복사되었습니다";
