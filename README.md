@@ -513,18 +513,18 @@ let toolBar = UIToolbar(frame: CGRect(origin: .zero, size: CGSize(width: UIScree
 > 🟢 : Naver Developers
 > ⚪️ : 기타 자료
 
-[🍎 URLSession](https://developer.apple.com/documentation/foundation/urlsession)
-[🍎 URLRequest](https://developer.apple.com/documentation/foundation/urlrequest)
-[🍎 URLComponents](https://developer.apple.com/documentation/foundation/urlcomponents)
-[🍎 UIAlertController](https://developer.apple.com/documentation/uikit/uialertcontroller)
-[🍎 DataScannerViewController](https://developer.apple.com/documentation/visionkit/datascannerviewcontroller)
-[🍎 Scanning data with the camera](https://developer.apple.com/documentation/visionkit/scanning_data_with_the_camera)
-[🍎 UIPickerView](https://developer.apple.com/documentation/uikit/uipickerview)
-[🍎 UIToolbar](https://developer.apple.com/documentation/uikit/uitoolbar)
-[🍎 Bounds](https://developer.apple.com/documentation/uikit/uiview/1622580-bounds)
-[🍎 Frame](https://developer.apple.com/documentation/uikit/uiview/1622621-frame)
-[🟢 파파고 번역 API](https://developers.naver.com/docs/papago/papago-nmt-overview.md)
-[🟢 파파고 언어 감지 API](https://developers.naver.com/docs/papago/papago-detectlangs-overview.md)
-[⚪️ RxSwift](https://github.com/ReactiveX/RxSwift)
+[🍎 URLSession](https://developer.apple.com/documentation/foundation/urlsession)<br>
+[🍎 URLRequest](https://developer.apple.com/documentation/foundation/urlrequest)<br>
+[🍎 URLComponents](https://developer.apple.com/documentation/foundation/urlcomponents)<br>
+[🍎 UIAlertController](https://developer.apple.com/documentation/uikit/uialertcontroller)<br>
+[🍎 DataScannerViewController](https://developer.apple.com/documentation/visionkit/datascannerviewcontroller)<br>
+[🍎 Scanning data with the camera](https://developer.apple.com/documentation/visionkit/scanning_data_with_the_camera)<br>
+[🍎 UIPickerView](https://developer.apple.com/documentation/uikit/uipickerview)<br>
+[🍎 UIToolbar](https://developer.apple.com/documentation/uikit/uitoolbar)<br>
+[🍎 Bounds](https://developer.apple.com/documentation/uikit/uiview/1622580-bounds)<br>
+[🍎 Frame](https://developer.apple.com/documentation/uikit/uiview/1622621-frame)<br>
+[🟢 파파고 번역 API](https://developers.naver.com/docs/papago/papago-nmt-overview.md)<br>
+[🟢 파파고 언어 감지 API](https://developers.naver.com/docs/papago/papago-detectlangs-overview.md)<br>
+[⚪️ RxSwift](https://github.com/ReactiveX/RxSwift)<br>
 [⚪️ Kodeco : New Scanning and Text Capabilities with VisionKit](https://www.kodeco.com/36652642-new-scanning-and-text-capabilities-with-visionkit)
 </br>
